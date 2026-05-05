@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import InstallPrompt from "@/components/InstallPrompt";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
     <html lang="es" className="h-full">
       <body className={`${inter.className} h-full bg-slate-900 text-white antialiased`}>
         <ServiceWorkerRegister />
+        <InstallPrompt />
         {children}
       </body>
     </html>
