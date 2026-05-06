@@ -52,12 +52,20 @@ export default function DictationPage() {
     const { data } = await supabase
       .from("phrases")
       .select("*")
-      .order("next_review_date", { ascending: true });
-    const list = data ?? [];
+      .order("created_at", { ascending: false });
     const today = todayISO();
+    const list = (data ?? []).map((p: Phrase) => ({
+      ...p,
+      interval:         p.interval         ?? 1,
+      ease_factor:      p.ease_factor       ?? 2.5,
+      repetitions:      p.repetitions       ?? 0,
+      next_review_date: p.next_review_date  ?? today,
+      correct_count:    p.correct_count     ?? 0,
+      incorrect_count:  p.incorrect_count   ?? 0,
+    }));
     setPhrases(list);
     setQueue(buildQueue(list));
-    setDueCount(list.filter((p) => p.next_review_date <= today).length);
+    setDueCount(list.filter((p: Phrase) => p.next_review_date <= today).length);
     setLoading(false);
   }
 
@@ -129,13 +137,9 @@ export default function DictationPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
-        <Link href="/" className="text-sm text-slate-400 hover:text-white transition">← Flashcards</Link>
-        <div className="flex items-center gap-2">
-          <span className="text-lg">🎧</span>
-          <h1 className="font-bold">Modo Dictado</h1>
-        </div>
-        <Link href="/manage" className="text-sm text-slate-400 hover:text-white transition">Gestionar →</Link>
+      <header className="flex items-center gap-2 px-5 pt-5 pb-3">
+        <span className="text-2xl">🎧</span>
+        <h1 className="font-bold text-lg">Modo Dictado</h1>
       </header>
 
       {/* Progress */}

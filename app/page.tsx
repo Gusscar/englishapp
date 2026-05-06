@@ -3,41 +3,55 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useState, useCallback } from "react";
-import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { applySM2, todayISO, type Quality } from "@/lib/sm2";
 import type { Phrase } from "@/lib/types";
 import FlashCard from "@/components/FlashCard";
+import Link from "next/link";
+
+const today = todayISO();
+
+function withSRSDefaults(p: Phrase): Phrase {
+  return {
+    ...p,
+    interval:          p.interval          ?? 1,
+    ease_factor:       p.ease_factor       ?? 2.5,
+    repetitions:       p.repetitions       ?? 0,
+    next_review_date:  p.next_review_date  ?? today,
+    correct_count:     p.correct_count     ?? 0,
+    incorrect_count:   p.incorrect_count   ?? 0,
+  };
+}
 
 function buildQueue(phrases: Phrase[]): Phrase[] {
-  const today = todayISO();
-  const due = phrases.filter((p) => p.next_review_date <= today);
-  const upcoming = phrases.filter((p) => p.next_review_date > today);
-  // Due phrases first (sorted by date asc), then upcoming as preview
-  due.sort((a, b) => a.next_review_date.localeCompare(b.next_review_date));
-  upcoming.sort((a, b) => a.next_review_date.localeCompare(b.next_review_date));
+  const due      = phrases.filter((p) => p.next_review_date <= today)
+    .sort((a, b) => a.next_review_date.localeCompare(b.next_review_date));
+  const upcoming = phrases.filter((p) => p.next_review_date > today)
+    .sort((a, b) => a.next_review_date.localeCompare(b.next_review_date));
   return [...due, ...upcoming];
 }
 
 export default function HomePage() {
-  const [phrases, setPhrases] = useState<Phrase[]>([]);
-  const [queue, setQueue] = useState<Phrase[]>([]);
-  const [index, setIndex] = useState(0);
+  const [phrases,  setPhrases]  = useState<Phrase[]>([]);
+  const [queue,    setQueue]    = useState<Phrase[]>([]);
+  const [index,    setIndex]    = useState(0);
   const [dueCount, setDueCount] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState<string | null>(null);
 
   async function loadPhrases() {
+    setLoading(true);
+    // order by created_at — works even without SRS columns
     const { data, error } = await supabase
       .from("phrases")
       .select("*")
-      .order("next_review_date", { ascending: true });
+      .order("created_at", { ascending: false });
+
     if (error) {
-      setError("No se pudieron cargar las frases.");
+      setError("Error al conectar con la base de datos.");
     } else {
-      const list = data ?? [];
-      const today = todayISO();
-      const due = list.filter((p) => p.next_review_date <= today).length;
+      const list = (data ?? []).map(withSRSDefaults);
+      const due  = list.filter((p) => p.next_review_date <= today).length;
       setPhrases(list);
       setQueue(buildQueue(list));
       setDueCount(due);
@@ -45,122 +59,131 @@ export default function HomePage() {
     setLoading(false);
   }
 
-  useEffect(() => { loadPhrases(); }, []);
+  useEffect(() => { loadPhrases(); }, []); // eslint-disable-line
 
   const handleResult = useCallback(async (id: string, quality: Quality) => {
     const phrase = phrases.find((p) => p.id === id);
     if (!phrase) return;
 
     const newState = applySM2(
-      {
-        interval: phrase.interval,
-        ease_factor: phrase.ease_factor,
-        repetitions: phrase.repetitions,
-        next_review_date: phrase.next_review_date,
-      },
+      { interval: phrase.interval, ease_factor: phrase.ease_factor,
+        repetitions: phrase.repetitions, next_review_date: phrase.next_review_date },
       quality
     );
-
     const correct = quality >= 3;
     const updates = {
       ...newState,
-      correct_count: phrase.correct_count + (correct ? 1 : 0),
+      correct_count:   phrase.correct_count   + (correct ? 1 : 0),
       incorrect_count: phrase.incorrect_count + (correct ? 0 : 1),
     };
 
     await supabase.from("phrases").update(updates).eq("id", id);
-
-    setPhrases((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, ...updates } : p))
-    );
-
-    // Recount due
-    const today = todayISO();
-    setDueCount((prev) =>
-      correct && newState.next_review_date > today ? Math.max(0, prev - 1) : prev
-    );
+    setPhrases((prev) => prev.map((p) => (p.id === id ? { ...p, ...updates } : p)));
+    if (correct && newState.next_review_date > today)
+      setDueCount((n) => Math.max(0, n - 1));
   }, [phrases]);
 
   function handleNext() {
     setIndex((i) => {
       const next = i + 1;
-      if (next >= queue.length) {
-        // Rebuild queue with updated phrases
-        const newQueue = buildQueue(phrases);
-        setQueue(newQueue);
-        return 0;
-      }
+      if (next >= queue.length) { setQueue(buildQueue(phrases)); return 0; }
       return next;
     });
   }
 
-  const current = queue[index];
-  const today = todayISO();
-  const allCaughtUp = !loading && dueCount === 0 && phrases.length > 0;
+  const current      = queue[index];
+  const allCaughtUp  = !loading && !error && dueCount === 0 && phrases.length > 0;
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
+
+      {/* ── Header ── */}
+      <header className="flex items-center justify-between px-5 pt-5 pb-3">
         <div className="flex items-center gap-2">
-          <span className="text-xl">🇺🇸</span>
-          <h1 className="font-bold text-lg">English Practice</h1>
+          <span className="text-2xl">🇺🇸</span>
+          <h1 className="font-bold text-lg tracking-tight">English Practice</h1>
         </div>
-        <div className="flex items-center gap-4">
-          <Link href="/dictation" className="text-sm text-slate-400 hover:text-white transition">
-            🎧 Dictado
-          </Link>
-          <Link href="/reading" className="text-sm text-slate-400 hover:text-white transition">
-            📖 Leer
-          </Link>
-          <Link href="/manage" className="text-sm text-slate-400 hover:text-white transition">
-            Gestionar →
-          </Link>
-        </div>
+        {!loading && phrases.length > 0 && (
+          <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
+            dueCount > 0
+              ? "bg-indigo-900/60 text-indigo-300 border border-indigo-700"
+              : "bg-emerald-900/60 text-emerald-300 border border-emerald-700"
+          }`}>
+            {dueCount > 0 ? `${dueCount} pendientes` : "¡Al día! 🎉"}
+          </span>
+        )}
       </header>
 
-      {/* Main */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-10">
-        {loading && <p className="text-slate-400 animate-pulse">Cargando…</p>}
-        {error && <p className="text-red-400">{error}</p>}
+      {/* ── Main ── */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-4 gap-4">
 
-        {!loading && phrases.length === 0 && (
-          <div className="text-center">
-            <p className="text-slate-400 mb-4">No hay frases todavía.</p>
-            <Link href="/manage" className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition font-medium">
-              Agregar frases
+        {loading && (
+          <div className="flex flex-col items-center gap-3 text-slate-400">
+            <span className="text-4xl animate-spin">⟳</span>
+            <p className="text-sm">Cargando frases…</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="text-center p-5 rounded-2xl bg-red-900/30 border border-red-800 max-w-sm w-full">
+            <p className="text-red-400 font-semibold mb-1">Sin conexión</p>
+            <p className="text-slate-400 text-sm mb-4">{error}</p>
+            <button
+              onClick={loadPhrases}
+              className="px-5 py-2.5 rounded-xl bg-red-700 hover:bg-red-600 transition text-sm font-medium"
+            >
+              Reintentar
+            </button>
+          </div>
+        )}
+
+        {!loading && !error && phrases.length === 0 && (
+          <div className="text-center px-6">
+            <p className="text-5xl mb-4">📝</p>
+            <p className="font-semibold text-lg mb-1">Sin frases todavía</p>
+            <p className="text-slate-400 text-sm mb-6">Agrega tus primeras frases para empezar a practicar</p>
+            <Link
+              href="/manage"
+              className="inline-block px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 transition font-semibold"
+            >
+              + Agregar frases
             </Link>
           </div>
         )}
 
-        {/* All caught up today */}
         {allCaughtUp && (
-          <div className="text-center mb-8 p-5 rounded-2xl bg-emerald-900/30 border border-emerald-800 max-w-sm">
-            <p className="text-2xl mb-2">🎉</p>
-            <p className="font-semibold text-emerald-300">¡Al día!</p>
-            <p className="text-sm text-slate-400 mt-1">
-              No hay frases pendientes para hoy. Próxima revisión:{" "}
+          <div className="text-center px-6 py-8 rounded-3xl bg-emerald-900/20 border border-emerald-800/50 max-w-sm w-full">
+            <p className="text-5xl mb-3">🎉</p>
+            <p className="font-bold text-xl text-emerald-300 mb-1">¡Al día!</p>
+            <p className="text-slate-400 text-sm mb-1">No hay frases pendientes para hoy.</p>
+            <p className="text-slate-500 text-xs mb-5">
+              Próxima revisión:{" "}
               <span className="text-slate-300">
                 {phrases.find((p) => p.next_review_date > today)?.next_review_date ?? "—"}
               </span>
             </p>
             <button
               onClick={() => { setQueue(buildQueue(phrases)); setIndex(0); }}
-              className="mt-4 text-sm px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition"
+              className="px-5 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 transition text-sm font-medium"
             >
               Repasar de todas formas
             </button>
           </div>
         )}
 
-        {!loading && current && (
-          <FlashCard
-            phrase={current}
-            dueCount={dueCount}
-            totalCount={phrases.length}
-            onResult={handleResult}
-            onNext={handleNext}
-          />
+        {!loading && !error && current && !allCaughtUp && (
+          <>
+            <p className="text-slate-500 text-xs">
+              {index + 1} / {queue.length}
+            </p>
+            <FlashCard
+              phrase={current}
+              dueCount={dueCount}
+              totalCount={phrases.length}
+              onResult={handleResult}
+              onNext={handleNext}
+            />
+          </>
         )}
       </main>
     </div>

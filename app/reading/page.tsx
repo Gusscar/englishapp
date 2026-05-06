@@ -564,14 +564,9 @@ export default function ReadingPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
-        <Link href="/" className="text-sm text-slate-400 hover:text-white transition">
-          ← Inicio
-        </Link>
-        <h1 className="font-bold">📖 Lectura</h1>
-        <Link href="/dictation" className="text-sm text-slate-400 hover:text-white transition">
-          🎧 Dictado
-        </Link>
+      <header className="flex items-center gap-2 px-5 pt-5 pb-3">
+        <span className="text-2xl">📖</span>
+        <h1 className="font-bold text-lg">Lectura</h1>
       </header>
 
       {/* Tabs */}

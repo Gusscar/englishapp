@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import InstallPrompt from "@/components/InstallPrompt";
+import BottomNav from "@/components/BottomNav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,9 +26,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#6366f1",
+  themeColor: "#0f172a",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -38,7 +40,11 @@ export default function RootLayout({
       <body className={`${inter.className} h-full bg-slate-900 text-white antialiased`}>
         <ServiceWorkerRegister />
         <InstallPrompt />
-        {children}
+        {/* pb-20 leaves room for the bottom nav */}
+        <div className="pb-20">
+          {children}
+        </div>
+        <BottomNav />
       </body>
     </html>
   );

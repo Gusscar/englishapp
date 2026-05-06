@@ -49,14 +49,11 @@ export default function ManagePage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
-        <Link href="/" className="text-sm text-slate-400 hover:text-white transition">
-          ← Practicar
-        </Link>
-        <h1 className="font-bold text-lg">Gestionar frases</h1>
+      <header className="flex items-center justify-between px-5 pt-5 pb-3">
+        <h1 className="font-bold text-lg">Mis frases</h1>
         <button
           onClick={() => { setEditing(null); setShowForm(true); }}
-          className="text-sm px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition font-medium"
+          className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition font-semibold text-sm"
         >
           + Nueva
         </button>
@@ -79,7 +76,7 @@ export default function ManagePage() {
       )}
 
       {/* List */}
-      <main className="flex-1 px-4 py-8 max-w-2xl mx-auto w-full">
+      <main className="flex-1 px-4 py-4 max-w-2xl mx-auto w-full">
         {loading && <p className="text-slate-400 animate-pulse">Cargando…</p>}
         {!loading && phrases.length === 0 && (
           <p className="text-slate-400 text-center mt-16">
