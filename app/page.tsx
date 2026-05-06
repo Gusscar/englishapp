@@ -106,9 +106,14 @@ export default function HomePage() {
           <span className="text-xl">🇺🇸</span>
           <h1 className="font-bold text-lg">English Practice</h1>
         </div>
-        <Link href="/manage" className="text-sm text-slate-400 hover:text-white transition">
-          Gestionar →
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/dictation" className="text-sm text-slate-400 hover:text-white transition">
+            🎧 Dictado
+          </Link>
+          <Link href="/manage" className="text-sm text-slate-400 hover:text-white transition">
+            Gestionar →
+          </Link>
+        </div>
       </header>
 
       {/* Main */}
