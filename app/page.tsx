@@ -110,6 +110,9 @@ export default function HomePage() {
           <Link href="/dictation" className="text-sm text-slate-400 hover:text-white transition">
             🎧 Dictado
           </Link>
+          <Link href="/reading" className="text-sm text-slate-400 hover:text-white transition">
+            📖 Leer
+          </Link>
           <Link href="/manage" className="text-sm text-slate-400 hover:text-white transition">
             Gestionar →
           </Link>
