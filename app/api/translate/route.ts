@@ -14,7 +14,9 @@ English: "${english.trim()}"`;
   try {
     const spanish = await generateText(prompt, { maxTokens: 120, temperature: 0.2 });
     return NextResponse.json({ spanish });
-  } catch {
-    return NextResponse.json({ error: "AI unavailable" }, { status: 500 });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[translate]", msg);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

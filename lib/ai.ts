@@ -45,7 +45,11 @@ async function callDeepSeek(prompt: string, maxTokens: number, temperature: numb
     }),
   });
 
-  if (!res.ok) throw new Error(`DeepSeek error: ${res.status}`);
+  if (!res.ok) {
+    const body = await res.text();
+    console.error(`[DeepSeek] HTTP ${res.status}:`, body);
+    throw new Error(`DeepSeek error: ${res.status} — ${body}`);
+  }
   const data = await res.json();
   const text: string = data.choices?.[0]?.message?.content ?? "";
   if (!text) throw new Error("DeepSeek returned empty response");
@@ -81,5 +85,7 @@ export async function generateText(
     }
   }
 
-  throw new Error(`All AI providers failed. ${errors.join(" | ")}`);
+  const msg = `All AI providers failed. ${errors.join(" | ")}`;
+  console.error("[ai]", msg);
+  throw new Error(msg);
 }
