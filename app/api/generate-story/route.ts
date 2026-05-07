@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+import { generateText } from "@/lib/ai";
 
 const LEVEL_GUIDE: Record<string, { words: string; guide: string }> = {
   A1: { words: "80-100",  guide: "only present simple, vocabulary from the 500 most common words, very short and direct sentences" },
@@ -12,11 +10,6 @@ const LEVEL_GUIDE: Record<string, { words: string; guide: string }> = {
 };
 
 export async function POST(req: NextRequest) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json({ error: "GEMINI_API_KEY not set" }, { status: 500 });
-  }
-
   try {
     const { level, topic } = await req.json();
     const guide = LEVEL_GUIDE[level] ?? LEVEL_GUIDE.B1;
@@ -40,31 +33,9 @@ Respond ONLY with valid JSON — no markdown fences, no extra text before or aft
 
 Include 5-7 vocabulary items challenging for a ${level} learner. Only use words that actually appear in the story.`;
 
-    const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.8,
-          maxOutputTokens: 1500,
-        },
-      }),
-    });
-
-    if (!res.ok) {
-      const err = await res.text();
-      console.error("Gemini error:", err);
-      return NextResponse.json({ error: "Gemini API error" }, { status: 500 });
-    }
-
-    const data = await res.json();
-    const raw: string = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-
-    // Strip potential markdown fences
+    const raw = await generateText(prompt, { maxTokens: 1500, temperature: 0.8 });
     const jsonStr = raw.replace(/^```json?\s*/i, "").replace(/\s*```$/i, "").trim();
     const story = JSON.parse(jsonStr);
-
     return NextResponse.json(story);
   } catch (error) {
     console.error("Story generation error:", error);

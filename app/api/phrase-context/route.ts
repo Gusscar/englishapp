@@ -1,14 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+import { generateText } from "@/lib/ai";
 
 export async function POST(req: NextRequest) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json({ error: "GEMINI_API_KEY not set" }, { status: 500 });
-  }
-
   const { english, spanish } = await req.json();
   if (!english?.trim()) {
     return NextResponse.json({ error: "english is required" }, { status: 400 });
@@ -29,27 +22,12 @@ Return ONLY valid JSON — no markdown, no extra text:
 
 Keep examples concise and natural. Use everyday spoken English, not textbook language.`;
 
-  const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.4, maxOutputTokens: 400 },
-    }),
-  });
-
-  if (!res.ok) {
-    return NextResponse.json({ error: "Gemini API error" }, { status: 500 });
-  }
-
-  const data = await res.json();
-  const raw: string = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-  const jsonStr = raw.replace(/^```json?\s*/i, "").replace(/\s*```$/i, "").trim();
-
   try {
+    const raw = await generateText(prompt, { maxTokens: 400, temperature: 0.4 });
+    const jsonStr = raw.replace(/^```json?\s*/i, "").replace(/\s*```$/i, "").trim();
     const context = JSON.parse(jsonStr);
     return NextResponse.json(context);
   } catch {
-    return NextResponse.json({ error: "Failed to parse context" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to generate context" }, { status: 500 });
   }
 }
