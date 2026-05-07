@@ -47,6 +47,13 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
     setStage("answered");
   }
 
+  function handleRetry() {
+    setFlipped(false);
+    setStage("practice");
+    setSpokenCorrect(null);
+    setTranscript(null);
+  }
+
   function handleNext() {
     setFlipped(false);
     setStage("practice");
@@ -113,7 +120,7 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
           {/* Back */}
           <div className="card-back rounded-2xl bg-indigo-900 border border-indigo-700 flex flex-col items-center justify-center p-8 select-none">
             <p className="text-2xl font-semibold text-center leading-snug text-indigo-100">{phrase.spanish}</p>
-            <p className="text-xs text-indigo-400 mt-4">traducción</p>
+            <p className="text-xs text-indigo-400 mt-4">({phrase.english})</p>
           </div>
         </div>
       </div>
@@ -167,10 +174,16 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
       {/* Quality buttons — shown after answering */}
       {stage === "answered" && (
         spokenCorrect !== null ? (
-          <div className="w-full flex justify-center">
+          <div className="w-full flex gap-3">
+            <button
+              onClick={handleRetry}
+              className="flex-1 px-4 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 transition text-sm font-medium"
+            >
+              Repetir
+            </button>
             <button
               onClick={handleNext}
-              className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition text-sm font-medium"
+              className="flex-1 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition text-sm font-medium"
             >
               Siguiente →
             </button>
