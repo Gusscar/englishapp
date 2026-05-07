@@ -4,6 +4,7 @@ import "./globals.css";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import InstallPrompt from "@/components/InstallPrompt";
 import BottomNav from "@/components/BottomNav";
+import QuickCapture from "@/components/QuickCapture";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,6 +45,7 @@ export default function RootLayout({
         <div className="pb-20">
           {children}
         </div>
+        <QuickCapture />
         <BottomNav />
       </body>
     </html>
