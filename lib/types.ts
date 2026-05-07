@@ -16,5 +16,5 @@ export interface Phrase {
 
 export type PhraseInsert = Omit<
   Phrase,
-  "id" | "created_at" | "correct_count" | "incorrect_count" | "interval" | "ease_factor" | "repetitions" | "next_review_date"
+  "id" | "created_at" | "correct_count" | "incorrect_count" | "interval" | "ease_factor" | "repetitions" | "next_review_date" | "context"
 >;
