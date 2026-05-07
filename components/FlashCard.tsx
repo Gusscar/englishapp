@@ -58,6 +58,11 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
   const nextReview = phrase.next_review_date;
   const isNew = phrase.repetitions === 0;
 
+  let parsedContext: { tip: string; examples: string[] } | null = null;
+  try {
+    if (phrase.context) parsedContext = JSON.parse(phrase.context);
+  } catch { /* ignore */ }
+
   return (
     <div className="flex flex-col items-center gap-5 w-full max-w-lg mx-auto">
 
@@ -112,6 +117,26 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
           </div>
         </div>
       </div>
+
+      {/* Context — shown when card is flipped */}
+      {flipped && parsedContext && (
+        <div className="w-full rounded-xl bg-amber-950/40 border border-amber-800/40 px-4 py-3 flex flex-col gap-2.5">
+          <p className="text-xs font-semibold text-amber-400 uppercase tracking-wide">💡 Cómo lo usan los nativos</p>
+          <p className="text-sm text-slate-300 leading-relaxed">{parsedContext.tip}</p>
+          {parsedContext.examples?.length > 0 && (
+            <div className="flex flex-col gap-2 mt-0.5">
+              {parsedContext.examples.map((ex, i) => (
+                <div
+                  key={i}
+                  className="text-xs text-slate-400 whitespace-pre-line border-l-2 border-amber-800/60 pl-3 leading-relaxed font-mono"
+                >
+                  {ex}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Speech feedback */}
       {transcript && (

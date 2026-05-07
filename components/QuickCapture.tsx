@@ -67,6 +67,26 @@ export default function QuickCapture() {
     }
   }
 
+  async function generateAndSaveContext(id: string, eng: string, esp: string) {
+    try {
+      const res = await fetch("/api/phrase-context", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ english: eng, spanish: esp }),
+      });
+      if (!res.ok) return;
+      const context = await res.json();
+      if (context.tip) {
+        await supabase
+          .from("phrases")
+          .update({ context: JSON.stringify(context) })
+          .eq("id", id);
+      }
+    } catch {
+      // silent — context is optional
+    }
+  }
+
   async function handleSave() {
     if (!english.trim() || !spanish.trim()) {
       setError("Necesitas la frase y la traducción.");
@@ -74,18 +94,24 @@ export default function QuickCapture() {
     }
     setSaving(true);
     setError(null);
-    const { error: dbErr } = await supabase.from("phrases").insert({
-      english: english.trim(),
-      spanish: spanish.trim(),
-      category: source || null,
-      correct_count: 0,
-      incorrect_count: 0,
-    });
+    const { data, error: dbErr } = await supabase
+      .from("phrases")
+      .insert({
+        english: english.trim(),
+        spanish: spanish.trim(),
+        category: source || null,
+        correct_count: 0,
+        incorrect_count: 0,
+      })
+      .select("id")
+      .single();
     setSaving(false);
-    if (dbErr) {
+    if (dbErr || !data) {
       setError("Error al guardar. Intenta de nuevo.");
       return;
     }
+    // Fire context generation in background — no await
+    generateAndSaveContext(data.id, english.trim(), spanish.trim());
     handleClose();
     setToast(true);
     setTimeout(() => setToast(false), 2500);

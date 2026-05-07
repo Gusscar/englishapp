@@ -3,6 +3,7 @@ export interface Phrase {
   english: string;
   spanish: string;
   category: string | null;
+  context: string | null;
   created_at: string;
   correct_count: number;
   incorrect_count: number;
