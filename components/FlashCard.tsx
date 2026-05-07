@@ -34,13 +34,11 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
     setTranscript(spokenText);
     setFlipped(true);
     setStage("answered");
-    // If incorrect, auto-log quality 1 but still let user pick override
-    if (!correct) onResult(phrase.id, 1);
+    onResult(phrase.id, correct ? 5 : 1);
   }
 
   function handleQuality(quality: Quality) {
-    // Override if they spoke correctly but want to grade themselves
-    if (spokenCorrect !== false) onResult(phrase.id, quality);
+    onResult(phrase.id, quality);
     handleNext();
   }
 
@@ -143,21 +141,32 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
 
       {/* Quality buttons — shown after answering */}
       {stage === "answered" && (
-        <div className="w-full flex flex-col gap-2">
-          <p className="text-xs text-slate-400 text-center mb-1">¿Qué tan fácil fue?</p>
-          <div className="grid grid-cols-4 gap-2">
-            {qualityButtons.map(({ quality, label, hint, color }) => (
-              <button
-                key={quality}
-                onClick={() => handleQuality(quality)}
-                className={`${color} flex flex-col items-center py-2.5 px-1 rounded-xl transition text-xs font-medium`}
-              >
-                <span>{label}</span>
-                <span className="opacity-60 text-[10px] mt-0.5">{hint}</span>
-              </button>
-            ))}
+        spokenCorrect !== null ? (
+          <div className="w-full flex justify-center">
+            <button
+              onClick={handleNext}
+              className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition text-sm font-medium"
+            >
+              Siguiente →
+            </button>
           </div>
-        </div>
+        ) : (
+          <div className="w-full flex flex-col gap-2">
+            <p className="text-sm text-slate-300 text-center mb-1 font-medium">{phrase.english}</p>
+            <div className="grid grid-cols-4 gap-2">
+              {qualityButtons.map(({ quality, label, hint, color }) => (
+                <button
+                  key={quality}
+                  onClick={() => handleQuality(quality)}
+                  className={`${color} flex flex-col items-center py-2.5 px-1 rounded-xl transition text-xs font-medium`}
+                >
+                  <span>{label}</span>
+                  <span className="opacity-60 text-[10px] mt-0.5">{hint}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )
       )}
 
       {/* Stats row */}
