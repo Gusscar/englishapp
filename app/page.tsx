@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { applySM2, todayISO, type Quality } from "@/lib/sm2";
 import type { Phrase } from "@/lib/types";
@@ -93,6 +93,28 @@ export default function HomePage() {
 
   const current      = queue[index];
   const allCaughtUp  = !loading && !error && dueCount === 0 && phrases.length > 0;
+
+  // Auto-generate context for phrases that don't have it yet
+  const generatingContext = useRef(new Set<string>());
+  useEffect(() => {
+    if (!current || current.context || generatingContext.current.has(current.id)) return;
+    generatingContext.current.add(current.id);
+    fetch("/api/phrase-context", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ english: current.english, spanish: current.spanish }),
+    })
+      .then((r) => r.ok ? r.json() : null)
+      .then(async (ctx) => {
+        if (!ctx?.tip) return;
+        const contextStr = JSON.stringify(ctx);
+        await supabase.from("phrases").update({ context: contextStr }).eq("id", current.id);
+        setPhrases((prev) =>
+          prev.map((p) => (p.id === current.id ? { ...p, context: contextStr } : p))
+        );
+      })
+      .catch(() => { /* silent */ });
+  }, [current?.id]); // eslint-disable-line
 
   return (
     <div className="min-h-screen flex flex-col">
