@@ -25,14 +25,21 @@ export function similarity(a: string, b: string): number {
 }
 
 // Returns word-level diff: each word tagged correct | wrong | missing
-export type WordTag = { word: string; status: "correct" | "wrong" | "extra" };
+export type WordTag = { word: string; status: "correct" | "wrong" | "missing" };
 
 export function diffWords(typed: string, expected: string): WordTag[] {
   const ta = normalize(typed).split(" ").filter(Boolean);
   const ea = normalize(expected).split(" ").filter(Boolean);
+  const maxLen = Math.max(ta.length, ea.length);
+  const result: WordTag[] = [];
 
-  return ta.map((word, i) => ({
-    word,
-    status: ea[i] === word ? "correct" : "wrong",
-  }));
+  for (let i = 0; i < maxLen; i++) {
+    if (i < ta.length) {
+      result.push({ word: ta[i], status: ta[i] === (ea[i] ?? "") ? "correct" : "wrong" });
+    } else {
+      result.push({ word: ea[i], status: "missing" });
+    }
+  }
+
+  return result;
 }
