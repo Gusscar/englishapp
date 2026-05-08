@@ -8,6 +8,7 @@ const items = [
   { href: "/scramble",  icon: "🧩", label: "Armar"     },
   { href: "/dictation", icon: "🎧", label: "Dictado"   },
   { href: "/reading",   icon: "📖", label: "Leer"      },
+  { href: "/grammar",   icon: "📝", label: "Gramática" },
   { href: "/manage",    icon: "⚙️", label: "Gestionar" },
 ];
 
