@@ -13,6 +13,7 @@ export default function PhraseForm({ initial, onSave, onCancel }: PhraseFormProp
   const [english, setEnglish] = useState(initial?.english ?? "");
   const [spanish, setSpanish] = useState(initial?.spanish ?? "");
   const [category, setCategory] = useState(initial?.category ?? "");
+  const [notes, setNotes] = useState(initial?.notes ?? "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,6 +30,7 @@ export default function PhraseForm({ initial, onSave, onCancel }: PhraseFormProp
         english: english.trim(),
         spanish: spanish.trim(),
         category: category.trim() || null,
+        notes: notes.trim() || null,
       });
     } catch {
       setError("Error al guardar. Intenta de nuevo.");
@@ -70,6 +72,18 @@ export default function PhraseForm({ initial, onSave, onCancel }: PhraseFormProp
           onChange={(e) => setCategory(e.target.value)}
           placeholder="e.g. Saludos, Negocios…"
           className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-slate-300 mb-1">
+          Tu ejemplo / notas (opcional)
+        </label>
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="e.g. — Hey! How are you doing? — Pretty good, thanks!"
+          rows={3}
+          className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
         />
       </div>
 

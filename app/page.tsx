@@ -68,6 +68,12 @@ export default function HomePage() {
 
   useEffect(() => { loadPhrases(); }, []); // eslint-disable-line
 
+  async function handleContextSave(id: string, context: string) {
+    await supabase.from("phrases").update({ context }).eq("id", id);
+    setPhrases((prev) => prev.map((p) => (p.id === id ? { ...p, context } : p)));
+    setQueue((prev) => prev.map((p) => (p.id === id ? { ...p, context } : p)));
+  }
+
   const handleResult = useCallback(async (id: string, quality: Quality) => {
     const phrase = phrases.find((p) => p.id === id);
     if (!phrase) return;
@@ -211,6 +217,7 @@ export default function HomePage() {
               totalCount={phrases.length}
               onResult={handleResult}
               onNext={handleNext}
+              onContextSave={handleContextSave}
             />
           </>
         )}

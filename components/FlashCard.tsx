@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Phrase } from "@/lib/types";
 import type { Quality } from "@/lib/sm2";
 import SpeechButton from "./SpeechButton";
@@ -12,6 +12,7 @@ interface FlashCardProps {
   totalCount: number;
   onResult: (id: string, quality: Quality) => void;
   onNext: () => void;
+  onContextSave: (id: string, context: string) => Promise<void>;
 }
 
 type Stage = "practice" | "answered";
@@ -23,11 +24,23 @@ const qualityButtons: { quality: Quality; label: string; hint: string; color: st
   { quality: 5, label: "Fácil",       hint: "intervalo ×EF+", color: "bg-emerald-600 hover:bg-emerald-500" },
 ];
 
-export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNext }: FlashCardProps) {
+export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNext, onContextSave }: FlashCardProps) {
   const [flipped, setFlipped] = useState(false);
   const [stage, setStage] = useState<Stage>("practice");
   const [spokenCorrect, setSpokenCorrect] = useState<boolean | null>(null);
   const [transcript, setTranscript] = useState<string | null>(null);
+  const [editingContext, setEditingContext] = useState(false);
+  const [editTip, setEditTip] = useState("");
+  const [editExamples, setEditExamples] = useState<string[]>([]);
+  const [savingContext, setSavingContext] = useState(false);
+
+  useEffect(() => {
+    setFlipped(false);
+    setStage("practice");
+    setSpokenCorrect(null);
+    setTranscript(null);
+    setEditingContext(false);
+  }, [phrase.id]);
 
   function handleSpeechResult(correct: boolean, spokenText: string) {
     setSpokenCorrect(correct);
@@ -69,6 +82,21 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
   try {
     if (phrase.context) parsedContext = JSON.parse(phrase.context);
   } catch { /* ignore */ }
+
+  function handleEditContext() {
+    if (!parsedContext) return;
+    setEditTip(parsedContext.tip);
+    setEditExamples([...parsedContext.examples]);
+    setEditingContext(true);
+  }
+
+  async function handleSaveContext() {
+    setSavingContext(true);
+    const newContext = JSON.stringify({ tip: editTip, examples: editExamples.filter(e => e.trim()) });
+    await onContextSave(phrase.id, newContext);
+    setSavingContext(false);
+    setEditingContext(false);
+  }
 
   return (
     <div className="flex flex-col items-center gap-5 w-full max-w-lg mx-auto">
@@ -125,21 +153,84 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
         </div>
       </div>
 
-      {/* Context — shown when card is flipped */}
+      {/* User notes — shown when card is flipped */}
+      {flipped && phrase.notes && (
+        <div className="w-full rounded-xl bg-slate-700/50 border border-slate-600/60 px-4 py-3 flex flex-col gap-1.5">
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">📝 Tu ejemplo</p>
+          <p className="text-sm text-slate-300 whitespace-pre-line leading-relaxed">{phrase.notes}</p>
+        </div>
+      )}
+
+      {/* AI Context — shown when card is flipped */}
       {flipped && parsedContext && (
         <div className="w-full rounded-xl bg-amber-950/40 border border-amber-800/40 px-4 py-3 flex flex-col gap-2.5">
-          <p className="text-xs font-semibold text-amber-400 uppercase tracking-wide">💡 Cómo lo usan los nativos</p>
-          <p className="text-sm text-slate-300 leading-relaxed">{parsedContext.tip}</p>
-          {parsedContext.examples?.length > 0 && (
-            <div className="flex flex-col gap-2 mt-0.5">
-              {parsedContext.examples.map((ex, i) => (
-                <div
-                  key={i}
-                  className="text-xs text-slate-400 whitespace-pre-line border-l-2 border-amber-800/60 pl-3 leading-relaxed font-mono"
+          {!editingContext ? (
+            <>
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold text-amber-400 uppercase tracking-wide">💡 Cómo lo usan los nativos</p>
+                <button
+                  onClick={handleEditContext}
+                  className="text-xs text-slate-500 hover:text-slate-300 transition px-2 py-0.5 rounded hover:bg-slate-700"
                 >
-                  {ex}
+                  ✏️ Editar
+                </button>
+              </div>
+              <p className="text-sm text-slate-300 leading-relaxed">{parsedContext.tip}</p>
+              {parsedContext.examples?.length > 0 && (
+                <div className="flex flex-col gap-2 mt-0.5">
+                  {parsedContext.examples.map((ex, i) => (
+                    <div
+                      key={i}
+                      className="text-xs text-slate-400 whitespace-pre-line border-l-2 border-amber-800/60 pl-3 leading-relaxed font-mono"
+                    >
+                      {ex}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="flex flex-col gap-3">
+              <p className="text-xs font-semibold text-amber-400 uppercase tracking-wide">✏️ Editando contexto</p>
+              <div>
+                <p className="text-xs text-slate-400 mb-1">Consejo</p>
+                <textarea
+                  value={editTip}
+                  onChange={(e) => setEditTip(e.target.value)}
+                  rows={3}
+                  className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-600 resize-none"
+                />
+              </div>
+              {editExamples.map((ex, i) => (
+                <div key={i}>
+                  <p className="text-xs text-slate-400 mb-1">Ejemplo {i + 1}</p>
+                  <textarea
+                    value={ex}
+                    onChange={(e) => {
+                      const next = [...editExamples];
+                      next[i] = e.target.value;
+                      setEditExamples(next);
+                    }}
+                    rows={3}
+                    className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-xs text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-600 resize-none"
+                  />
                 </div>
               ))}
+              <div className="flex gap-2 justify-end">
+                <button
+                  onClick={() => setEditingContext(false)}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 transition"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleSaveContext}
+                  disabled={savingContext}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-amber-700 hover:bg-amber-600 disabled:opacity-60 transition font-medium"
+                >
+                  {savingContext ? "Guardando…" : "Guardar"}
+                </button>
+              </div>
             </div>
           )}
         </div>
