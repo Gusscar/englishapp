@@ -33,7 +33,9 @@ function stripGutenbergWrapper(text: string): string {
     }
   }
 
-  return text.slice(start, end).trim();
+  const content = text.slice(start, end).trim();
+  // Remove illustration markers from plain-text Gutenberg files
+  return content.replace(/\[Illustration[^\]]*\]/gi, "").trim();
 }
 
 export async function GET(req: NextRequest) {
