@@ -10,6 +10,7 @@ const items = [
   { href: "/reading",   icon: "📖", label: "Leer"      },
   { href: "/videos",    icon: "🎬", label: "Videos"    },
   { href: "/grammar",   icon: "📝", label: "Gramática" },
+  { href: "/patterns",  icon: "💬", label: "Frases"    },
   { href: "/manage",    icon: "⚙️", label: "Gestionar" },
 ];
 
