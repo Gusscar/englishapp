@@ -13,18 +13,19 @@ const GEMINI_URL       = "https://generativelanguage.googleapis.com/v1beta/model
 const DEEPSEEK_URL     = "https://api.deepseek.com/v1/chat/completions";
 const GROQ_URL         = "https://api.groq.com/openai/v1/chat/completions";
 const OPENROUTER_URL    = "https://openrouter.ai/api/v1/chat/completions";
-// Free models — updated May 2026. OpenRouter rotates availability; order matters.
+// Free models — verified available on this account (May 2026).
 const OPENROUTER_MODELS = [
-  "meta-llama/llama-4-scout:free",               // Meta — fast chat
-  "meta-llama/llama-4-maverick:free",            // Meta — 128K ctx
-  "deepseek/deepseek-chat-v3.1:free",            // DeepSeek — fast chat
-  "deepseek/deepseek-r1-0528:free",              // DeepSeek — reasoning
-  "deepseek/deepseek-r1:free",                   // DeepSeek — reasoning
-  "qwen/qwen3-235b-a22b:free",                   // Alibaba — large model
-  "qwen/qwen-2.5-72b-instruct:free",             // Alibaba — general
-  "google/gemma-3-12b-it:free",                  // Google — instruct
-  "meta-llama/llama-3.3-70b-instruct:free",      // Meta — strong reasoning
-  "mistralai/mistral-7b-instruct:free",          // Mistral — lightweight
+  "openrouter/free",                              // OpenRouter auto-router — picks any available free model
+  "meta-llama/llama-3.3-70b-instruct:free",      // Meta — confirmed works
+  "openai/gpt-oss-120b:free",                    // OpenAI OSS — large
+  "openai/gpt-oss-20b:free",                     // OpenAI OSS — fast
+  "nvidia/nemotron-3-super-120b-a12b:free",      // NVIDIA — large
+  "nousresearch/hermes-3-llama-3.1-405b:free",   // Nous Research — 405B
+  "deepseek/deepseek-v4-flash:free",             // DeepSeek — fast
+  "google/gemma-4-31b-it:free",                  // Google Gemma 4
+  "google/gemma-4-26b-a4b-it:free",             // Google Gemma 4 (smaller)
+  "qwen/qwen3-next-80b-a3b-instruct:free",       // Qwen 3
+  "meta-llama/llama-3.2-3b-instruct:free",       // Meta — lightweight fallback
 ];
 
 async function callGemini(prompt: string, maxTokens: number, temperature: number): Promise<string> {
