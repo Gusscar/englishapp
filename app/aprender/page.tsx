@@ -59,6 +59,21 @@ const sections = [
     iconColor: "text-indigo-400",
     badge: null,
   },
+  {
+    href: "/immersion",
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="18" y1="20" x2="18" y2="10"/>
+        <line x1="12" y1="20" x2="12" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="14"/>
+      </svg>
+    ),
+    title: "Tracker de inmersion",
+    desc: "Registra tu tiempo escuchando y leyendo",
+    color: "from-cyan-900/50 to-cyan-900/10 border-cyan-700/30",
+    iconColor: "text-cyan-400",
+    badge: null,
+  },
 ];
 
 export default function AprenderPage() {

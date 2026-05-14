@@ -51,8 +51,8 @@ const moreItems = [
   },
 ];
 
-const practiceRoutes = ["/practicar", "/scramble", "/dictation"];
-const learnRoutes   = ["/aprender", "/reading", "/videos", "/grammar", "/patterns"];
+const practiceRoutes = ["/practicar", "/scramble", "/dictation", "/writing"];
+const learnRoutes   = ["/aprender", "/reading", "/videos", "/grammar", "/patterns", "/immersion"];
 const moreRoutes    = ["/manage"];
 
 export default function BottomNav() {

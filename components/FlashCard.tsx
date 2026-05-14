@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { Phrase } from "@/lib/types";
 import type { Quality } from "@/lib/sm2";
 import SpeechButton from "./SpeechButton";
@@ -16,6 +16,7 @@ interface FlashCardProps {
 }
 
 type Stage = "practice" | "answered";
+type ShadowStage = "idle" | "speaking" | "ready" | "listening";
 
 const qualityButtons: { quality: Quality; label: string; hint: string; color: string; icon: string }[] = [
   { quality: 1, label: "No lo supe",  hint: "vuelve hoy",    color: "bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300",     icon: "✗"  },
@@ -33,6 +34,8 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
   const [editTip, setEditTip] = useState("");
   const [editExamples, setEditExamples] = useState<string[]>([]);
   const [savingContext, setSavingContext] = useState(false);
+  const [shadowStage, setShadowStage] = useState<ShadowStage>("idle");
+  const shadowRecogRef = useRef<{ stop: () => void } | null>(null);
 
   useEffect(() => {
     setFlipped(false);
@@ -40,7 +43,51 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
     setSpokenCorrect(null);
     setTranscript(null);
     setEditingContext(false);
+    setShadowStage("idle");
+    shadowRecogRef.current?.stop();
   }, [phrase.id]);
+
+  function handleShadowing() {
+    if (!("speechSynthesis" in window)) return;
+    setShadowStage("speaking");
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(phrase.english);
+    utter.lang = "en-US";
+    utter.rate = 0.85;
+    utter.onend = () => {
+      setShadowStage("ready");
+      setTimeout(() => startShadowMic(), 600);
+    };
+    utter.onerror = () => setShadowStage("idle");
+    window.speechSynthesis.speak(utter);
+  }
+
+  function startShadowMic() {
+    const win = window as Window & {
+      SpeechRecognition?: new () => { lang: string; interimResults: boolean; maxAlternatives: number; start(): void; stop(): void; onstart: ((e: Event) => void) | null; onend: ((e: Event) => void) | null; onerror: ((e: Event) => void) | null; onresult: ((e: { results: { length: number; [i: number]: { length: number; [j: number]: { transcript: string } } } }) => void) | null };
+      webkitSpeechRecognition?: new () => { lang: string; interimResults: boolean; maxAlternatives: number; start(): void; stop(): void; onstart: ((e: Event) => void) | null; onend: ((e: Event) => void) | null; onerror: ((e: Event) => void) | null; onresult: ((e: { results: { length: number; [i: number]: { length: number; [j: number]: { transcript: string } } } }) => void) | null };
+    };
+    const Ctor = win.SpeechRecognition ?? win.webkitSpeechRecognition;
+    if (!Ctor) { setShadowStage("idle"); return; }
+
+    const r = new Ctor();
+    r.lang = "en-US";
+    r.interimResults = false;
+    r.maxAlternatives = 3;
+    shadowRecogRef.current = r;
+
+    r.onstart = () => setShadowStage("listening");
+    r.onend   = () => setShadowStage("idle");
+    r.onerror = () => setShadowStage("idle");
+    r.onresult = (e) => {
+      const transcripts = Array.from({ length: e.results[0].length }, (_, i) => e.results[0][i].transcript);
+      const normalize = (s: string) => s.toLowerCase().replace(/[^\w\s]/g, "").trim();
+      const correct = transcripts.some(t => normalize(t) === normalize(phrase.english));
+      handleSpeechResult(correct, transcripts[0]);
+      setShadowStage("idle");
+    };
+    r.start();
+  }
 
   function handleSpeechResult(correct: boolean, spokenText: string) {
     setSpokenCorrect(correct);
@@ -253,15 +300,41 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
 
       {/* Action buttons */}
       {stage === "practice" && (
-        <div className="flex gap-3 flex-wrap justify-center w-full">
-          <SpeechButton text={phrase.english} />
-          <MicButton expected={phrase.english} onResult={handleSpeechResult} />
+        <div className="flex flex-col gap-3 w-full">
+          {/* Shadowing mode */}
           <button
-            onClick={handleReveal}
-            className="flex-1 min-w-[120px] px-5 py-3 rounded-2xl bg-slate-700/80 hover:bg-slate-600/80 active:scale-95 transition-all text-sm font-semibold border border-slate-600/40"
+            onClick={handleShadowing}
+            disabled={shadowStage !== "idle"}
+            className={`w-full py-3 rounded-2xl text-sm font-semibold transition-all active:scale-95 border flex items-center justify-center gap-2 ${
+              shadowStage === "speaking"  ? "bg-violet-500/20 border-violet-500/40 text-violet-300 animate-pulse" :
+              shadowStage === "ready"     ? "bg-amber-500/20 border-amber-500/40 text-amber-300" :
+              shadowStage === "listening" ? "bg-red-500/20 border-red-500/40 text-red-300 animate-pulse" :
+              "bg-slate-700/60 border-slate-600/40 text-slate-300 hover:bg-indigo-500/20 hover:border-indigo-500/40 hover:text-indigo-300"
+            }`}
           >
-            Ver traduccion
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              {shadowStage === "listening" ? (
+                <><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></>
+              ) : (
+                <><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></>
+              )}
+            </svg>
+            {shadowStage === "speaking"  ? "Escucha la frase…"   :
+             shadowStage === "ready"     ? "Ahora repitela!"     :
+             shadowStage === "listening" ? "Escuchando tu voz…"  :
+             "Shadowing — escucha y repite"}
           </button>
+
+          <div className="flex gap-3">
+            <SpeechButton text={phrase.english} />
+            <MicButton expected={phrase.english} onResult={handleSpeechResult} />
+            <button
+              onClick={handleReveal}
+              className="flex-1 px-5 py-3 rounded-2xl bg-slate-700/80 hover:bg-slate-600/80 active:scale-95 transition-all text-sm font-semibold border border-slate-600/40"
+            >
+              Ver traduccion
+            </button>
+          </div>
         </div>
       )}
 

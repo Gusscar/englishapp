@@ -4,6 +4,19 @@ import Link from "next/link";
 
 const sections = [
   {
+    href: "/writing",
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20h9"/>
+        <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+      </svg>
+    ),
+    title: "Diario en ingles",
+    desc: "Escribe todos los dias con un prompt diferente",
+    color: "from-indigo-900/60 to-indigo-900/20 border-indigo-700/40",
+    iconColor: "text-indigo-400",
+  },
+  {
     href: "/scramble",
     icon: (
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
