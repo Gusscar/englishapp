@@ -141,20 +141,20 @@ export default function PatternsPage() {
             {/* Pattern */}
             <div className="flex flex-col gap-3">
               <div>
-                <label className="text-xs text-slate-400 mb-1 block">Patron en Espanol</label>
-                <input
-                  value={formPatternES}
-                  onChange={e => setFormPatternES(e.target.value)}
-                  placeholder="Ej: Tiene que haber..."
-                  className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-              <div>
                 <label className="text-xs text-slate-400 mb-1 block">Patron en Ingles</label>
                 <input
                   value={formPatternEN}
                   onChange={e => setFormPatternEN(e.target.value)}
                   placeholder="Ej: There's gotta be..."
+                  className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-sm text-indigo-300 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-slate-400 mb-1 block">Patron en Espanol</label>
+                <input
+                  value={formPatternES}
+                  onChange={e => setFormPatternES(e.target.value)}
+                  placeholder="Ej: Tiene que haber..."
                   className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
@@ -187,16 +187,16 @@ export default function PatternsPage() {
                       )}
                     </div>
                     <input
-                      value={ex.spanish}
-                      onChange={e => updateExample(i, "spanish", e.target.value)}
-                      placeholder="En espanol..."
-                      className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
-                    <input
                       value={ex.english}
                       onChange={e => updateExample(i, "english", e.target.value)}
                       placeholder="In English..."
                       className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-sm text-indigo-300 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <input
+                      value={ex.spanish}
+                      onChange={e => updateExample(i, "spanish", e.target.value)}
+                      placeholder="En espanol..."
+                      className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                   </div>
                 ))}
@@ -259,8 +259,8 @@ export default function PatternsPage() {
                 className="w-full text-left px-5 py-4 flex items-start justify-between gap-3"
               >
                 <div className="flex-1 min-w-0">
-                  <p className="text-base font-semibold text-slate-200 leading-snug">{g.pattern_spanish}</p>
-                  <p className="text-base text-indigo-400 font-medium leading-snug mt-0.5">{g.pattern_english}</p>
+                  <p className="text-base font-semibold text-indigo-300 leading-snug">{g.pattern_english}</p>
+                  <p className="text-base text-slate-400 leading-snug mt-0.5">{g.pattern_spanish}</p>
                   {g.notes && (
                     <p className="text-xs text-slate-500 mt-1">{g.notes}</p>
                   )}
@@ -282,8 +282,8 @@ export default function PatternsPage() {
                     )}
                     {g.examples.map((ex, i) => (
                       <div key={i} className="flex flex-col gap-0.5 border-l-2 border-indigo-700/60 pl-3">
-                        <p className="text-sm text-slate-300 leading-relaxed">{ex.spanish}</p>
                         <p className="text-sm text-indigo-300 leading-relaxed font-medium">{ex.english}</p>
+                        <p className="text-sm text-slate-400 leading-relaxed">{ex.spanish}</p>
                       </div>
                     ))}
                   </div>
