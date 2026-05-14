@@ -13,12 +13,18 @@ const GEMINI_URL       = "https://generativelanguage.googleapis.com/v1beta/model
 const DEEPSEEK_URL     = "https://api.deepseek.com/v1/chat/completions";
 const GROQ_URL         = "https://api.groq.com/openai/v1/chat/completions";
 const OPENROUTER_URL    = "https://openrouter.ai/api/v1/chat/completions";
+// Free models from different underlying providers — if one provider is down, others still work
 const OPENROUTER_MODELS = [
-  "meta-llama/llama-3.3-70b-instruct:free",
-  "mistralai/mistral-nemo:free",
-  "qwen/qwen-2.5-72b-instruct:free",
-  "meta-llama/llama-3.1-8b-instruct:free",
-  "mistralai/mistral-7b-instruct:free",
+  "deepseek/deepseek-r1-0528-qwen3-8b:free",   // DeepSeek infra
+  "qwen/qwen3-8b:free",                          // Alibaba infra
+  "google/gemma-3-12b-it:free",                  // Google infra
+  "meta-llama/llama-3.3-70b-instruct:free",      // Venice/Meta
+  "mistralai/mistral-nemo:free",                 // Mistral infra
+  "qwen/qwen-2.5-72b-instruct:free",             // Alibaba infra
+  "deepseek/deepseek-r1:free",                   // DeepSeek infra
+  "meta-llama/llama-3.1-8b-instruct:free",       // Venice/Meta
+  "google/gemma-2-9b-it:free",                   // Google infra
+  "mistralai/mistral-7b-instruct:free",          // Mistral infra
 ];
 
 async function callGemini(prompt: string, maxTokens: number, temperature: number): Promise<string> {
@@ -81,6 +87,7 @@ async function callOpenRouter(prompt: string, maxTokens: number, temperature: nu
     "X-Title": "English Practice App",
   };
 
+  const modelErrors: string[] = [];
   for (const model of OPENROUTER_MODELS) {
     try {
       const res = await fetch(OPENROUTER_URL, {
@@ -93,13 +100,14 @@ async function callOpenRouter(prompt: string, maxTokens: number, temperature: nu
           max_tokens: maxTokens,
         }),
       });
-      if (!res.ok) { await res.text(); continue; }
+      if (!res.ok) { modelErrors.push(`${model}:${res.status}`); continue; }
       const data = await res.json();
       const text: string = data.choices?.[0]?.message?.content ?? "";
       if (text) return text.trim();
-    } catch { continue; }
+      modelErrors.push(`${model}:empty`);
+    } catch (e) { modelErrors.push(`${model}:err`); continue; }
   }
-  throw new Error("OpenRouter: all free models unavailable");
+  throw new Error(`OpenRouter: all models failed — ${modelErrors.join(", ")}`);
 }
 
 async function callGroq(prompt: string, maxTokens: number, temperature: number): Promise<string> {
@@ -186,7 +194,7 @@ async function chatOpenAI(url: string, model: string, apiKey: string, system: st
 
 /**
  * Multi-turn chat using whichever AI provider is configured.
- * Order: Gemini → DeepSeek → Groq → OpenRouter
+ * Order: OpenRouter → Gemini → DeepSeek → Groq
  */
 export async function generateChat(
   system: string,
@@ -197,6 +205,17 @@ export async function generateChat(
   const temperature = options.temperature ?? 0.7;
   const errors: string[] = [];
 
+  if (process.env.OPENROUTER_API_KEY) {
+    const orHeaders = { "HTTP-Referer": "https://englishapp-sand.vercel.app", "X-Title": "English Practice App" };
+    const modelErrors: string[] = [];
+    for (const model of OPENROUTER_MODELS) {
+      try {
+        const result = await chatOpenAI(OPENROUTER_URL, model, process.env.OPENROUTER_API_KEY, system, messages, maxTokens, temperature, orHeaders);
+        return result;
+      } catch (e) { modelErrors.push(`${model}:${e}`); continue; }
+    }
+    errors.push(`OpenRouter: ${modelErrors.join(", ")}`);
+  }
   if (process.env.GEMINI_API_KEY) {
     try { return await chatGemini(system, messages, maxTokens, temperature); }
     catch (e) { errors.push(`Gemini: ${e}`); }
@@ -209,21 +228,13 @@ export async function generateChat(
     try { return await chatOpenAI(GROQ_URL, "llama-3.3-70b-versatile", process.env.GROQ_API_KEY, system, messages, maxTokens, temperature); }
     catch (e) { errors.push(`Groq: ${e}`); }
   }
-  if (process.env.OPENROUTER_API_KEY) {
-    const orHeaders = { "HTTP-Referer": "https://englishapp-sand.vercel.app", "X-Title": "English Practice App" };
-    for (const model of OPENROUTER_MODELS) {
-      try { return await chatOpenAI(OPENROUTER_URL, model, process.env.OPENROUTER_API_KEY, system, messages, maxTokens, temperature, orHeaders); }
-      catch { continue; }
-    }
-    errors.push("OpenRouter: all free models unavailable");
-  }
 
   throw new Error(`All AI providers failed. ${errors.join(" | ")}`);
 }
 
 /**
  * Generates text using whichever AI provider is configured.
- * Order: Gemini → DeepSeek → Groq
+ * Order: OpenRouter → Gemini → DeepSeek → Groq
  */
 export async function generateText(
   prompt: string,
@@ -233,6 +244,11 @@ export async function generateText(
   const temperature = options.temperature ?? 0.3;
 
   const errors: string[] = [];
+
+  if (process.env.OPENROUTER_API_KEY) {
+    try { return await callOpenRouter(prompt, maxTokens, temperature); }
+    catch (e) { errors.push(`OpenRouter: ${e}`); }
+  }
 
   if (process.env.GEMINI_API_KEY) {
     try { return await callGemini(prompt, maxTokens, temperature); }
@@ -247,11 +263,6 @@ export async function generateText(
   if (process.env.GROQ_API_KEY) {
     try { return await callGroq(prompt, maxTokens, temperature); }
     catch (e) { errors.push(`Groq: ${e}`); }
-  }
-
-  if (process.env.OPENROUTER_API_KEY) {
-    try { return await callOpenRouter(prompt, maxTokens, temperature); }
-    catch (e) { errors.push(`OpenRouter: ${e}`); }
   }
 
   const msg = `All AI providers failed. ${errors.join(" | ")}`;
