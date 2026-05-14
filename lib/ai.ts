@@ -97,22 +97,29 @@ async function chatGemini(system: string, messages: ChatMessage[], maxTokens: nu
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error("No GEMINI_API_KEY");
 
-  const contents = messages.map(m => ({
-    role: m.role === "assistant" ? "model" : "user",
-    parts: [{ text: m.content }],
-  }));
+  // Prepend system as user/model pair — more compatible than system_instruction
+  const contents = [
+    { role: "user",  parts: [{ text: `[Instructions]: ${system}` }] },
+    { role: "model", parts: [{ text: "Understood. I will follow these instructions." }] },
+    ...messages.map(m => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [{ text: m.content }],
+    })),
+  ];
 
   const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      system_instruction: { parts: [{ text: system }] },
       contents,
       generationConfig: { temperature, maxOutputTokens: maxTokens },
     }),
   });
 
-  if (!res.ok) throw new Error(`Gemini chat error: ${res.status}`);
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Gemini chat error: ${res.status} — ${body}`);
+  }
   const data = await res.json();
   const text: string = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
   if (!text) throw new Error("Gemini returned empty response");

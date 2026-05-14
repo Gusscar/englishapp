@@ -71,7 +71,8 @@ Only include real errors in corrections. If there are no errors, return empty ar
     return NextResponse.json({ reply });
 
   } catch (e) {
-    console.error("[conversation]", e);
-    return NextResponse.json({ error: "AI unavailable" }, { status: 500 });
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[conversation]", msg);
+    return NextResponse.json({ error: "AI unavailable", detail: msg }, { status: 500 });
   }
 }
