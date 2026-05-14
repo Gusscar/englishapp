@@ -51,7 +51,7 @@ const moreItems = [
   },
 ];
 
-const practiceRoutes = ["/practicar", "/scramble", "/dictation", "/writing"];
+const practiceRoutes = ["/practicar", "/scramble", "/dictation", "/writing", "/conversation"];
 const learnRoutes   = ["/aprender", "/reading", "/videos", "/grammar", "/patterns", "/immersion"];
 const moreRoutes    = ["/manage"];
 

@@ -4,6 +4,20 @@ import Link from "next/link";
 
 const sections = [
   {
+    href: "/conversation",
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        <line x1="9" y1="10" x2="15" y2="10"/>
+        <line x1="9" y1="14" x2="13" y2="14"/>
+      </svg>
+    ),
+    title: "Conversacion con IA",
+    desc: "Practica hablando en 8 escenarios reales",
+    color: "from-emerald-900/60 to-emerald-900/20 border-emerald-700/40",
+    iconColor: "text-emerald-400",
+  },
+  {
     href: "/writing",
     icon: (
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
