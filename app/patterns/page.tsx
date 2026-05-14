@@ -2,7 +2,50 @@
 
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+
+function SpeakButton({ text }: { text: string }) {
+  const [playing, setPlaying] = useState(false);
+
+  const speak = useCallback(() => {
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-US";
+    utter.rate = 0.9;
+    utter.onstart = () => setPlaying(true);
+    utter.onend = () => setPlaying(false);
+    utter.onerror = () => setPlaying(false);
+    window.speechSynthesis.speak(utter);
+  }, [text]);
+
+  return (
+    <button
+      onClick={e => { e.stopPropagation(); speak(); }}
+      disabled={playing}
+      aria-label="Escuchar en ingles"
+      className={`shrink-0 size-8 flex items-center justify-center rounded-xl transition-all active:scale-90 ${
+        playing
+          ? "bg-indigo-500/30 text-indigo-300"
+          : "bg-slate-700/60 hover:bg-indigo-500/20 text-slate-400 hover:text-indigo-300"
+      }`}
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        {playing ? (
+          <>
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/>
+            <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" className="animate-pulse"/>
+          </>
+        ) : (
+          <>
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 010 7.07"/>
+          </>
+        )}
+      </svg>
+    </button>
+  );
+}
 import { supabase } from "@/lib/supabase";
 
 interface Example {
@@ -259,7 +302,10 @@ export default function PatternsPage() {
                 className="w-full text-left px-5 py-4 flex items-start justify-between gap-3"
               >
                 <div className="flex-1 min-w-0">
-                  <p className="text-base font-semibold text-indigo-300 leading-snug">{g.pattern_english}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-base font-semibold text-indigo-300 leading-snug">{g.pattern_english}</p>
+                    <SpeakButton text={g.pattern_english} />
+                  </div>
                   <p className="text-base text-slate-400 leading-snug mt-0.5">{g.pattern_spanish}</p>
                   {g.notes && (
                     <p className="text-xs text-slate-500 mt-1">{g.notes}</p>
@@ -282,7 +328,10 @@ export default function PatternsPage() {
                     )}
                     {g.examples.map((ex, i) => (
                       <div key={i} className="flex flex-col gap-0.5 border-l-2 border-indigo-700/60 pl-3">
-                        <p className="text-sm text-indigo-300 leading-relaxed font-medium">{ex.english}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm text-indigo-300 leading-relaxed font-medium flex-1">{ex.english}</p>
+                          <SpeakButton text={ex.english} />
+                        </div>
                         <p className="text-sm text-slate-400 leading-relaxed">{ex.spanish}</p>
                       </div>
                     ))}
