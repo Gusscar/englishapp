@@ -22,13 +22,18 @@ interface Feedback {
 }
 
 /* ── Speech recognition types ── */
+interface SpeechResult {
+  isFinal: boolean;
+  length: number;
+  [j: number]: { transcript: string };
+}
 interface WebSpeechRec extends EventTarget {
-  lang: string; interimResults: boolean; maxAlternatives: number;
+  lang: string; interimResults: boolean; continuous: boolean; maxAlternatives: number;
   start(): void; stop(): void;
   onstart: ((e: Event) => void) | null;
   onend:   ((e: Event) => void) | null;
   onerror: ((e: Event) => void) | null;
-  onresult: ((e: { results: { length: number; [i: number]: { length: number; [j: number]: { transcript: string } } } }) => void) | null;
+  onresult: ((e: { resultIndex: number; results: { length: number; [i: number]: SpeechResult } }) => void) | null;
 }
 
 export default function ConversationPage() {
@@ -40,9 +45,10 @@ export default function ConversationPage() {
   const [feedback,    setFeedback]    = useState<Feedback | null>(null);
   const [loadingFb,   setLoadingFb]   = useState(false);
   const [showFb,      setShowFb]      = useState(false);
-  const bottomRef   = useRef<HTMLDivElement>(null);
-  const inputRef    = useRef<HTMLTextAreaElement>(null);
-  const recognRef   = useRef<WebSpeechRec | null>(null);
+  const bottomRef      = useRef<HTMLDivElement>(null);
+  const inputRef       = useRef<HTMLTextAreaElement>(null);
+  const recognRef      = useRef<WebSpeechRec | null>(null);
+  const finalTextRef   = useRef("");
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -108,27 +114,41 @@ export default function ConversationPage() {
     }
   }
 
-  function startMic() {
+  function handleMicDown() {
+    if (loading) return;
     const win = window as Window & { SpeechRecognition?: new () => WebSpeechRec; webkitSpeechRecognition?: new () => WebSpeechRec };
     const Ctor = win.SpeechRecognition ?? win.webkitSpeechRecognition;
-    if (!Ctor) { alert("Tu navegador no soporta voz."); return; }
+    if (!Ctor) { alert("Tu navegador no soporta reconocimiento de voz."); return; }
+
+    finalTextRef.current = "";
     const r = new Ctor();
     r.lang = "en-US";
-    r.interimResults = false;
+    r.interimResults = true;
+    r.continuous = true;
     r.maxAlternatives = 1;
     recognRef.current = r;
+
     r.onstart = () => setListening(true);
-    r.onend   = () => setListening(false);
-    r.onerror = () => setListening(false);
     r.onresult = (e) => {
-      const text = e.results[0][0].transcript;
-      setInput(text);
-      setTimeout(() => sendMessage(text), 300);
+      let interim = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) finalTextRef.current += e.results[i][0].transcript + " ";
+        else interim = e.results[i][0].transcript;
+      }
+      setInput((finalTextRef.current + interim).trim());
+    };
+    r.onerror = () => { setListening(false); };
+    r.onend = () => {
+      setListening(false);
+      const text = finalTextRef.current.trim();
+      if (text) sendMessage(text);
     };
     r.start();
   }
 
-  function stopMic() { recognRef.current?.stop(); }
+  function handleMicUp() {
+    recognRef.current?.stop();
+  }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -242,9 +262,13 @@ export default function ConversationPage() {
           />
           <div className="flex gap-2 shrink-0 pb-0.5">
             <button
-              onClick={listening ? stopMic : startMic}
-              className={`size-9 flex items-center justify-center rounded-xl transition-all active:scale-90 ${
-                listening ? "bg-red-500/30 text-red-300 animate-pulse" : "bg-slate-700 text-slate-400 hover:text-white"
+              onPointerDown={handleMicDown}
+              onPointerUp={handleMicUp}
+              onPointerLeave={handleMicUp}
+              onContextMenu={e => e.preventDefault()}
+              style={{ touchAction: "none", userSelect: "none" }}
+              className={`size-9 flex items-center justify-center rounded-xl transition-all ${
+                listening ? "bg-red-500 text-white scale-110 shadow-lg shadow-red-500/40" : "bg-slate-700 text-slate-400 hover:text-white active:scale-95"
               }`}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
