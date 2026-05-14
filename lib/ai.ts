@@ -13,18 +13,18 @@ const GEMINI_URL       = "https://generativelanguage.googleapis.com/v1beta/model
 const DEEPSEEK_URL     = "https://api.deepseek.com/v1/chat/completions";
 const GROQ_URL         = "https://api.groq.com/openai/v1/chat/completions";
 const OPENROUTER_URL    = "https://openrouter.ai/api/v1/chat/completions";
-// Free models from different underlying providers — if one provider is down, others still work
+// Free models — updated May 2026. OpenRouter rotates availability; order matters.
 const OPENROUTER_MODELS = [
-  "deepseek/deepseek-r1-0528-qwen3-8b:free",   // DeepSeek infra
-  "qwen/qwen3-8b:free",                          // Alibaba infra
-  "google/gemma-3-12b-it:free",                  // Google infra
-  "meta-llama/llama-3.3-70b-instruct:free",      // Venice/Meta
-  "mistralai/mistral-nemo:free",                 // Mistral infra
-  "qwen/qwen-2.5-72b-instruct:free",             // Alibaba infra
-  "deepseek/deepseek-r1:free",                   // DeepSeek infra
-  "meta-llama/llama-3.1-8b-instruct:free",       // Venice/Meta
-  "google/gemma-2-9b-it:free",                   // Google infra
-  "mistralai/mistral-7b-instruct:free",          // Mistral infra
+  "meta-llama/llama-4-scout:free",               // Meta — fast chat
+  "meta-llama/llama-4-maverick:free",            // Meta — 128K ctx
+  "deepseek/deepseek-chat-v3.1:free",            // DeepSeek — fast chat
+  "deepseek/deepseek-r1-0528:free",              // DeepSeek — reasoning
+  "deepseek/deepseek-r1:free",                   // DeepSeek — reasoning
+  "qwen/qwen3-235b-a22b:free",                   // Alibaba — large model
+  "qwen/qwen-2.5-72b-instruct:free",             // Alibaba — general
+  "google/gemma-3-12b-it:free",                  // Google — instruct
+  "meta-llama/llama-3.3-70b-instruct:free",      // Meta — strong reasoning
+  "mistralai/mistral-7b-instruct:free",          // Mistral — lightweight
 ];
 
 async function callGemini(prompt: string, maxTokens: number, temperature: number): Promise<string> {
