@@ -133,39 +133,43 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col">
 
       {/* ── Header ── */}
-      <header className="flex items-center justify-between px-5 pt-5 pb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">🇺🇸</span>
-          <h1 className="font-bold text-lg tracking-tight">English Practice</h1>
+      <header className="flex items-center justify-between px-5 pt-6 pb-4">
+        <div>
+          <h1 className="font-semibold text-xl tracking-tight text-white">English Practice</h1>
+          {!loading && phrases.length > 0 && (
+            <p className="text-xs text-slate-500 mt-0.5">
+              {phrases.length} frases en total
+            </p>
+          )}
         </div>
         {!loading && phrases.length > 0 && (
-          <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
+          <span className={`text-xs font-semibold px-3 py-1.5 rounded-full ${
             dueCount > 0
-              ? "bg-indigo-900/60 text-indigo-300 border border-indigo-700"
-              : "bg-emerald-900/60 text-emerald-300 border border-emerald-700"
+              ? "bg-indigo-500/15 text-indigo-300 border border-indigo-500/30"
+              : "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
           }`}>
-            {dueCount > 0 ? `${dueCount} pendientes` : "¡Al día! 🎉"}
+            {dueCount > 0 ? `${dueCount} pendientes` : "Al dia"}
           </span>
         )}
       </header>
 
       {/* ── Main ── */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-4 gap-4">
+      <main className="flex-1 flex flex-col items-center justify-center p-4 gap-4">
 
         {loading && (
-          <div className="flex flex-col items-center gap-3 text-slate-400">
-            <span className="text-4xl animate-spin">⟳</span>
+          <div className="flex flex-col items-center gap-4 text-slate-500">
+            <div className="size-10 rounded-full border-2 border-slate-700 border-t-indigo-500 animate-spin" />
             <p className="text-sm">Cargando frases…</p>
           </div>
         )}
 
         {error && (
-          <div className="text-center p-5 rounded-2xl bg-red-900/30 border border-red-800 max-w-sm w-full">
-            <p className="text-red-400 font-semibold mb-1">Sin conexión</p>
-            <p className="text-slate-400 text-sm mb-4">{error}</p>
+          <div className="text-center p-6 rounded-3xl bg-red-950/40 border border-red-800/50 max-w-sm w-full">
+            <p className="text-red-400 font-bold mb-1">Sin conexion</p>
+            <p className="text-slate-400 text-sm mb-5">{error}</p>
             <button
               onClick={loadPhrases}
-              className="px-5 py-2.5 rounded-xl bg-red-700 hover:bg-red-600 transition text-sm font-medium"
+              className="px-5 py-2.5 rounded-2xl bg-red-700/80 hover:bg-red-600/80 active:scale-95 transition-all text-sm font-semibold"
             >
               Reintentar
             </button>
@@ -173,33 +177,37 @@ export default function HomePage() {
         )}
 
         {!loading && !error && phrases.length === 0 && (
-          <div className="text-center px-6">
-            <p className="text-5xl mb-4">📝</p>
-            <p className="font-semibold text-lg mb-1">Sin frases todavía</p>
-            <p className="text-slate-400 text-sm mb-6">Agrega tus primeras frases para empezar a practicar</p>
+          <div className="text-center px-6 py-8">
+            <div className="size-20 rounded-3xl bg-slate-800 border border-slate-700 flex items-center justify-center mx-auto mb-5 text-4xl">
+              📝
+            </div>
+            <p className="font-bold text-xl mb-2">Sin frases todavia</p>
+            <p className="text-slate-400 text-sm mb-7 leading-relaxed max-w-[260px] mx-auto">
+              Agrega tus primeras frases para empezar a practicar
+            </p>
             <Link
               href="/manage"
-              className="inline-block px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 transition font-semibold"
+              className="inline-block px-7 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 active:scale-95 transition-all font-semibold text-sm shadow-lg shadow-indigo-900/40"
             >
-              + Agregar frases
+              Agregar frases
             </Link>
           </div>
         )}
 
         {allCaughtUp && (
-          <div className="text-center px-6 py-8 rounded-3xl bg-emerald-900/20 border border-emerald-800/50 max-w-sm w-full">
-            <p className="text-5xl mb-3">🎉</p>
-            <p className="font-bold text-xl text-emerald-300 mb-1">¡Al día!</p>
+          <div className="text-center px-6 py-8 rounded-3xl bg-emerald-950/30 border border-emerald-800/30 max-w-sm w-full">
+            <div className="text-5xl mb-4">🎉</div>
+            <p className="font-bold text-2xl text-emerald-300 mb-1">Al dia</p>
             <p className="text-slate-400 text-sm mb-1">No hay frases pendientes para hoy.</p>
-            <p className="text-slate-500 text-xs mb-5">
-              Próxima revisión:{" "}
-              <span className="text-slate-300">
+            <p className="text-slate-600 text-xs mb-6">
+              Proxima revision:{" "}
+              <span className="text-slate-400">
                 {phrases.find((p) => p.next_review_date > today)?.next_review_date ?? "—"}
               </span>
             </p>
             <button
               onClick={() => { setQueue(buildQueue(phrases)); setIndex(0); }}
-              className="px-5 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 transition text-sm font-medium"
+              className="px-5 py-2.5 rounded-2xl bg-slate-700/80 hover:bg-slate-600/80 active:scale-95 transition-all text-sm font-semibold border border-slate-600/40"
             >
               Repasar de todas formas
             </button>
@@ -208,8 +216,8 @@ export default function HomePage() {
 
         {!loading && !error && current && !allCaughtUp && (
           <>
-            <p className="text-slate-500 text-xs">
-              {index + 1} / {queue.length}
+            <p className="text-slate-600 text-xs tabular-nums self-start pl-1">
+              {index + 1} de {queue.length}
             </p>
             <FlashCard
               phrase={current}

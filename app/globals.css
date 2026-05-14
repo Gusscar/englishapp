@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Tap highlight removal for app-like feel */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .perspective {
   perspective: 1000px;
 }

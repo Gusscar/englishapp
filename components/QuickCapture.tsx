@@ -25,7 +25,9 @@ export default function QuickCapture() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 80);
+    if (!open) return;
+    const id = setTimeout(() => inputRef.current?.focus(), 80);
+    return () => clearTimeout(id);
   }, [open]);
 
   function handleClose() {
@@ -129,10 +131,13 @@ export default function QuickCapture() {
       {/* Floating button */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-[84px] right-4 z-40 w-14 h-14 rounded-full bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-900/60 flex items-center justify-center text-3xl font-light transition active:scale-95"
-        aria-label="Agregar frase rápida"
+        className="fixed bottom-[84px] right-4 z-40 w-14 h-14 rounded-2xl bg-indigo-600 hover:bg-indigo-500 shadow-xl shadow-indigo-900/50 flex items-center justify-center transition-all active:scale-90"
+        aria-label="Agregar frase rapida"
       >
-        +
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
       </button>
 
       {/* Overlay */}
