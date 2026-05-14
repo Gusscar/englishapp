@@ -12,8 +12,14 @@ export interface ChatMessage {
 const GEMINI_URL       = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 const DEEPSEEK_URL     = "https://api.deepseek.com/v1/chat/completions";
 const GROQ_URL         = "https://api.groq.com/openai/v1/chat/completions";
-const OPENROUTER_URL   = "https://openrouter.ai/api/v1/chat/completions";
-const OPENROUTER_MODEL = "meta-llama/llama-3.3-70b-instruct:free";
+const OPENROUTER_URL    = "https://openrouter.ai/api/v1/chat/completions";
+const OPENROUTER_MODELS = [
+  "meta-llama/llama-3.3-70b-instruct:free",
+  "mistralai/mistral-nemo:free",
+  "qwen/qwen-2.5-72b-instruct:free",
+  "meta-llama/llama-3.1-8b-instruct:free",
+  "mistralai/mistral-7b-instruct:free",
+];
 
 async function callGemini(prompt: string, maxTokens: number, temperature: number): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -68,30 +74,32 @@ async function callOpenRouter(prompt: string, maxTokens: number, temperature: nu
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) throw new Error("No OPENROUTER_API_KEY");
 
-  const res = await fetch(OPENROUTER_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-      "HTTP-Referer": "https://englishapp-sand.vercel.app",
-      "X-Title": "English Practice App",
-    },
-    body: JSON.stringify({
-      model: OPENROUTER_MODEL,
-      messages: [{ role: "user", content: prompt }],
-      temperature,
-      max_tokens: maxTokens,
-    }),
-  });
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${apiKey}`,
+    "HTTP-Referer": "https://englishapp-sand.vercel.app",
+    "X-Title": "English Practice App",
+  };
 
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`OpenRouter error: ${res.status} — ${body}`);
+  for (const model of OPENROUTER_MODELS) {
+    try {
+      const res = await fetch(OPENROUTER_URL, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          model,
+          messages: [{ role: "user", content: prompt }],
+          temperature,
+          max_tokens: maxTokens,
+        }),
+      });
+      if (!res.ok) { await res.text(); continue; }
+      const data = await res.json();
+      const text: string = data.choices?.[0]?.message?.content ?? "";
+      if (text) return text.trim();
+    } catch { continue; }
   }
-  const data = await res.json();
-  const text: string = data.choices?.[0]?.message?.content ?? "";
-  if (!text) throw new Error("OpenRouter returned empty response");
-  return text.trim();
+  throw new Error("OpenRouter: all free models unavailable");
 }
 
 async function callGroq(prompt: string, maxTokens: number, temperature: number): Promise<string> {
@@ -202,11 +210,12 @@ export async function generateChat(
     catch (e) { errors.push(`Groq: ${e}`); }
   }
   if (process.env.OPENROUTER_API_KEY) {
-    try { return await chatOpenAI(OPENROUTER_URL, OPENROUTER_MODEL, process.env.OPENROUTER_API_KEY, system, messages, maxTokens, temperature, {
-      "HTTP-Referer": "https://englishapp-sand.vercel.app",
-      "X-Title": "English Practice App",
-    }); }
-    catch (e) { errors.push(`OpenRouter: ${e}`); }
+    const orHeaders = { "HTTP-Referer": "https://englishapp-sand.vercel.app", "X-Title": "English Practice App" };
+    for (const model of OPENROUTER_MODELS) {
+      try { return await chatOpenAI(OPENROUTER_URL, model, process.env.OPENROUTER_API_KEY, system, messages, maxTokens, temperature, orHeaders); }
+      catch { continue; }
+    }
+    errors.push("OpenRouter: all free models unavailable");
   }
 
   throw new Error(`All AI providers failed. ${errors.join(" | ")}`);
