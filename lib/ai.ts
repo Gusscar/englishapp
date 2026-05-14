@@ -1,6 +1,7 @@
 /**
- * Shared AI helper — tries Gemini first, falls back to DeepSeek / Groq.
- * Set GEMINI_API_KEY and/or DEEPSEEK_API_KEY and/or GROQ_API_KEY in .env.local.
+ * Shared AI helper — tries providers in order until one succeeds.
+ * Set any of these keys in .env.local / Vercel env vars:
+ *   GEMINI_API_KEY, DEEPSEEK_API_KEY, GROQ_API_KEY, OPENROUTER_API_KEY
  */
 
 export interface ChatMessage {
@@ -8,10 +9,11 @@ export interface ChatMessage {
   content: string;
 }
 
-const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
-const DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions";
-const GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions";
+const GEMINI_URL       = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+const DEEPSEEK_URL     = "https://api.deepseek.com/v1/chat/completions";
+const GROQ_URL         = "https://api.groq.com/openai/v1/chat/completions";
+const OPENROUTER_URL   = "https://openrouter.ai/api/v1/chat/completions";
+const OPENROUTER_MODEL = "meta-llama/llama-3.3-70b-instruct:free";
 
 async function callGemini(prompt: string, maxTokens: number, temperature: number): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -59,6 +61,36 @@ async function callDeepSeek(prompt: string, maxTokens: number, temperature: numb
   const data = await res.json();
   const text: string = data.choices?.[0]?.message?.content ?? "";
   if (!text) throw new Error("DeepSeek returned empty response");
+  return text.trim();
+}
+
+async function callOpenRouter(prompt: string, maxTokens: number, temperature: number): Promise<string> {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) throw new Error("No OPENROUTER_API_KEY");
+
+  const res = await fetch(OPENROUTER_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+      "HTTP-Referer": "https://englishapp-sand.vercel.app",
+      "X-Title": "English Practice App",
+    },
+    body: JSON.stringify({
+      model: OPENROUTER_MODEL,
+      messages: [{ role: "user", content: prompt }],
+      temperature,
+      max_tokens: maxTokens,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`OpenRouter error: ${res.status} — ${body}`);
+  }
+  const data = await res.json();
+  const text: string = data.choices?.[0]?.message?.content ?? "";
+  if (!text) throw new Error("OpenRouter returned empty response");
   return text.trim();
 }
 
@@ -126,10 +158,10 @@ async function chatGemini(system: string, messages: ChatMessage[], maxTokens: nu
   return text.trim();
 }
 
-async function chatOpenAI(url: string, model: string, apiKey: string, system: string, messages: ChatMessage[], maxTokens: number, temperature: number): Promise<string> {
+async function chatOpenAI(url: string, model: string, apiKey: string, system: string, messages: ChatMessage[], maxTokens: number, temperature: number, extraHeaders: Record<string,string> = {}): Promise<string> {
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}`, ...extraHeaders },
     body: JSON.stringify({
       model,
       messages: [{ role: "system", content: system }, ...messages],
@@ -146,7 +178,7 @@ async function chatOpenAI(url: string, model: string, apiKey: string, system: st
 
 /**
  * Multi-turn chat using whichever AI provider is configured.
- * Order: Gemini → DeepSeek → Groq
+ * Order: Gemini → DeepSeek → Groq → OpenRouter
  */
 export async function generateChat(
   system: string,
@@ -168,6 +200,13 @@ export async function generateChat(
   if (process.env.GROQ_API_KEY) {
     try { return await chatOpenAI(GROQ_URL, "llama-3.3-70b-versatile", process.env.GROQ_API_KEY, system, messages, maxTokens, temperature); }
     catch (e) { errors.push(`Groq: ${e}`); }
+  }
+  if (process.env.OPENROUTER_API_KEY) {
+    try { return await chatOpenAI(OPENROUTER_URL, OPENROUTER_MODEL, process.env.OPENROUTER_API_KEY, system, messages, maxTokens, temperature, {
+      "HTTP-Referer": "https://englishapp-sand.vercel.app",
+      "X-Title": "English Practice App",
+    }); }
+    catch (e) { errors.push(`OpenRouter: ${e}`); }
   }
 
   throw new Error(`All AI providers failed. ${errors.join(" | ")}`);
@@ -199,6 +238,11 @@ export async function generateText(
   if (process.env.GROQ_API_KEY) {
     try { return await callGroq(prompt, maxTokens, temperature); }
     catch (e) { errors.push(`Groq: ${e}`); }
+  }
+
+  if (process.env.OPENROUTER_API_KEY) {
+    try { return await callOpenRouter(prompt, maxTokens, temperature); }
+    catch (e) { errors.push(`OpenRouter: ${e}`); }
   }
 
   const msg = `All AI providers failed. ${errors.join(" | ")}`;
