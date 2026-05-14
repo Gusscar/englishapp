@@ -5,6 +5,7 @@ import type { Phrase } from "@/lib/types";
 import type { Quality } from "@/lib/sm2";
 import SpeechButton from "./SpeechButton";
 import MicButton from "./MicButton";
+import { LEVEL_CONFIG } from "@/lib/levels";
 
 interface FlashCardProps {
   phrase: Phrase;
@@ -162,7 +163,12 @@ export default function FlashCard({ phrase, dueCount, totalCount, onResult, onNe
       </div>
 
       {/* Badge row */}
-      <div className="flex gap-2 items-center self-start">
+      <div className="flex gap-2 items-center self-start flex-wrap">
+        {phrase.level && LEVEL_CONFIG[phrase.level as keyof typeof LEVEL_CONFIG] && (
+          <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${LEVEL_CONFIG[phrase.level as keyof typeof LEVEL_CONFIG].badge}`}>
+            {phrase.level} · {LEVEL_CONFIG[phrase.level as keyof typeof LEVEL_CONFIG].desc}
+          </span>
+        )}
         {phrase.category && (
           <span className="text-xs font-bold uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-full border border-indigo-500/20">
             {phrase.category}

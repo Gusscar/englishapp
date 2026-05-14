@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { LEVELS, LEVEL_CONFIG, type Level } from "@/lib/levels";
 
 const SOURCE_CHIPS = [
   { label: "Netflix",  icon: "🎬" },
@@ -18,6 +19,7 @@ export default function QuickCapture() {
   const [english, setEnglish]     = useState("");
   const [spanish, setSpanish]     = useState("");
   const [source, setSource]       = useState("");
+  const [level, setLevel]         = useState<Level | "">("");
   const [translating, setTranslating] = useState(false);
   const [saving, setSaving]       = useState(false);
   const [toast, setToast]         = useState(false);
@@ -35,6 +37,7 @@ export default function QuickCapture() {
     setEnglish("");
     setSpanish("");
     setSource("");
+    setLevel("");
     setError(null);
   }
 
@@ -102,6 +105,7 @@ export default function QuickCapture() {
         english: english.trim(),
         spanish: spanish.trim(),
         category: source || null,
+        level: level || null,
         correct_count: 0,
         incorrect_count: 0,
       })
@@ -210,6 +214,28 @@ export default function QuickCapture() {
                     {icon} {label}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Level picker */}
+            <div>
+              <p className="text-xs text-slate-400 mb-2">Nivel (opcional — se detecta con IA)</p>
+              <div className="flex gap-2 flex-wrap">
+                {LEVELS.map(lvl => {
+                  const cfg = LEVEL_CONFIG[lvl];
+                  return (
+                    <button
+                      key={lvl}
+                      type="button"
+                      onClick={() => setLevel(level === lvl ? "" : lvl)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
+                        level === lvl ? cfg.chip : "bg-slate-700 text-slate-400 border-slate-600"
+                      }`}
+                    >
+                      {lvl}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

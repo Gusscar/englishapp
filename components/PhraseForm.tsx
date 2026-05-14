@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Phrase, PhraseInsert } from "@/lib/types";
+import { LEVELS, LEVEL_CONFIG, type Level } from "@/lib/levels";
 
 interface PhraseFormProps {
   initial?: Phrase;
@@ -14,6 +15,7 @@ export default function PhraseForm({ initial, onSave, onCancel }: PhraseFormProp
   const [spanish, setSpanish] = useState(initial?.spanish ?? "");
   const [category, setCategory] = useState(initial?.category ?? "");
   const [notes, setNotes] = useState(initial?.notes ?? "");
+  const [level, setLevel] = useState<Level | "">(initial?.level as Level ?? "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,6 +33,7 @@ export default function PhraseForm({ initial, onSave, onCancel }: PhraseFormProp
         spanish: spanish.trim(),
         category: category.trim() || null,
         notes: notes.trim() || null,
+        level: level || null,
       });
     } catch {
       setError("Error al guardar. Intenta de nuevo.");
@@ -85,6 +88,29 @@ export default function PhraseForm({ initial, onSave, onCancel }: PhraseFormProp
           rows={3}
           className="w-full rounded-lg bg-slate-700 border border-slate-600 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
         />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-slate-300 mb-2">
+          Nivel CEFR (opcional — se detecta automáticamente)
+        </label>
+        <div className="flex gap-2 flex-wrap">
+          {LEVELS.map(lvl => {
+            const cfg = LEVEL_CONFIG[lvl];
+            return (
+              <button
+                key={lvl}
+                type="button"
+                onClick={() => setLevel(level === lvl ? "" : lvl)}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
+                  level === lvl ? cfg.chip : "bg-slate-700 text-slate-400 border-slate-600"
+                }`}
+              >
+                {lvl} <span className="font-normal opacity-70">· {cfg.desc}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {error && <p className="text-red-400 text-sm">{error}</p>}

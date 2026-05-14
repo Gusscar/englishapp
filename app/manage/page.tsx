@@ -7,6 +7,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import type { Phrase, PhraseInsert } from "@/lib/types";
 import PhraseForm from "@/components/PhraseForm";
+import { LEVEL_CONFIG } from "@/lib/levels";
 
 function parseImportText(text: string): PhraseInsert[] {
   return text
@@ -221,7 +222,14 @@ export default function ManagePage() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium truncate">{phrase.english}</p>
+                  <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                    <p className="font-medium truncate">{phrase.english}</p>
+                    {phrase.level && LEVEL_CONFIG[phrase.level as keyof typeof LEVEL_CONFIG] && (
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${LEVEL_CONFIG[phrase.level as keyof typeof LEVEL_CONFIG].badge}`}>
+                        {phrase.level}
+                      </span>
+                    )}
+                  </div>
                   <p className="text-sm text-slate-400 truncate">{phrase.spanish}</p>
                   {phrase.category && (
                     <span className="text-xs text-indigo-400">{phrase.category}</span>

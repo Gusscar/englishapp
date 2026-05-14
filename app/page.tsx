@@ -8,6 +8,7 @@ import { applySM2, todayISO, type Quality } from "@/lib/sm2";
 import type { Phrase } from "@/lib/types";
 import FlashCard from "@/components/FlashCard";
 import Link from "next/link";
+import { LEVELS, LEVEL_CONFIG, type Level } from "@/lib/levels";
 
 const today = todayISO();
 
@@ -39,12 +40,13 @@ function buildQueue(phrases: Phrase[]): Phrase[] {
 }
 
 export default function HomePage() {
-  const [phrases,  setPhrases]  = useState<Phrase[]>([]);
-  const [queue,    setQueue]    = useState<Phrase[]>([]);
-  const [index,    setIndex]    = useState(0);
-  const [dueCount, setDueCount] = useState(0);
-  const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState<string | null>(null);
+  const [phrases,      setPhrases]      = useState<Phrase[]>([]);
+  const [queue,        setQueue]        = useState<Phrase[]>([]);
+  const [index,        setIndex]        = useState(0);
+  const [dueCount,     setDueCount]     = useState(0);
+  const [loading,      setLoading]      = useState(true);
+  const [error,        setError]        = useState<string | null>(null);
+  const [levelFilter,  setLevelFilter]  = useState<Level | null>(null);
 
   async function loadPhrases() {
     setLoading(true);
@@ -104,10 +106,21 @@ export default function HomePage() {
     });
   }
 
-  const current      = queue[index];
-  const allCaughtUp  = !loading && !error && dueCount === 0 && phrases.length > 0;
+  // Filtered queue by level
+  const filteredPhrases = levelFilter
+    ? phrases.filter(p => p.level === levelFilter)
+    : phrases;
+  const filteredQueue = levelFilter
+    ? queue.filter(p => p.level === levelFilter)
+    : queue;
+  const filteredDueCount = levelFilter
+    ? filteredPhrases.filter(p => p.next_review_date <= today).length
+    : dueCount;
 
-  // Auto-generate context for phrases that don't have it yet
+  const current      = filteredQueue[index] ?? filteredQueue[0];
+  const allCaughtUp  = !loading && !error && filteredDueCount === 0 && filteredPhrases.length > 0;
+
+  // Auto-generate context + level for phrases that don't have it yet
   const generatingContext = useRef(new Set<string>());
   useEffect(() => {
     if (!current || current.context || generatingContext.current.has(current.id)) return;
@@ -121,9 +134,11 @@ export default function HomePage() {
       .then(async (ctx) => {
         if (!ctx?.tip) return;
         const contextStr = JSON.stringify(ctx);
-        await supabase.from("phrases").update({ context: contextStr }).eq("id", current.id);
+        const updates: Record<string, string> = { context: contextStr };
+        if (ctx.level && !current.level) updates.level = ctx.level;
+        await supabase.from("phrases").update(updates).eq("id", current.id);
         setPhrases((prev) =>
-          prev.map((p) => (p.id === current.id ? { ...p, context: contextStr } : p))
+          prev.map((p) => (p.id === current.id ? { ...p, ...updates } : p))
         );
       })
       .catch(() => { /* silent */ });
@@ -152,6 +167,39 @@ export default function HomePage() {
           </span>
         )}
       </header>
+
+      {/* ── Level filter chips ── */}
+      {!loading && phrases.length > 0 && (
+        <div className="flex gap-2 px-4 pb-1 overflow-x-auto scrollbar-none">
+          <button
+            onClick={() => { setLevelFilter(null); setIndex(0); }}
+            className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+              !levelFilter
+                ? "bg-slate-600 text-white border-slate-500"
+                : "bg-slate-800 text-slate-500 border-slate-700"
+            }`}
+          >
+            Todos
+          </button>
+          {LEVELS.map(lvl => {
+            const count = phrases.filter(p => p.level === lvl).length;
+            if (count === 0) return null;
+            const cfg = LEVEL_CONFIG[lvl];
+            return (
+              <button
+                key={lvl}
+                onClick={() => { setLevelFilter(lvl); setIndex(0); }}
+                className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                  levelFilter === lvl ? cfg.chip : "bg-slate-800 text-slate-500 border-slate-700"
+                }`}
+              >
+                {lvl}
+                <span className="opacity-60 font-normal">{count}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* ── Main ── */}
       <main className="flex-1 flex flex-col items-center justify-center p-4 gap-4">
@@ -214,15 +262,23 @@ export default function HomePage() {
           </div>
         )}
 
+        {!loading && !error && filteredPhrases.length === 0 && levelFilter && (
+          <div className="text-center px-6 py-8">
+            <p className="text-4xl mb-3">🔍</p>
+            <p className="font-semibold text-lg mb-1">Sin frases en {levelFilter}</p>
+            <p className="text-slate-400 text-sm">Agrega frases o selecciona otro nivel</p>
+          </div>
+        )}
+
         {!loading && !error && current && !allCaughtUp && (
           <>
             <p className="text-slate-600 text-xs tabular-nums self-start pl-1">
-              {index + 1} de {queue.length}
+              {(filteredQueue.indexOf(current) + 1) || 1} de {filteredQueue.length}
             </p>
             <FlashCard
               phrase={current}
-              dueCount={dueCount}
-              totalCount={phrases.length}
+              dueCount={filteredDueCount}
+              totalCount={filteredPhrases.length}
               onResult={handleResult}
               onNext={handleNext}
               onContextSave={handleContextSave}
