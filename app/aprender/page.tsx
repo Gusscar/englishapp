@@ -74,6 +74,19 @@ const sections = [
     iconColor: "text-cyan-400",
     badge: null,
   },
+  {
+    href: "/stats",
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    ),
+    title: "Mi progreso",
+    desc: "Racha, frases dominadas y estadisticas",
+    color: "from-violet-900/50 to-violet-900/10 border-violet-700/30",
+    iconColor: "text-violet-400",
+    badge: null,
+  },
 ];
 
 export default function AprenderPage() {

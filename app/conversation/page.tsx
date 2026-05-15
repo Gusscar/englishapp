@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import type { ChatMessage } from "@/lib/ai";
+import { supabase } from "@/lib/supabase";
 
 /* ── Scenarios ── */
 const SCENARIOS = [
@@ -45,10 +46,53 @@ export default function ConversationPage() {
   const [feedback,    setFeedback]    = useState<Feedback | null>(null);
   const [loadingFb,   setLoadingFb]   = useState(false);
   const [showFb,      setShowFb]      = useState(false);
+  const [autoSpeak,   setAutoSpeak]   = useState(true);
+  const [saveSheet,   setSaveSheet]   = useState<{ open: boolean; context: string }>({ open: false, context: "" });
+  const [saveEn,      setSaveEn]      = useState("");
+  const [saveEs,      setSaveEs]      = useState("");
+  const [saving,      setSaving]      = useState(false);
   const bottomRef      = useRef<HTMLDivElement>(null);
   const inputRef       = useRef<HTMLTextAreaElement>(null);
   const recognRef      = useRef<WebSpeechRec | null>(null);
   const finalTextRef   = useRef("");
+
+  function speakText(text: string) {
+    if (typeof window === "undefined") return;
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = "en-US";
+    utt.rate = 0.92;
+    const voices = window.speechSynthesis.getVoices();
+    const enVoice = voices.find(v => v.lang.startsWith("en") && v.localService) ?? voices.find(v => v.lang.startsWith("en"));
+    if (enVoice) utt.voice = enVoice;
+    window.speechSynthesis.speak(utt);
+  }
+
+  async function handleSaveWord() {
+    if (!saveEn.trim()) return;
+    setSaving(true);
+    let translation = saveEs.trim();
+    if (!translation) {
+      try {
+        const res = await fetch("/api/conversation", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mode: "chat",
+            scenario: "free",
+            messages: [{ role: "user", content: `Translate to Spanish (only the translation, nothing else): "${saveEn.trim()}"` }],
+          }),
+        });
+        const d = await res.json();
+        translation = d.reply ?? "";
+      } catch { /* use empty */ }
+    }
+    await supabase.from("phrases").insert({ english: saveEn.trim(), spanish: translation, ease_factor: 2.5, interval: 1, repetitions: 0 });
+    setSaving(false);
+    setSaveSheet({ open: false, context: "" });
+    setSaveEn("");
+    setSaveEs("");
+  }
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -69,12 +113,14 @@ export default function ConversationPage() {
       }),
     });
     const data = await res.json();
+    const reply = data.reply ?? "Hello! I'm ready to practice with you.";
     setMessages([
       { role: "user", content: "Hello! Let's start." },
-      { role: "assistant", content: data.reply ?? "Hello! I'm ready to practice with you." },
+      { role: "assistant", content: reply },
     ]);
     setLoading(false);
-  }, []);
+    if (autoSpeak) speakText(reply);
+  }, [autoSpeak]);
 
   async function sendMessage(text: string) {
     if (!text.trim() || loading) return;
@@ -90,7 +136,9 @@ export default function ConversationPage() {
         body: JSON.stringify({ scenario, mode: "chat", messages: next }),
       });
       const data = await res.json();
-      setMessages(prev => [...prev, { role: "assistant", content: data.reply ?? "..." }]);
+      const reply = data.reply ?? "...";
+      setMessages(prev => [...prev, { role: "assistant", content: reply }]);
+      if (autoSpeak) speakText(reply);
     } finally {
       setLoading(false);
       setTimeout(() => inputRef.current?.focus(), 100);
@@ -206,6 +254,21 @@ export default function ConversationPage() {
           <p className="text-xs text-slate-500">Solo en ingles</p>
         </div>
         <button
+          onClick={() => { setAutoSpeak(v => { if (v) window.speechSynthesis.cancel(); return !v; }); }}
+          title={autoSpeak ? "Silenciar voz" : "Activar voz"}
+          className={`shrink-0 size-8 flex items-center justify-center rounded-xl transition-all active:scale-90 ${autoSpeak ? "bg-indigo-500/20 text-indigo-400" : "bg-slate-800 text-slate-500"}`}
+        >
+          {autoSpeak ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/>
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+          )}
+        </button>
+        <button
           onClick={getFeedback}
           disabled={messages.length < 4 || loadingFb}
           className="shrink-0 px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold disabled:opacity-30 active:scale-95 transition-all"
@@ -219,16 +282,38 @@ export default function ConversationPage() {
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
             {m.role === "assistant" && (
-              <span className="size-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs shrink-0 mr-2 mt-1">
-                AI
-              </span>
+              <span className="size-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs shrink-0 mr-2 mt-1">AI</span>
             )}
-            <div className={`max-w-[78%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
-              m.role === "user"
-                ? "bg-indigo-600 text-white rounded-br-sm"
-                : "bg-slate-800 text-slate-200 border border-slate-700/60 rounded-bl-sm"
-            }`}>
-              {m.content}
+            <div className="flex flex-col gap-1 max-w-[78%]">
+              <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                m.role === "user"
+                  ? "bg-indigo-600 text-white rounded-br-sm"
+                  : "bg-slate-800 text-slate-200 border border-slate-700/60 rounded-bl-sm"
+              }`}>
+                {m.content}
+              </div>
+              {m.role === "assistant" && (
+                <div className="flex gap-1.5 pl-1">
+                  <button
+                    onClick={() => speakText(m.content)}
+                    className="size-6 flex items-center justify-center rounded-lg bg-slate-800/80 text-slate-500 hover:text-indigo-400 transition-colors"
+                    title="Escuchar"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07"/>
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => { setSaveSheet({ open: true, context: m.content }); setSaveEn(""); setSaveEs(""); }}
+                    className="size-6 flex items-center justify-center rounded-lg bg-slate-800/80 text-slate-500 hover:text-emerald-400 transition-colors"
+                    title="Guardar palabra"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+                    </svg>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -294,6 +379,40 @@ export default function ConversationPage() {
           {messages.filter(m => m.role === "user").length} mensajes · Feedback disponible con 2+ intercambios
         </p>
       </div>
+
+      {/* Save word sheet */}
+      {saveSheet.open && (
+        <div className="fixed inset-0 z-50 flex items-end">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSaveSheet({ open: false, context: "" })} />
+          <div className="relative w-full bg-slate-800 rounded-t-3xl border-t border-slate-700/60 px-4 pt-3 pb-8 flex flex-col gap-4">
+            <div className="w-10 h-1 rounded-full bg-slate-600 mx-auto mb-1" />
+            <h2 className="font-semibold text-base">Guardar vocabulario</h2>
+            <p className="text-xs text-slate-500 -mt-2 leading-relaxed line-clamp-2">{saveSheet.context}</p>
+            <div className="flex flex-col gap-2">
+              <input
+                autoFocus
+                value={saveEn}
+                onChange={e => setSaveEn(e.target.value)}
+                placeholder="Palabra o frase en inglés"
+                className="w-full bg-slate-700/60 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500/60"
+              />
+              <input
+                value={saveEs}
+                onChange={e => setSaveEs(e.target.value)}
+                placeholder="Traducción en español (opcional, la IA la completa)"
+                className="w-full bg-slate-700/60 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500/60"
+              />
+            </div>
+            <button
+              onClick={handleSaveWord}
+              disabled={!saveEn.trim() || saving}
+              className="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white font-semibold text-sm active:scale-[0.98] transition-all"
+            >
+              {saving ? "Guardando…" : "Guardar en flashcards"}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Feedback sheet */}
       {showFb && (
