@@ -8,12 +8,9 @@ import { supabase } from "@/lib/supabase";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-interface GutendexBook {
-  id: number;
+interface WikiResult {
   title: string;
-  authors: { name: string }[];
-  subjects: string[];
-  formats: Record<string, string>;
+  description: string;
 }
 
 interface VocabItem {
@@ -43,7 +40,7 @@ interface ReadingState {
   title: string;
   content: string;
   vocabulary?: VocabItem[];
-  source: "ai" | "gutenberg";
+  source: "ai" | "wikipedia";
   level?: string;
   topic?: string;
 }
@@ -125,7 +122,7 @@ function ReadingView({
               <span>~{minutes} min</span>
               {state.level && <span className="text-indigo-400 font-medium">{state.level}</span>}
               {state.source === "ai" && <span className="text-purple-400">✨ IA</span>}
-              {state.source === "gutenberg" && <span className="text-amber-400">📚 Gutenberg</span>}
+              {state.source === "wikipedia" && <span className="text-sky-400">🌐 Wikipedia</span>}
             </div>
           </div>
           <button
@@ -214,114 +211,122 @@ function ReadingView({
   );
 }
 
-// ── ClassicBrowser (Gutendex) ──────────────────────────────────────────────
+// ── WikiReader (Wikipedia API) ─────────────────────────────────────────────
 
-const LEVEL_PRESETS: { label: string; desc: string; query: string; topic?: string }[] = [
-  { label: "A1–A2", desc: "Fábulas, cuentos simples",        query: "Aesop",          topic: "children" },
-  { label: "B1",    desc: "Cuentos cortos, aventura fácil",  query: "O. Henry"                         },
-  { label: "B2",    desc: "Sherlock, Verne, Wells",          query: "Sherlock Holmes"                   },
-  { label: "C1+",   desc: "Literatura clásica compleja",     query: "Henry James"                       },
-];
+const WIKI_TOPICS: Record<string, { desc: string; topics: string[] }> = {
+  "A1–A2": { desc: "Temas simples",     topics: ["Cat", "Dog", "Football", "Pizza", "Rain", "Apple", "Horse"] },
+  "B1":    { desc: "Temas cotidianos",  topics: ["The Beatles", "Olympic Games", "Amazon River", "Coffee", "Solar System"] },
+  "B2":    { desc: "Historia, ciencia", topics: ["World War II", "Climate change", "William Shakespeare", "Internet", "Moon landing"] },
+  "C1+":   { desc: "Temas complejos",   topics: ["French Revolution", "Cognitive psychology", "Existentialism", "Quantum mechanics"] },
+};
 
-function ClassicBrowser({ onRead }: { onRead: (title: string, content: string) => void }) {
-  const [books, setBooks] = useState<GutendexBook[]>([]);
-  const [search, setSearch] = useState("");
-  const [activePreset, setActivePreset] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [fetching, setFetching] = useState<number | null>(null);
-  const [page, setPage] = useState(1);
-  const [hasNext, setHasNext] = useState(false);
+async function fetchWikiArticle(title: string): Promise<string> {
+  const url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=true&exsectionformat=plain&redirects=1&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+  const res = await fetch(url);
+  const data = await res.json();
+  const pages = data.query?.pages ?? {};
+  const page = Object.values(pages)[0] as { extract?: string };
+  const text = (page?.extract ?? "").trim();
+  // Return first ~600 words to keep it readable
+  const words = text.split(/\s+/).filter(Boolean);
+  return words.slice(0, 600).join(" ");
+}
 
-  async function loadBooks(query: string, p: number, topic?: string) {
+function WikiReader({ onRead }: { onRead: (title: string, content: string) => void }) {
+  const [search, setSearch]         = useState("");
+  const [results, setResults]       = useState<WikiResult[]>([]);
+  const [activeLevel, setActiveLevel] = useState<string | null>(null);
+  const [loading, setLoading]       = useState(false);
+  const [fetching, setFetching]     = useState<string | null>(null);
+  const [searched, setSearched]     = useState(false);
+
+  async function doSearch(query: string) {
+    if (!query.trim()) return;
     setLoading(true);
-    const params = new URLSearchParams({
-      languages: "en",
-      page: String(p),
-      ...(query.trim() ? { search: query } : { topic: topic ?? "children" }),
-    });
+    setSearched(true);
     try {
-      const res = await fetch(`https://gutendex.com/books?${params}`);
-      const data = await res.json();
-      setBooks(data.results ?? []);
-      setHasNext(!!data.next);
+      const url = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=8&format=json&origin=*`;
+      const res = await fetch(url);
+      const [, titles, descs] = await res.json() as [string, string[], string[]];
+      setResults(titles.map((t, i) => ({ title: t, description: descs[i] ?? "" })));
     } catch {
-      setBooks([]);
+      setResults([]);
     }
     setLoading(false);
   }
 
-  useEffect(() => { loadBooks("", 1); }, []);
+  async function handleRead(title: string) {
+    setFetching(title);
+    try {
+      const content = await fetchWikiArticle(title);
+      if (!content) throw new Error("empty");
+      onRead(title, content);
+    } catch {
+      alert("No se pudo cargar el artículo. Intenta con otro.");
+    }
+    setFetching(null);
+  }
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
-    setActivePreset(null);
-    setPage(1);
-    loadBooks(search, 1);
-  }
-
-  function handlePreset(preset: typeof LEVEL_PRESETS[0]) {
-    setActivePreset(preset.label);
-    setSearch(preset.query);
-    setPage(1);
-    loadBooks(preset.query, 1, preset.topic);
-  }
-
-  function changePage(delta: number) {
-    const p = page + delta;
-    setPage(p);
-    loadBooks(search, p);
-  }
-
-  async function handleRead(book: GutendexBook) {
-    const textUrl =
-      book.formats["text/plain; charset=utf-8"] ??
-      book.formats["text/plain"] ??
-      null;
-    if (!textUrl) { alert("Este libro no tiene versión de texto disponible."); return; }
-
-    setFetching(book.id);
-    try {
-      const res = await fetch(
-        `/api/gutenberg-text?url=${encodeURIComponent(textUrl)}&page=0`
-      );
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      onRead(book.title, data.content);
-    } catch {
-      alert("No se pudo cargar el libro. Intenta con otro.");
-    } finally {
-      setFetching(null);
-    }
+    setActiveLevel(null);
+    doSearch(search);
   }
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Level filter presets */}
+      {/* Level buttons */}
       <div>
-        <p className="text-xs text-slate-500 mb-2">Filtrar por nivel aproximado:</p>
+        <p className="text-xs text-slate-500 mb-2">Filtrar por nivel:</p>
         <div className="grid grid-cols-4 gap-2">
-          {LEVEL_PRESETS.map((preset) => (
+          {Object.entries(WIKI_TOPICS).map(([level, { desc }]) => (
             <button
-              key={preset.label}
-              onClick={() => handlePreset(preset)}
+              key={level}
+              onClick={() => {
+                setActiveLevel(level);
+                const topics = WIKI_TOPICS[level].topics;
+                const pick = topics[Math.floor(Math.random() * topics.length)];
+                setSearch(pick);
+                doSearch(pick);
+              }}
               className={`flex flex-col items-start px-3 py-2 rounded-xl border text-left transition ${
-                activePreset === preset.label
+                activeLevel === level
                   ? "bg-indigo-600/30 border-indigo-500/60 text-indigo-300"
                   : "bg-slate-700/40 border-slate-600/40 text-slate-400 hover:bg-slate-700"
               }`}
             >
-              <span className="text-sm font-bold">{preset.label}</span>
-              <span className="text-[10px] opacity-70 leading-tight mt-0.5">{preset.desc}</span>
+              <span className="text-sm font-bold">{level}</span>
+              <span className="text-[10px] opacity-70 leading-tight mt-0.5">{desc}</span>
             </button>
           ))}
         </div>
       </div>
 
+      {/* Topic chips for active level */}
+      {activeLevel && (
+        <div className="flex flex-wrap gap-2">
+          {WIKI_TOPICS[activeLevel].topics.map((topic) => (
+            <button
+              key={topic}
+              onClick={() => { setSearch(topic); doSearch(topic); }}
+              className={`text-xs px-3 py-1.5 rounded-full transition ${
+                search === topic
+                  ? "bg-indigo-600 text-white"
+                  : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+              }`}
+            >
+              {topic}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Search */}
       <form onSubmit={handleSearch} className="flex gap-2">
         <input
           value={search}
-          onChange={(e) => { setSearch(e.target.value); setActivePreset(null); }}
-          placeholder="Buscar libro (Alice, Sherlock, Aesop…)"
+          onChange={(e) => { setSearch(e.target.value); setActiveLevel(null); }}
+          placeholder="Buscar tema en Wikipedia (en inglés)…"
           className="flex-1 rounded-xl bg-slate-700 border border-slate-600 px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
         />
         <button
@@ -332,75 +337,34 @@ function ClassicBrowser({ onRead }: { onRead: (title: string, content: string) =
         </button>
       </form>
 
-      <p className="text-xs text-slate-500">
-        Mostrando {search ? `resultados para "${search}"` : "libros infantiles"} en inglés · Por defecto ordenados por popularidad
-      </p>
-
+      {/* Results */}
       {loading ? (
-        <div className="text-center py-10 text-slate-400 animate-pulse">Cargando libros…</div>
-      ) : books.length === 0 ? (
+        <p className="text-center py-8 text-slate-400 animate-pulse">Buscando…</p>
+      ) : !searched ? (
+        <p className="text-center py-8 text-slate-500 text-sm">Elige un nivel o busca un tema para empezar.</p>
+      ) : results.length === 0 ? (
         <p className="text-center py-8 text-slate-400">Sin resultados. Prueba otra búsqueda.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {books.map((book) => {
-            const hasText = !!(
-              book.formats["text/plain; charset=utf-8"] ?? book.formats["text/plain"]
-            );
-            return (
-              <div
-                key={book.id}
-                className="bg-slate-700/40 border border-slate-600 rounded-xl p-4 flex flex-col gap-2"
-              >
-                <div>
-                  <p className="font-medium text-sm line-clamp-2 leading-snug">{book.title}</p>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    {book.authors.map((a) => a.name).join(", ") || "Anónimo"}
-                  </p>
-                </div>
-                <div className="flex gap-1 flex-wrap">
-                  {book.subjects.slice(0, 2).map((s, i) => (
-                    <span
-                      key={i}
-                      className="text-[10px] px-2 py-0.5 rounded-full bg-slate-600 text-slate-300 truncate max-w-[130px]"
-                    >
-                      {s.replace(/ -- Juvenile fiction/i, "")}
-                    </span>
-                  ))}
-                </div>
-                <button
-                  onClick={() => handleRead(book)}
-                  disabled={!hasText || fetching === book.id}
-                  className={`mt-auto text-xs py-2 rounded-lg transition font-medium ${
-                    hasText
-                      ? "bg-amber-600 hover:bg-amber-500 disabled:opacity-60"
-                      : "bg-slate-600 text-slate-400 cursor-not-allowed"
-                  }`}
-                >
-                  {fetching === book.id ? "Cargando…" : hasText ? "📖 Leer extracto" : "Sin texto"}
-                </button>
+        <div className="flex flex-col gap-3">
+          {results.map((r) => (
+            <div key={r.title} className="bg-slate-700/40 border border-slate-600 rounded-xl p-4 flex gap-3 items-start">
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm">{r.title}</p>
+                {r.description && (
+                  <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">{r.description}</p>
+                )}
               </div>
-            );
-          })}
+              <button
+                onClick={() => handleRead(r.title)}
+                disabled={fetching === r.title}
+                className="shrink-0 text-xs px-3 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-60 transition font-medium"
+              >
+                {fetching === r.title ? "Cargando…" : "📖 Leer"}
+              </button>
+            </div>
+          ))}
         </div>
       )}
-
-      <div className="flex justify-between items-center pt-1">
-        <button
-          onClick={() => changePage(-1)}
-          disabled={page === 1 || loading}
-          className="text-xs px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 disabled:opacity-40 transition"
-        >
-          ← Anterior
-        </button>
-        <span className="text-xs text-slate-500">Página {page}</span>
-        <button
-          onClick={() => changePage(1)}
-          disabled={!hasNext || loading}
-          className="text-xs px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 disabled:opacity-40 transition"
-        >
-          Siguiente →
-        </button>
-      </div>
     </div>
   );
 }
@@ -554,7 +518,7 @@ function SavedStoriesTab({ onRead }: { onRead: (s: SavedStory) => void }) {
             <p className="font-medium text-sm line-clamp-1">{s.title}</p>
             <div className="flex gap-2 mt-0.5 flex-wrap">
               {s.level && <span className="text-xs text-indigo-400 font-medium">{s.level}</span>}
-              <span className="text-xs text-slate-500">{s.source === "ai" ? "✨ IA" : "📚 Gutenberg"}</span>
+              <span className="text-xs text-slate-500">{s.source === "ai" ? "✨ IA" : "🌐 Wikipedia"}</span>
               <span className="text-xs text-slate-500">{new Date(s.created_at).toLocaleDateString("es")}</span>
             </div>
             <p className="text-xs text-slate-400 line-clamp-2 mt-1">{s.content.slice(0, 140)}…</p>
@@ -593,7 +557,7 @@ export default function ReadingPage() {
   }
 
   const tabs: { key: Tab; label: string }[] = [
-    { key: "classics", label: "📚 Clásicos" },
+    { key: "classics", label: "🌐 Artículos" },
     { key: "generate", label: "✨ Generar IA" },
     { key: "saved", label: "💾 Guardados" },
   ];
@@ -626,9 +590,9 @@ export default function ReadingPage() {
       {/* Content */}
       <main className="flex-1 px-4 py-6 max-w-2xl mx-auto w-full">
         {tab === "classics" && (
-          <ClassicBrowser
+          <WikiReader
             onRead={(title, content) =>
-              openReading({ title, content, source: "gutenberg" })
+              openReading({ title, content, source: "wikipedia" })
             }
           />
         )}
