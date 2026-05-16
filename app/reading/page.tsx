@@ -216,20 +216,28 @@ function ReadingView({
 
 // ── ClassicBrowser (Gutendex) ──────────────────────────────────────────────
 
+const LEVEL_PRESETS: { label: string; desc: string; query: string; topic?: string }[] = [
+  { label: "A1–A2", desc: "Fábulas, cuentos simples",        query: "Aesop",          topic: "children" },
+  { label: "B1",    desc: "Cuentos cortos, aventura fácil",  query: "O. Henry"                         },
+  { label: "B2",    desc: "Sherlock, Verne, Wells",          query: "Sherlock Holmes"                   },
+  { label: "C1+",   desc: "Literatura clásica compleja",     query: "Henry James"                       },
+];
+
 function ClassicBrowser({ onRead }: { onRead: (title: string, content: string) => void }) {
   const [books, setBooks] = useState<GutendexBook[]>([]);
   const [search, setSearch] = useState("");
+  const [activePreset, setActivePreset] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState<number | null>(null);
   const [page, setPage] = useState(1);
   const [hasNext, setHasNext] = useState(false);
 
-  async function loadBooks(query: string, p: number) {
+  async function loadBooks(query: string, p: number, topic?: string) {
     setLoading(true);
     const params = new URLSearchParams({
       languages: "en",
       page: String(p),
-      ...(query.trim() ? { search: query } : { topic: "children" }),
+      ...(query.trim() ? { search: query } : { topic: topic ?? "children" }),
     });
     try {
       const res = await fetch(`https://gutendex.com/books?${params}`);
@@ -246,8 +254,16 @@ function ClassicBrowser({ onRead }: { onRead: (title: string, content: string) =
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
+    setActivePreset(null);
     setPage(1);
     loadBooks(search, 1);
+  }
+
+  function handlePreset(preset: typeof LEVEL_PRESETS[0]) {
+    setActivePreset(preset.label);
+    setSearch(preset.query);
+    setPage(1);
+    loadBooks(preset.query, 1, preset.topic);
   }
 
   function changePage(delta: number) {
@@ -280,10 +296,31 @@ function ClassicBrowser({ onRead }: { onRead: (title: string, content: string) =
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Level filter presets */}
+      <div>
+        <p className="text-xs text-slate-500 mb-2">Filtrar por nivel aproximado:</p>
+        <div className="grid grid-cols-4 gap-2">
+          {LEVEL_PRESETS.map((preset) => (
+            <button
+              key={preset.label}
+              onClick={() => handlePreset(preset)}
+              className={`flex flex-col items-start px-3 py-2 rounded-xl border text-left transition ${
+                activePreset === preset.label
+                  ? "bg-indigo-600/30 border-indigo-500/60 text-indigo-300"
+                  : "bg-slate-700/40 border-slate-600/40 text-slate-400 hover:bg-slate-700"
+              }`}
+            >
+              <span className="text-sm font-bold">{preset.label}</span>
+              <span className="text-[10px] opacity-70 leading-tight mt-0.5">{preset.desc}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <form onSubmit={handleSearch} className="flex gap-2">
         <input
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value); setActivePreset(null); }}
           placeholder="Buscar libro (Alice, Sherlock, Aesop…)"
           className="flex-1 rounded-xl bg-slate-700 border border-slate-600 px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
         />
