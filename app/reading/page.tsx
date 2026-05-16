@@ -483,6 +483,8 @@ function StoryGenerator({ onReady }: { onReady: (story: GeneratedStory) => void 
 function SavedStoriesTab({ onRead }: { onRead: (s: SavedStory) => void }) {
   const [stories, setStories] = useState<SavedStory[]>([]);
   const [loading, setLoading] = useState(true);
+  const [clearing, setClearing] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
 
   useEffect(() => {
     supabase
@@ -497,18 +499,55 @@ function SavedStoriesTab({ onRead }: { onRead: (s: SavedStory) => void }) {
     setStories((prev) => prev.filter((s) => s.id !== id));
   }
 
+  async function clearAll() {
+    setClearing(true);
+    await supabase.from("saved_stories").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    setStories([]);
+    setClearing(false);
+    setConfirmClear(false);
+  }
+
   if (loading) return <p className="text-slate-400 text-center py-10 animate-pulse">Cargando…</p>;
 
   if (stories.length === 0) return (
     <div className="text-center py-12 text-slate-400">
       <p className="text-2xl mb-3">📚</p>
       <p>No hay cuentos guardados todavía.</p>
-      <p className="text-sm mt-1">Genera uno con IA o guarda un extracto clásico.</p>
+      <p className="text-sm mt-1">Genera uno con IA o guarda un artículo de Wikipedia.</p>
     </div>
   );
 
   return (
     <div className="flex flex-col gap-3">
+      {/* Clear all button */}
+      <div className="flex justify-end">
+        {confirmClear ? (
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-400">¿Borrar todo?</span>
+            <button
+              onClick={clearAll}
+              disabled={clearing}
+              className="text-xs px-3 py-1.5 rounded-lg bg-red-700 hover:bg-red-600 text-white transition disabled:opacity-60"
+            >
+              {clearing ? "Borrando…" : "Confirmar"}
+            </button>
+            <button
+              onClick={() => setConfirmClear(false)}
+              className="text-xs px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 transition"
+            >
+              Cancelar
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setConfirmClear(true)}
+            className="text-xs px-3 py-1.5 rounded-lg bg-slate-700/60 hover:bg-slate-700 text-slate-400 hover:text-red-400 transition"
+          >
+            🗑 Limpiar todo
+          </button>
+        )}
+      </div>
+
       {stories.map((s) => (
         <div
           key={s.id}
