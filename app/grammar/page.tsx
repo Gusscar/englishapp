@@ -260,6 +260,174 @@ const TOPICS: GrammarTopic[] = [
       { english:"I like coffee, but I prefer tea.", highlight:"but", spanish:"Me gusta el café, pero prefiero el té.", note:"'But' conecta ideas opuestas o contrastantes." },
     ],
   },
+  {
+    id:"to-be", label:"To Be", icon:"🧩", color:"teal",
+    title:"To Be: am / is / are", structure:"I am  |  you/we/they are  |  he/she/it is",
+    description:"'To be' es el verbo más fundamental en inglés. Describe identidad, profesión, estado y características. Negativo: am/is/are + not. Pregunta: Am/Is/Are + subject + ...?",
+    examples:[
+      { english:"I am a student from Colombia.", highlight:"am", spanish:"Soy un estudiante de Colombia.", note:"I siempre usa 'am'." },
+      { english:"She is very intelligent and hardworking.", highlight:"is", spanish:"Ella es muy inteligente y trabajadora.", note:"He/she/it siempre usa 'is'." },
+      { english:"They are not ready yet.", highlight:"are not", spanish:"Ellos no están listos todavía.", note:"Negación: are not / aren't." },
+      { english:"Are you from Mexico?", highlight:"Are", spanish:"¿Eres de México?", note:"Pregunta: Are/Am/Is + subject?" },
+      { english:"He isn't at home right now.", highlight:"isn't", spanish:"Él no está en casa ahora mismo.", note:"Contracción negativa: isn't = is not." },
+    ],
+  },
+  {
+    id:"there-is-are", label:"There is/are", icon:"📍", color:"sky",
+    title:"There is / There are", structure:"There is + singular  |  There are + plural",
+    description:"Expresa existencia o presencia. 'There is' para singular o incontable, 'There are' para plural. Negativo: isn't / aren't. Pregunta: Is there…? / Are there…?",
+    examples:[
+      { english:"There is a book on the table.", highlight:"There is", spanish:"Hay un libro sobre la mesa.", note:"Singular → There is. Se contrae: There's." },
+      { english:"There are three students in the classroom.", highlight:"There are", spanish:"Hay tres estudiantes en el salón.", note:"Plural → There are." },
+      { english:"There isn't any coffee left.", highlight:"There isn't", spanish:"No hay café.", note:"Negativo singular: There isn't (= There is not)." },
+      { english:"Are there any questions?", highlight:"Are there", spanish:"¿Hay preguntas?", note:"Pregunta plural: Are there + noun?" },
+      { english:"There are no hotels near here.", highlight:"There are no", spanish:"No hay hoteles cerca.", note:"'There are no' + plural noun = alternativa a 'there aren't any'." },
+    ],
+  },
+  {
+    id:"possessives", label:"Possessives", icon:"👤", color:"amber",
+    title:"Possessive Adjectives & Pronouns", structure:"my/mine · your/yours · his · her/hers · our/ours · their/theirs",
+    description:"Los adjetivos posesivos (my, your, his…) preceden al sustantivo. Los pronombres posesivos (mine, yours, his…) lo reemplazan. His no cambia entre adjetivo y pronombre.",
+    examples:[
+      { english:"This is my book. Is that yours?", highlight:"my", spanish:"Este es mi libro. ¿Es ese tuyo?", note:"My = adjetivo (precede al sustantivo). Yours = pronombre (lo reemplaza)." },
+      { english:"Her bag is expensive, but mine is cheap.", highlight:"mine", spanish:"Su bolso es caro, pero el mío es barato.", note:"Mine reemplaza 'my bag' — pronombre posesivo." },
+      { english:"Their house is bigger than ours.", highlight:"Their", spanish:"Su casa es más grande que la nuestra.", note:"Their = de ellos (adjetivo). Ours = la nuestra (pronombre)." },
+      { english:"The dog hurt its paw.", highlight:"its", spanish:"El perro se lastimó la pata.", note:"Its = de él/ella para animales/cosas. It's (con apóstrofe) = it is." },
+      { english:"We forgot our tickets.", highlight:"our", spanish:"Olvidamos nuestras entradas.", note:"Our = nuestro/a/os/as (adjetivo posesivo)." },
+    ],
+  },
+  {
+    id:"demonstratives", label:"Demonstratives", icon:"👉", color:"indigo",
+    title:"Demonstrative Pronouns", structure:"this / that (singular)  |  these / those (plural)",
+    description:"This/these para cosas cercanas; that/those para cosas lejanas. Actúan como adjetivos (this book) o como pronombres solos (this is mine). El plural de this es these; el de that es those.",
+    examples:[
+      { english:"This phone is mine.", highlight:"This", spanish:"Este teléfono es mío.", note:"This = singular, objeto cercano." },
+      { english:"That building is very old.", highlight:"That", spanish:"Ese edificio es muy viejo.", note:"That = singular, objeto lejano." },
+      { english:"These shoes are on sale.", highlight:"These", spanish:"Estos zapatos están en oferta.", note:"These = plural, objetos cercanos." },
+      { english:"Those clouds look dark.", highlight:"Those", spanish:"Esas nubes se ven oscuras.", note:"Those = plural, objetos lejanos." },
+      { english:"Is this your first time here?", highlight:"this", spanish:"¿Es esta tu primera vez aquí?", note:"This también introduce situaciones o contextos actuales." },
+    ],
+  },
+  {
+    id:"prepositions-place", label:"Prep. de lugar", icon:"🗺️", color:"orange",
+    title:"Prepositions of Place", structure:"in · on · at · next to · behind · between · above · below",
+    description:"Las preposiciones de lugar indican dónde está algo. In (dentro de), on (sobre), at (punto exacto), next to (al lado de), between (entre dos), above/below (arriba/abajo sin contacto).",
+    examples:[
+      { english:"The cat is under the table.", highlight:"under", spanish:"El gato está debajo de la mesa.", note:"Under = debajo de (con o sin contacto)." },
+      { english:"The bank is next to the supermarket.", highlight:"next to", spanish:"El banco está al lado del supermercado.", note:"Next to = al lado de." },
+      { english:"She sat between Tom and Mary.", highlight:"between", spanish:"Ella se sentó entre Tom y Mary.", note:"Between = entre dos elementos específicos." },
+      { english:"The picture is on the wall.", highlight:"on", spanish:"La foto está en la pared.", note:"On = sobre una superficie (vertical u horizontal)." },
+      { english:"There is a bridge above the river.", highlight:"above", spanish:"Hay un puente sobre el río.", note:"Above = encima de / por encima de (sin contacto directo)." },
+    ],
+  },
+  {
+    id:"prepositions-time", label:"Prep. de tiempo", icon:"🕐", color:"lime",
+    title:"Prepositions of Time", structure:"at (hora) · on (día/fecha) · in (mes/año) · by · since · for",
+    description:"At para horas y momentos exactos, on para días y fechas específicas, in para meses, años y períodos. By = antes de cierto tiempo límite. Since = desde un punto. For = durante una duración.",
+    examples:[
+      { english:"The meeting starts at 9 o'clock.", highlight:"at", spanish:"La reunión empieza a las 9 en punto.", note:"At + hora exacta o momento preciso." },
+      { english:"I was born on March 15th.", highlight:"on", spanish:"Nací el 15 de marzo.", note:"On + fecha o día específico." },
+      { english:"She graduated in 2020.", highlight:"in", spanish:"Ella se graduó en 2020.", note:"In + año, mes o estación." },
+      { english:"Please finish the report by Friday.", highlight:"by", spanish:"Por favor termina el informe para el viernes.", note:"By = antes de cierta fecha o límite." },
+      { english:"I have lived here for five years.", highlight:"for", spanish:"He vivido aquí durante cinco años.", note:"For + duración de tiempo. Since + punto de inicio." },
+    ],
+  },
+  {
+    id:"reflexive-pronouns", label:"Reflexive Pron.", icon:"🪞", color:"violet",
+    title:"Reflexive Pronouns", structure:"myself · yourself · himself · herself · itself · ourselves · yourselves · themselves",
+    description:"Se usan cuando el sujeto y el objeto son la misma persona, para énfasis (I did it myself = yo solito), y en expresiones fijas (help yourself, enjoy yourself, by oneself).",
+    examples:[
+      { english:"She taught herself to play the guitar.", highlight:"herself", spanish:"Ella sola se enseñó a tocar la guitarra.", note:"El sujeto y el objeto son la misma persona." },
+      { english:"I hurt myself at the gym.", highlight:"myself", spanish:"Me lastimé en el gimnasio.", note:"Myself = me lastimé a mí mismo." },
+      { english:"They built the house themselves.", highlight:"themselves", spanish:"Ellos mismos construyeron la casa.", note:"Themselves = énfasis: sin ayuda de nadie." },
+      { english:"Help yourself to some food.", highlight:"yourself", spanish:"Sírvete algo de comer.", note:"Expresión fija: help yourself = sírvete tú mismo." },
+      { english:"The machine turns itself off automatically.", highlight:"itself", spanish:"La máquina se apaga sola automáticamente.", note:"Itself para objetos o animales." },
+    ],
+  },
+  {
+    id:"tag-questions", label:"Tag Questions", icon:"❓", color:"pink",
+    title:"Tag Questions", structure:"positive sentence + negative tag?  |  negative sentence + positive tag?",
+    description:"Confirman información o piden acuerdo. Oración positiva → tag negativa. Oración negativa → tag positiva. El auxiliar en el tag coincide con el tiempo de la oración principal.",
+    examples:[
+      { english:"She works here, doesn't she?", highlight:"doesn't she", spanish:"Ella trabaja aquí, ¿verdad?", note:"Simple present positivo + she → doesn't she?" },
+      { english:"You aren't coming, are you?", highlight:"are you", spanish:"No vas a venir, ¿verdad?", note:"Negativo continuo → tag positiva: are you?" },
+      { english:"They have met before, haven't they?", highlight:"haven't they", spanish:"Ellos se han conocido antes, ¿no?", note:"Present perfect positivo → haven't they?" },
+      { english:"It wasn't raining, was it?", highlight:"was it", spanish:"No estaba lloviendo, ¿verdad?", note:"Past continuous negativo → tag positiva: was it?" },
+      { english:"You can swim, can't you?", highlight:"can't you", spanish:"Puedes nadar, ¿verdad?", note:"Modal positivo → tag negativa con can't." },
+    ],
+  },
+  {
+    id:"indefinite-pronouns", label:"Indef. Pronouns", icon:"🔍", color:"yellow",
+    title:"Indefinite Pronouns", structure:"some- · any- · no- + one / body / thing / where",
+    description:"'Some-' en afirmaciones y ofertas. 'Any-' en negaciones y preguntas. 'No-' equivale a negación sin 'not'. Compounds: -one/-body (persona), -thing (cosa), -where (lugar). Verbo siempre singular.",
+    examples:[
+      { english:"Someone left their bag in the classroom.", highlight:"Someone", spanish:"Alguien dejó su bolso en el salón.", note:"Someone = alguna persona (en afirmaciones)." },
+      { english:"I don't know anything about it.", highlight:"anything", spanish:"No sé nada sobre eso.", note:"Anything en oraciones negativas." },
+      { english:"Nobody told me about the meeting.", highlight:"Nobody", spanish:"Nadie me dijo sobre la reunión.", note:"Nobody/no one = ninguna persona. Verbo en singular." },
+      { english:"Is there anything I can do to help?", highlight:"anything", spanish:"¿Hay algo en que pueda ayudar?", note:"Anything en preguntas." },
+      { english:"I want to go somewhere warm this winter.", highlight:"somewhere", spanish:"Quiero ir a algún lugar cálido este invierno.", note:"Somewhere = algún lugar (en afirmaciones)." },
+    ],
+  },
+  {
+    id:"relative-pronouns", label:"Relative Pron.", icon:"🔗", color:"rose",
+    title:"Relative Pronouns", structure:"who (personas) · which (cosas) · that (ambos) · whose (posesión) · where (lugar)",
+    description:"Introducen cláusulas que dan información sobre un sustantivo. Who/that para personas, which/that para cosas, whose para posesión, where para lugares. That es más informal que who/which.",
+    examples:[
+      { english:"The man who called you is my uncle.", highlight:"who", spanish:"El hombre que te llamó es mi tío.", note:"Who = pronombre relativo para personas." },
+      { english:"I bought the book which you recommended.", highlight:"which", spanish:"Compré el libro que recomendaste.", note:"Which = pronombre relativo para cosas (más formal)." },
+      { english:"The student whose bag was stolen called the police.", highlight:"whose", spanish:"El estudiante cuya bolsa fue robada llamó a la policía.", note:"Whose = posesión. Reemplaza his/her/their." },
+      { english:"The restaurant where we had dinner is closing.", highlight:"where", spanish:"El restaurante donde cenamos está cerrando.", note:"Where = pronombre relativo para lugares." },
+      { english:"She is the person that fixed my computer.", highlight:"that", spanish:"Ella es la persona que arregló mi computadora.", note:"That = informal, para personas o cosas." },
+    ],
+  },
+  {
+    id:"already-yet-just", label:"Already/Yet/Just", icon:"⏱️", color:"purple",
+    title:"Already, Yet & Just", structure:"already (ya) · yet (todavía) · just (recién)",
+    description:"Already: algo ocurrió antes de lo esperado (afirmaciones, entre have y participio). Yet: algo no ha ocurrido pero se espera (negaciones y preguntas, al final). Just: hace muy poco (afirmaciones).",
+    examples:[
+      { english:"I have already finished my homework.", highlight:"already", spanish:"Ya terminé mi tarea.", note:"Already en afirmaciones → ocurrió antes de lo esperado." },
+      { english:"Have you eaten yet?", highlight:"yet", spanish:"¿Ya comiste?", note:"Yet en preguntas → ¿ya ocurrió lo esperado? Al final." },
+      { english:"She hasn't called me yet.", highlight:"yet", spanish:"Ella todavía no me ha llamado.", note:"Yet en negaciones → al final de la oración." },
+      { english:"He has just arrived from London.", highlight:"just", spanish:"Él acaba de llegar de Londres.", note:"Just = hace muy poco. Entre have y el participio." },
+      { english:"Don't call him — he has already left.", highlight:"already left", spanish:"No lo llames, ya se fue.", note:"Already también se usa en afirmaciones con simple past." },
+    ],
+  },
+  {
+    id:"modal-past", label:"Modales pasado", icon:"🔙", color:"orange",
+    title:"Modal Verbs in the Past", structure:"could / should / would / might + have + past participle",
+    description:"Expresan situaciones hipotéticas ya imposibles de cambiar. Should have = reproche o consejo tardío. Could have = posibilidad no realizada. Might have = suposición. Would have = resultado hipotético.",
+    examples:[
+      { english:"You should have studied more for the exam.", highlight:"should have studied", spanish:"Debiste haber estudiado más para el examen.", note:"Should have + participio = reproche o arrepentimiento." },
+      { english:"I could have helped you if you had asked.", highlight:"could have helped", spanish:"Podría haberte ayudado si me lo hubieras pedido.", note:"Could have + participio = posibilidad pasada no realizada." },
+      { english:"She might have taken the wrong bus.", highlight:"might have taken", spanish:"Puede que haya tomado el bus equivocado.", note:"Might have + participio = suposición sobre el pasado." },
+      { english:"He would have called, but he lost his phone.", highlight:"would have called", spanish:"Él habría llamado, pero perdió su teléfono.", note:"Would have + participio = resultado hipotético (3rd conditional)." },
+      { english:"I shouldn't have eaten so much.", highlight:"shouldn't have eaten", spanish:"No debí haber comido tanto.", note:"Shouldn't have = arrepentimiento por algo que se hizo." },
+    ],
+  },
+  {
+    id:"wish", label:"Wish", icon:"🌠", color:"indigo",
+    title:"The Use of Wish", structure:"wish + past simple (presente) | wish + past perfect (pasado) | wish + would",
+    description:"Wish expresa deseos imposibles. Wish + past simple = deseo sobre el presente (irrealizable). Wish + past perfect = arrepentimiento. Wish + would = deseo de cambio en otro. 'Were' para todos los sujetos.",
+    examples:[
+      { english:"I wish I had more time.", highlight:"had", spanish:"Ojalá tuviera más tiempo.", note:"Wish + past simple → deseo presente imposible. 'Had', no 'have'." },
+      { english:"She wishes she could fly.", highlight:"could fly", spanish:"Ella desea poder volar.", note:"Wish + could + base = deseo de una habilidad." },
+      { english:"I wish I hadn't said that.", highlight:"hadn't said", spanish:"Ojalá no hubiera dicho eso.", note:"Wish + past perfect → arrepentimiento por algo en el pasado." },
+      { english:"He wishes he were taller.", highlight:"were", spanish:"Él desea ser más alto.", note:"Were en lugar de was con wish — correcto en todos los sujetos." },
+      { english:"I wish you would stop complaining.", highlight:"would stop", spanish:"Ojalá dejaras de quejarte.", note:"Wish + would → deseo de cambio en el comportamiento de otro." },
+    ],
+  },
+  {
+    id:"very-too", label:"Very & Too", icon:"⚖️", color:"emerald",
+    title:"Very vs Too", structure:"very + adjective/adverb (neutro) | too + adjective + to-infinitive (exceso)",
+    description:"Very intensifica de forma neutra, sin implicar problema. Too implica un exceso con consecuencia negativa — algo no es posible o deseable. 'Too + adj + to + infinitivo' es la estructura clave.",
+    examples:[
+      { english:"The movie was very interesting.", highlight:"very", spanish:"La película fue muy interesante.", note:"Very = intensificador neutro. Sin consecuencia negativa." },
+      { english:"It's too hot to go outside.", highlight:"too hot to", spanish:"Hace demasiado calor para salir.", note:"Too + adj + to-infinitivo = exceso que impide algo." },
+      { english:"She is very tall for her age.", highlight:"very", spanish:"Ella es muy alta para su edad.", note:"Very + adjetivo sin implicar problema." },
+      { english:"The coffee is too cold to drink.", highlight:"too cold", spanish:"El café está demasiado frío para tomarlo.", note:"Too implica que el resultado no es posible o agradable." },
+      { english:"He speaks English very well.", highlight:"very well", spanish:"Él habla inglés muy bien.", note:"Very también modifica adverbios. Well es el adverbio de good." },
+    ],
+  },
 ];
 
 // ── Quiz data (4 per topic = 48 questions) ────────────────────────────────────
@@ -378,6 +546,90 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
   { sentence:"It was cold, ___ I put on my jacket.", options:["because","although","so","even though"], correct:"so", topic:"Connectors", explanation:"'So' introduce la consecuencia o resultado de algo." },
   { sentence:"She passed the test ___ she didn't study.", options:["because","so","but","even though"], correct:"even though", topic:"Connectors", explanation:"'Even though' expresa contraste sorprendente o inesperado." },
   { sentence:"He is saving money ___ he can buy a car.", options:["because","although","but","so that"], correct:"so that", topic:"Connectors", explanation:"'So that' + subject expresa propósito o intención." },
+
+  // To Be
+  { sentence:"___ you from Colombia?", options:["Am","Is","Are","Be"], correct:"Are", topic:"To Be", explanation:"Con you/we/they usamos 'are'." },
+  { sentence:"She ___ a doctor at the hospital.", options:["am","are","be","is"], correct:"is", topic:"To Be", explanation:"Con he/she/it usamos 'is'." },
+  { sentence:"They ___ not ready yet.", options:["am","is","be","are"], correct:"are", topic:"To Be", explanation:"Con they usamos 'are'. Negativo: are not / aren't." },
+  { sentence:"I ___ very happy today.", options:["is","are","be","am"], correct:"am", topic:"To Be", explanation:"Con I siempre usamos 'am'." },
+
+  // There is / There are
+  { sentence:"___ a bank near here?", options:["There is","Are there","There are","Is there"], correct:"Is there", topic:"There is/are", explanation:"Pregunta singular: Is there + singular noun?" },
+  { sentence:"There ___ three apples on the table.", options:["is","am","be","are"], correct:"are", topic:"There is/are", explanation:"Three apples = plural → There are." },
+  { sentence:"There ___ any milk left.", options:["aren't","don't","are","isn't"], correct:"isn't", topic:"There is/are", explanation:"Milk es incontable → singular → There isn't." },
+  { sentence:"___ a lot of people at the concert last night.", options:["There is","There are","There were","There was"], correct:"There were", topic:"There is/are", explanation:"Pasado de 'there are' (plural) → There were." },
+
+  // Possessives
+  { sentence:"Is this ___ book? (de ella)", options:["hers","his","her","their"], correct:"her", topic:"Possessives", explanation:"Her = adjetivo posesivo (precede al sustantivo). Hers = pronombre." },
+  { sentence:"That car is ___. (de nosotros)", options:["our","we","us","ours"], correct:"ours", topic:"Possessives", explanation:"Ours = pronombre posesivo (reemplaza al sustantivo)." },
+  { sentence:"The dog hurt ___ paw.", options:["it's","his","their","its"], correct:"its", topic:"Possessives", explanation:"Its = de él/ella para animales/cosas. It's (con apóstrofe) = it is." },
+  { sentence:"___ house is bigger than ours. (de ellos)", options:["They","Them","Theirs","Their"], correct:"Their", topic:"Possessives", explanation:"Their = adjetivo posesivo (precede a 'house')." },
+
+  // Demonstratives
+  { sentence:"___ shoes over there are very expensive.", options:["This","That","These","Those"], correct:"Those", topic:"Demonstratives", explanation:"Over there = lejos + plural → Those." },
+  { sentence:"___ is my best friend. (presentando a alguien cercano)", options:["These","Those","That","This"], correct:"This", topic:"Demonstratives", explanation:"Singular + cercano = This." },
+  { sentence:"Are ___ your keys? (cerca, plural)", options:["that","this","those","these"], correct:"these", topic:"Demonstratives", explanation:"Cerca + plural → These." },
+  { sentence:"___ building was built in 1900. (lejos, singular)", options:["This","These","Those","That"], correct:"That", topic:"Demonstratives", explanation:"Lejos + singular → That." },
+
+  // Prepositions of Place
+  { sentence:"The supermarket is ___ the pharmacy. (al lado)", options:["in front of","between","behind","next to"], correct:"next to", topic:"Prepositions of Place", explanation:"Next to = al lado de." },
+  { sentence:"The cat is hiding ___ the sofa. (detrás)", options:["under","in front of","next to","behind"], correct:"behind", topic:"Prepositions of Place", explanation:"Behind = detrás de." },
+  { sentence:"The park is ___ the school and the library.", options:["next to","behind","above","between"], correct:"between", topic:"Prepositions of Place", explanation:"Between = entre dos elementos específicos." },
+  { sentence:"There's a lamp ___ the table. (encima, sin contacto)", options:["under","below","behind","above"], correct:"above", topic:"Prepositions of Place", explanation:"Above = encima de / por encima de (sin contacto)." },
+
+  // Prepositions of Time
+  { sentence:"The class starts ___ 8 o'clock.", options:["on","in","by","at"], correct:"at", topic:"Prepositions of Time", explanation:"At + hora exacta." },
+  { sentence:"I was born ___ March.", options:["at","on","by","in"], correct:"in", topic:"Prepositions of Time", explanation:"In + mes, año o estación." },
+  { sentence:"She has worked here ___ 2019.", options:["for","at","by","since"], correct:"since", topic:"Prepositions of Time", explanation:"Since + punto de inicio. For + duración." },
+  { sentence:"Please send the email ___ Friday.", options:["in","at","since","on"], correct:"on", topic:"Prepositions of Time", explanation:"On + día específico o fecha." },
+
+  // Reflexive Pronouns
+  { sentence:"She taught ___ to play the piano.", options:["her","hers","she","herself"], correct:"herself", topic:"Reflexive Pronouns", explanation:"Herself = she es el sujeto y el objeto a la vez." },
+  { sentence:"The children made the cake ___. (ellos mismos)", options:["themself","them","theirs","themselves"], correct:"themselves", topic:"Reflexive Pronouns", explanation:"Themselves = ellos mismos, sin ayuda de nadie." },
+  { sentence:"Be careful — don't hurt ___.", options:["you","your","yours","yourself"], correct:"yourself", topic:"Reflexive Pronouns", explanation:"Yourself = pronombre reflexivo de you (singular)." },
+  { sentence:"He fixed the car by ___.", options:["him","his","he","himself"], correct:"himself", topic:"Reflexive Pronouns", explanation:"By himself = él solo, sin ayuda de nadie." },
+
+  // Tag Questions
+  { sentence:"She works here, ___ ?", options:["isn't she","did she","won't she","doesn't she"], correct:"doesn't she", topic:"Tag Questions", explanation:"Simple present positivo + she → tag negativa: doesn't she?" },
+  { sentence:"You aren't leaving, ___ ?", options:["aren't you","do you","don't you","are you"], correct:"are you", topic:"Tag Questions", explanation:"Negativo → tag positiva. Aren't (be) → are you." },
+  { sentence:"They have met before, ___ ?", options:["have they","did they","don't they","haven't they"], correct:"haven't they", topic:"Tag Questions", explanation:"Present perfect positivo → tag negativa: haven't they?" },
+  { sentence:"It was a great movie, ___ ?", options:["isn't it","didn't it","weren't it","wasn't it"], correct:"wasn't it", topic:"Tag Questions", explanation:"Simple past positivo con 'be' → wasn't it?" },
+
+  // Indefinite Pronouns
+  { sentence:"___ called you while you were out.", options:["Anyone","Nobody","Nothing","Someone"], correct:"Someone", topic:"Indefinite Pronouns", explanation:"Someone = alguna persona (en afirmaciones)." },
+  { sentence:"I didn't see ___ at the party.", options:["someone","nobody","everybody","anyone"], correct:"anyone", topic:"Indefinite Pronouns", explanation:"Anyone en oraciones negativas = nadie / alguien." },
+  { sentence:"Is there ___ I can help you with?", options:["something","nothing","nobody","anything"], correct:"anything", topic:"Indefinite Pronouns", explanation:"Anything en preguntas = algo." },
+  { sentence:"___ was wrong — everything was perfect.", options:["Something","Anything","Nobody","Nothing"], correct:"Nothing", topic:"Indefinite Pronouns", explanation:"Nothing = nada. Negativo sin 'not' (no se dobla la negación)." },
+
+  // Relative Pronouns
+  { sentence:"The man ___ called you is my uncle.", options:["which","whose","where","who"], correct:"who", topic:"Relative Pronouns", explanation:"Who = pronombre relativo para personas." },
+  { sentence:"This is the house ___ I grew up.", options:["who","which","that","where"], correct:"where", topic:"Relative Pronouns", explanation:"Where = pronombre relativo para lugares." },
+  { sentence:"The student ___ bag was stolen called the police.", options:["who","which","that","whose"], correct:"whose", topic:"Relative Pronouns", explanation:"Whose = posesión. Reemplaza his/her/their." },
+  { sentence:"I loved the book ___ you recommended.", options:["who","where","whose","that"], correct:"that", topic:"Relative Pronouns", explanation:"That = que (para cosas o personas, registro informal)." },
+
+  // Already / Yet / Just
+  { sentence:"Have you finished your homework ___?", options:["already","just","still","yet"], correct:"yet", topic:"Already/Yet/Just", explanation:"Yet en preguntas va al final. ¿Ya ocurrió lo esperado?" },
+  { sentence:"Don't wait for her — she has ___ left.", options:["yet","still","already","just"], correct:"just", topic:"Already/Yet/Just", explanation:"Just = hace muy poco. She has just left = acaba de irse." },
+  { sentence:"I have ___ seen that movie. (ya lo vi, antes de lo esperado)", options:["yet","still","just","already"], correct:"already", topic:"Already/Yet/Just", explanation:"Already en afirmaciones → ocurrió antes de lo esperado." },
+  { sentence:"She hasn't arrived ___.", options:["already","just","still","yet"], correct:"yet", topic:"Already/Yet/Just", explanation:"Yet en negaciones = todavía no. Va al final de la oración." },
+
+  // Modal Verbs in Past
+  { sentence:"You ___ studied more. (era tu responsabilidad)", options:["could have","would have","might have","should have"], correct:"should have", topic:"Modal Verbs in Past", explanation:"Should have + participio = reproche o consejo tardío." },
+  { sentence:"I ___ helped you if you had asked me.", options:["should have","must have","might have","could have"], correct:"could have", topic:"Modal Verbs in Past", explanation:"Could have = posibilidad pasada no realizada." },
+  { sentence:"She ___ taken the wrong bus. (quizás)", options:["should have","would have","could have","might have"], correct:"might have", topic:"Modal Verbs in Past", explanation:"Might have = suposición incierta sobre el pasado." },
+  { sentence:"He ___ called, but he lost his phone.", options:["could have","should have","might have","would have"], correct:"would have", topic:"Modal Verbs in Past", explanation:"Would have + participio = resultado hipotético (3rd conditional)." },
+
+  // Wish
+  { sentence:"I wish I ___ more time to travel. (ahora)", options:["have","will have","have had","had"], correct:"had", topic:"Wish", explanation:"Wish + past simple = deseo presente imposible. 'Had', no 'have'." },
+  { sentence:"She wishes she ___ fly. (deseo de habilidad)", options:["can","will","would","could"], correct:"could", topic:"Wish", explanation:"Wish + could + base = deseo de una habilidad en el presente." },
+  { sentence:"I wish I ___ that. (me arrepiento)", options:["didn't say","don't say","won't say","hadn't said"], correct:"hadn't said", topic:"Wish", explanation:"Wish + past perfect = arrepentimiento por algo en el pasado." },
+  { sentence:"I wish you ___ make so much noise.", options:["don't","didn't","won't","wouldn't"], correct:"wouldn't", topic:"Wish", explanation:"Wish + would = deseo de cambio en comportamiento de otro." },
+
+  // Very & Too
+  { sentence:"It's ___ cold to go swimming today. (consecuencia negativa)", options:["very","so","quite","too"], correct:"too", topic:"Very & Too", explanation:"Too = exceso con consecuencia negativa. Too cold to swim = imposible." },
+  { sentence:"The movie was ___ interesting.", options:["too","too much","enough","very"], correct:"very", topic:"Very & Too", explanation:"Very = intensificador neutro. Sin consecuencia negativa." },
+  { sentence:"She is ___ tall to fit in that car.", options:["very","quite","so","too"], correct:"too", topic:"Very & Too", explanation:"Too + adjective + to-infinitivo = exceso que impide hacer algo." },
+  { sentence:"He speaks English ___.", options:["very good","too good","too well","very well"], correct:"very well", topic:"Very & Too", explanation:"Very modifica adverbios también. Well es el adverbio de good." },
 ];
 
 // ── Phrasal Verbs data (~50) ──────────────────────────────────────────────────
