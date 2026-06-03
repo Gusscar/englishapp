@@ -47,6 +47,7 @@ export default function HomePage() {
   const [loading,      setLoading]      = useState(true);
   const [error,        setError]        = useState<string | null>(null);
   const [levelFilter,  setLevelFilter]  = useState<Level | null>(null);
+  const [practiceAnyway, setPracticeAnyway] = useState(false);
 
   async function loadPhrases() {
     setLoading(true);
@@ -118,7 +119,7 @@ export default function HomePage() {
     : dueCount;
 
   const current      = filteredQueue[index] ?? filteredQueue[0];
-  const allCaughtUp  = !loading && !error && filteredDueCount === 0 && filteredPhrases.length > 0;
+  const allCaughtUp  = !practiceAnyway && !loading && !error && filteredDueCount === 0 && filteredPhrases.length > 0;
 
   // Auto-generate context + level for phrases that don't have it yet
   const generatingContext = useRef(new Set<string>());
@@ -254,7 +255,7 @@ export default function HomePage() {
               </span>
             </p>
             <button
-              onClick={() => { setQueue(buildQueue(phrases)); setIndex(0); }}
+              onClick={() => { setQueue(buildQueue(phrases)); setIndex(0); setPracticeAnyway(true); }}
               className="px-5 py-2.5 rounded-2xl bg-slate-700/80 hover:bg-slate-600/80 active:scale-95 transition-all text-sm font-semibold border border-slate-600/40"
             >
               Repasar de todas formas
