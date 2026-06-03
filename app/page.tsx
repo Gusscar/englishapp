@@ -59,7 +59,7 @@ export default function HomePage() {
     if (error) {
       setError("Error al conectar con la base de datos.");
     } else {
-      const list = (data ?? []).map(withSRSDefaults);
+      const list = ((data ?? []) as Phrase[]).map(withSRSDefaults);
       const due  = list.filter((p) => p.next_review_date <= today).length;
       setPhrases(list);
       setQueue(buildQueue(list));

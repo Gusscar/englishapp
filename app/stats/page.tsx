@@ -41,9 +41,12 @@ export default function StatsPage() {
         supabase.from("journal_entries").select("created_at"),
       ]);
 
-      const phrases = phrasesRes.data ?? [];
-      const immLogs = immRes.data ?? [];
-      const journals = journalRes.data ?? [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const phrases  = (phrasesRes.data  ?? []) as any[];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const immLogs  = (immRes.data      ?? []) as any[];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const journals = (journalRes.data  ?? []) as any[];
 
       const today = new Date().toISOString().slice(0, 10);
       const totalPhrases = phrases.length;
