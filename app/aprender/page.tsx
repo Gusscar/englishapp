@@ -4,6 +4,20 @@ import Link from "next/link";
 
 const sections = [
   {
+    href: "/curso",
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+      </svg>
+    ),
+    title: "Curso completo",
+    desc: "76 capítulos · 8 unidades · A1→B2",
+    color: "from-indigo-900/50 to-indigo-900/10 border-indigo-700/30",
+    iconColor: "text-indigo-400",
+    badge: "Nuevo",
+  },
+  {
     href: "/reading",
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -98,12 +112,17 @@ export default function AprenderPage() {
       </header>
 
       <main className="flex-1 px-4 grid grid-cols-2 gap-3 content-start">
-        {sections.map(({ href, icon, title, desc, color, iconColor }) => (
+        {sections.map(({ href, icon, title, desc, color, iconColor, badge }) => (
           <Link
             key={href}
             href={href}
-            className={`flex flex-col gap-3 p-4 rounded-3xl bg-gradient-to-br border ${color} active:scale-[0.97] transition-transform`}
+            className={`relative flex flex-col gap-3 p-4 rounded-3xl bg-gradient-to-br border ${color} active:scale-[0.97] transition-transform`}
           >
+            {badge && (
+              <span className="absolute top-3 right-3 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-indigo-500 text-white uppercase tracking-wide">
+                {badge}
+              </span>
+            )}
             <span className={iconColor}>{icon}</span>
             <div>
               <p className="font-semibold text-sm text-white leading-snug">{title}</p>

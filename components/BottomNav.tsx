@@ -52,7 +52,7 @@ const moreItems = [
 ];
 
 const practiceRoutes = ["/practicar", "/scramble", "/dictation", "/writing", "/conversation"];
-const learnRoutes   = ["/aprender", "/reading", "/videos", "/grammar", "/patterns", "/immersion", "/stats"];
+const learnRoutes   = ["/aprender", "/reading", "/videos", "/grammar", "/patterns", "/immersion", "/stats", "/curso"];
 const moreRoutes    = ["/manage"];
 
 export default function BottomNav() {

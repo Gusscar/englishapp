@@ -176,6 +176,90 @@ const TOPICS: GrammarTopic[] = [
       { english:"He told me not to touch that.", highlight:"not to touch", spanish:"Me dijo que no tocara eso.", note:'Direct: "Don\'t touch that!" → Imperativo negativo.' },
     ],
   },
+  {
+    id:"simple-present", label:"Simple Present", icon:"🔁", color:"emerald",
+    title:"Simple Present", structure:"subject + verb  |  he/she/it + verb-s",
+    description:"Expresa rutinas, hábitos y hechos generales. Con he/she/it se añade -s al verbo. Negación: don't / doesn't + base. Pregunta: Do / Does + subject + base.",
+    examples:[
+      { english:"She studies English every day.", highlight:"studies", spanish:"Ella estudia inglés cada día.", note:"He/she/it → verbo termina en -s/-es." },
+      { english:"I don't like cold weather.", highlight:"don't like", spanish:"No me gusta el clima frío.", note:"Negación con I/you/we/they → don't + base form." },
+      { english:"Does your mother work on Saturdays?", highlight:"Does", spanish:"¿Tu mamá trabaja los sábados?", note:"Pregunta con he/she/it → Does + subject + base form." },
+      { english:"Water boils at 100 degrees Celsius.", highlight:"boils", spanish:"El agua hierve a 100 grados Celsius.", note:"Hecho científico o verdad universal." },
+      { english:"We usually have breakfast at seven.", highlight:"have", spanish:"Generalmente desayunamos a las siete.", note:"Rutina diaria con adverbio de frecuencia." },
+    ],
+  },
+  {
+    id:"articles", label:"Articles", icon:"📖", color:"sky",
+    title:"Articles: the, a, an", structure:"the (específico)  |  a/an (indefinido)",
+    description:"'The' (el/la/los/las) señala algo ya conocido o único. 'A' se usa con consonante, 'an' con vocal o sonido vocálico. Omite el artículo con nombres propios y conceptos generales.",
+    examples:[
+      { english:"She is a teacher.", highlight:"a", spanish:"Ella es maestra.", note:"'A' introduce una profesión o algo no específico. Comienza con consonante → a." },
+      { english:"He is an engineer.", highlight:"an", spanish:"Él es ingeniero.", note:"'An' antes de vocal o sonido vocálico (engineer empieza con 'e')." },
+      { english:"Close the door, please.", highlight:"the", spanish:"Cierra la puerta, por favor.", note:"'The' → ya sabemos de cuál puerta se habla (contexto)." },
+      { english:"The sun rises in the east.", highlight:"The sun", spanish:"El sol sale por el este.", note:"'The' con elementos únicos en el mundo (the sun, the moon, the sky)." },
+      { english:"I need a new idea.", highlight:"a", spanish:"Necesito una nueva idea.", note:"'A' introduce algo por primera vez o no específico." },
+    ],
+  },
+  {
+    id:"frequency-adverbs", label:"Freq. Adverbs", icon:"📊", color:"indigo",
+    title:"Frequency Adverbs", structure:"subject + adverb + verb  |  be + adverb",
+    description:"Van entre el sujeto y el verbo principal, o después de 'be'. Always (100%) → usually (90%) → often (80%) → sometimes (50%) → rarely (20%) → never (0%).",
+    examples:[
+      { english:"She always studies at night.", highlight:"always", spanish:"Ella siempre estudia de noche.", note:"'Always' = 100% de las veces. Va antes del verbo principal." },
+      { english:"He is usually at home in the evenings.", highlight:"usually", spanish:"Él está usualmente en casa por las tardes.", note:"Con 'be': subject + be + adverb." },
+      { english:"We sometimes go to the cinema on weekends.", highlight:"sometimes", spanish:"A veces vamos al cine los fines de semana.", note:"'Sometimes' puede ir al inicio o en medio de la oración." },
+      { english:"How often do you exercise?", highlight:"How often", spanish:"¿Qué tan seguido haces ejercicio?", note:"Pregunta con 'How often' para averiguar frecuencia." },
+      { english:"I never drink coffee after 6 pm.", highlight:"never", spanish:"Nunca bebo café después de las 6 pm.", note:"'Never' = 0%. No necesita 'not' — ya es negativo." },
+    ],
+  },
+  {
+    id:"comparatives-superlatives", label:"Comp. & Superl.", icon:"📈", color:"amber",
+    title:"Comparatives & Superlatives", structure:"adj-er + than  |  more + adj + than  |  the + adj-est  |  the most + adj",
+    description:"Comparativos: adjetivos cortos + -er than; largos: more/less + adj + than. Irregulares: good→better→best, bad→worse→worst. Superlativos usan 'the' + -est o the most.",
+    examples:[
+      { english:"He is taller than his brother.", highlight:"taller than", spanish:"Él es más alto que su hermano.", note:"Adjetivo corto (1 sílaba) → + -er + than." },
+      { english:"This phone is more expensive than mine.", highlight:"more expensive than", spanish:"Este teléfono es más caro que el mío.", note:"Adjetivo largo (3+ sílabas) → more + adj + than." },
+      { english:"She is the smartest student in class.", highlight:"the smartest", spanish:"Ella es la estudiante más inteligente de la clase.", note:"Superlativo: the + adj + -est. Usa 'in' con grupos." },
+      { english:"This is the most delicious cake I've ever eaten.", highlight:"the most delicious", spanish:"Este es el pastel más delicioso que he comido.", note:"Superlativo de adjetivo largo: the most + adj." },
+      { english:"My English is getting better every day.", highlight:"better", spanish:"Mi inglés mejora cada día.", note:"Good → better → the best (irregular)." },
+    ],
+  },
+  {
+    id:"quantifiers", label:"Quantifiers", icon:"🔢", color:"orange",
+    title:"Quantifiers", structure:"some / any / many / much / a few / a little / a lot of",
+    description:"Some (positivo/pregunta), any (negativo/pregunta), many/few (contables), much/a little (incontables), a lot of (ambos). Contables se pueden contar; incontables no.",
+    examples:[
+      { english:"I have some money if you need it.", highlight:"some", spanish:"Tengo algo de dinero si lo necesitas.", note:"'Some' en oraciones positivas y preguntas amables." },
+      { english:"There isn't any milk in the fridge.", highlight:"any", spanish:"No hay leche en el refrigerador.", note:"'Any' en oraciones negativas e interrogativas." },
+      { english:"She has many friends at school.", highlight:"many", spanish:"Ella tiene muchos amigos en la escuela.", note:"'Many' con sustantivos contables en plural." },
+      { english:"We don't have much time.", highlight:"much", spanish:"No tenemos mucho tiempo.", note:"'Much' con sustantivos incontables (time, money, water)." },
+      { english:"A lot of people came to the party.", highlight:"A lot of", spanish:"Mucha gente vino a la fiesta.", note:"'A lot of' funciona con contables e incontables." },
+    ],
+  },
+  {
+    id:"do-make", label:"Do vs Make", icon:"🛠️", color:"purple",
+    title:"Do vs Make", structure:"do (actividades / tareas)  |  make (crear / producir)",
+    description:"Do: actividades físicas o mentales, tareas y servicios. Make: crear, producir o causar algo nuevo. Muchas combinaciones son fijas — hay que memorizarlas.",
+    examples:[
+      { english:"Can you do me a favor?", highlight:"do", spanish:"¿Me puedes hacer un favor?", note:"Do a favor — expresión fija. Do = realizar una acción." },
+      { english:"I always do my homework before dinner.", highlight:"do my homework", spanish:"Siempre hago mi tarea antes de cenar.", note:"Do homework / the dishes / the cleaning / exercise." },
+      { english:"She made a big mistake.", highlight:"made a mistake", spanish:"Ella cometió un gran error.", note:"Make a mistake — expresión fija. Make = producir un resultado." },
+      { english:"Let's make a plan for the weekend.", highlight:"make a plan", spanish:"Hagamos un plan para el fin de semana.", note:"Make a plan / decision / suggestion / phone call." },
+      { english:"The music makes me happy.", highlight:"makes me happy", spanish:"La música me hace feliz.", note:"Make + object + adjective → causar un estado en alguien." },
+    ],
+  },
+  {
+    id:"connectors", label:"Connectors", icon:"🔗", color:"teal",
+    title:"Connectors & Conjunctions", structure:"because / so / although / even though / but / so that",
+    description:"Because (causa), so (consecuencia), although/even though (contraste), but (pero), so that/in order to (propósito). Conectan ideas y muestran relación entre ellas.",
+    examples:[
+      { english:"I didn't buy it because it was too expensive.", highlight:"because", spanish:"No lo compré porque era demasiado caro.", note:"'Because' introduce la causa o razón." },
+      { english:"It was raining, so we stayed home.", highlight:"so", spanish:"Estaba lloviendo, así que nos quedamos en casa.", note:"'So' introduce la consecuencia o resultado." },
+      { english:"She passed the exam even though she didn't study.", highlight:"even though", spanish:"Pasó el examen aunque no estudió.", note:"'Even though' expresa sorpresa o contraste fuerte." },
+      { english:"He is washing the car so that he can take her out.", highlight:"so that", spanish:"Está lavando el carro para poder llevarla a pasear.", note:"'So that' + subject expresa propósito o intención." },
+      { english:"I like coffee, but I prefer tea.", highlight:"but", spanish:"Me gusta el café, pero prefiero el té.", note:"'But' conecta ideas opuestas o contrastantes." },
+    ],
+  },
 ];
 
 // ── Quiz data (4 per topic = 48 questions) ────────────────────────────────────
@@ -252,6 +336,48 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
   { sentence:'They said they ___ working. (Direct: "We are working.")', options:["are","have been","had been","were"], correct:"were", topic:"Reported Speech", explanation:"Present continuous → past continuous en reported speech." },
   { sentence:'He said he ___ call me. (Direct: "I will call you.")', options:["will","could","should","would"], correct:"would", topic:"Reported Speech", explanation:"Will → would en reported speech." },
   { sentence:'She asked if I ___. (Direct: "Have you eaten?")', options:["have eaten","was eating","ate","had eaten"], correct:"had eaten", topic:"Reported Speech", explanation:"Present perfect → past perfect en reported speech." },
+
+  // Simple Present
+  { sentence:"She ___ English every day.", options:["study","studies","is studying","studied"], correct:"studies", topic:"Simple Present", explanation:"He/she/it en presente simple → verbo + -s/-es. Study → studies." },
+  { sentence:"___ your brother work on weekends?", options:["Do","Is","Has","Does"], correct:"Does", topic:"Simple Present", explanation:"Pregunta con he/she/it → Does + subject + base form." },
+  { sentence:"I ___ like spicy food.", options:["doesn't","don't","isn't","wasn't"], correct:"don't", topic:"Simple Present", explanation:"Negación con I/you/we/they → don't + base form." },
+  { sentence:"Water ___ at 100°C.", options:["is boiling","boiled","boils","boil"], correct:"boils", topic:"Simple Present", explanation:"Hecho científico o verdad universal → simple present. He/she/it + -s." },
+
+  // Articles
+  { sentence:"She is ___ engineer.", options:["a","an","the","—"], correct:"an", topic:"Articles", explanation:"'An' antes de sonido vocálico. Engineer empieza con vocal 'e'." },
+  { sentence:"Close ___ window, please. (ya sabemos cuál)", options:["a","an","—","the"], correct:"the", topic:"Articles", explanation:"'The' cuando ambos hablantes saben de qué objeto se trata." },
+  { sentence:"I saw ___ great movie last night.", options:["the","an","—","a"], correct:"a", topic:"Articles", explanation:"'A' al introducir algo por primera vez. Movie empieza con consonante → a." },
+  { sentence:"___ sun is the closest star to Earth.", options:["A","An","—","The"], correct:"The", topic:"Articles", explanation:"'The' con elementos únicos (the sun, the moon, the Earth)." },
+
+  // Frequency Adverbs
+  { sentence:"She ___ studies before breakfast.", options:["never","always","sometimes","studies always"], correct:"always", topic:"Frequency Adverbs", explanation:"Adverbios de frecuencia van antes del verbo principal: subject + adverb + verb." },
+  { sentence:"He is ___ tired after work.", options:["usually","usually is","is usually","—usually"], correct:"usually", topic:"Frequency Adverbs", explanation:"Con el verbo 'be': subject + be + adverb. He is usually..." },
+  { sentence:"___ do you go to the gym?", options:["How many","How much","How often","How long"], correct:"How often", topic:"Frequency Adverbs", explanation:"'How often' pregunta por la frecuencia con que se hace algo." },
+  { sentence:"I ___ drink alcohol. (0%)", options:["always","usually","sometimes","never"], correct:"never", topic:"Frequency Adverbs", explanation:"'Never' = 0% de frecuencia. Es negativo por sí mismo." },
+
+  // Comparatives & Superlatives
+  { sentence:"This road is ___ than the other one. (largo)", options:["more long","longer","most long","the longest"], correct:"longer", topic:"Comparatives & Superlatives", explanation:"Adjetivo corto (1 sílaba) → + -er + than. Long → longer." },
+  { sentence:"This hotel is ___ expensive than the last one.", options:["the most","more","most","much"], correct:"more", topic:"Comparatives & Superlatives", explanation:"Adjetivo largo (3+ sílabas) → more + adj + than." },
+  { sentence:"She is ___ student in the class. (superlativo de good)", options:["the better","gooder","the best","the most good"], correct:"the best", topic:"Comparatives & Superlatives", explanation:"Good → better → the best (irregular). Superlativo siempre lleva 'the'." },
+  { sentence:"This is ___ movie I've ever seen. (superlativo, adjetivo largo)", options:["the most boring","more boring","the boringest","most boring"], correct:"the most boring", topic:"Comparatives & Superlatives", explanation:"Superlativo de adjetivo largo: the most + adj." },
+
+  // Quantifiers
+  { sentence:"There isn't ___ milk left.", options:["some","many","any","few"], correct:"any", topic:"Quantifiers", explanation:"'Any' en oraciones negativas con sustantivos incontables (milk)." },
+  { sentence:"She has ___ friends at school. (muchos)", options:["much","a little","many","any"], correct:"many", topic:"Quantifiers", explanation:"'Many' con sustantivos contables en plural (friends)." },
+  { sentence:"I don't have ___ time right now.", options:["many","few","some","much"], correct:"much", topic:"Quantifiers", explanation:"'Much' con sustantivos incontables (time) en oraciones negativas." },
+  { sentence:"Would you like ___ coffee?", options:["any","many","a few","some"], correct:"some", topic:"Quantifiers", explanation:"'Some' en preguntas amables u ofertas. Coffee es incontable." },
+
+  // Do vs Make
+  { sentence:"Can you ___ me a favor?", options:["make","do","have","give"], correct:"do", topic:"Do vs Make", explanation:"'Do a favor' es expresión fija. Do = realizar una acción o servicio." },
+  { sentence:"She ___ a big mistake.", options:["did","made","done","make"], correct:"made", topic:"Do vs Make", explanation:"'Make a mistake' es expresión fija. Make = producir un resultado." },
+  { sentence:"Don't forget to ___ the dishes after dinner.", options:["make","have","do","take"], correct:"do", topic:"Do vs Make", explanation:"'Do the dishes / homework / cleaning' → tareas domésticas → do." },
+  { sentence:"He ___ a phone call every morning.", options:["does","do","makes","has"], correct:"makes", topic:"Do vs Make", explanation:"'Make a phone call / plan / decision' → comunicación o creación → make." },
+
+  // Connectors
+  { sentence:"I stayed home ___ it was raining.", options:["so","although","because","even though"], correct:"because", topic:"Connectors", explanation:"'Because' introduce la causa o razón de algo." },
+  { sentence:"It was cold, ___ I put on my jacket.", options:["because","although","so","even though"], correct:"so", topic:"Connectors", explanation:"'So' introduce la consecuencia o resultado de algo." },
+  { sentence:"She passed the test ___ she didn't study.", options:["because","so","but","even though"], correct:"even though", topic:"Connectors", explanation:"'Even though' expresa contraste sorprendente o inesperado." },
+  { sentence:"He is saving money ___ he can buy a car.", options:["because","although","but","so that"], correct:"so that", topic:"Connectors", explanation:"'So that' + subject expresa propósito o intención." },
 ];
 
 // ── Phrasal Verbs data (~50) ──────────────────────────────────────────────────

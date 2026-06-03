@@ -657,7 +657,7 @@ export default function ReadingPage() {
                 title: s.title,
                 content: s.content,
                 vocabulary: s.vocabulary,
-                source: s.source as "ai" | "gutenberg",
+                source: s.source as "ai" | "wikipedia",
                 level: s.level ?? undefined,
                 topic: s.topic ?? undefined,
               })
