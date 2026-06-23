@@ -476,6 +476,234 @@ const TOPICS: GrammarTopic[] = [
       { english:"I didn't see you come in — I was reading.", highlight:"see", spanish:"No te vi entrar — estaba leyendo.", note:"See = percepción involuntaria. No estaba buscando verlo." },
     ],
   },
+  {
+    id:"bring-take", label:"Bring vs Take", icon:"↔️", color:"sky",
+    title:"Bring vs Take", structure:"bring (hacia aquí / donde estaremos) | take (hacia allá / lejos de aquí)",
+    description:"Bring = traer algo hacia donde está el hablante o hacia un destino compartido. Take = llevar algo lejos del hablante. Piénsalo como 'come' (bring) vs 'go' (take): si 'vienes', traes; si 'vas', llevas.",
+    examples:[
+      { english:"Bring me a glass of water, please.", highlight:"Bring", spanish:"Tráeme un vaso de agua, por favor.", note:"El agua viene hacia donde estoy yo → bring." },
+      { english:"Don't forget to take your umbrella.", highlight:"take", spanish:"No olvides llevar tu paraguas.", note:"El paraguas va contigo lejos de aquí → take." },
+      { english:"Can you bring your laptop to the meeting?", highlight:"bring", spanish:"¿Puedes traer tu laptop a la reunión?", note:"La reunión es donde estaremos los dos → bring." },
+      { english:"I'll take the kids to school this morning.", highlight:"take", spanish:"Llevaré a los niños a la escuela esta mañana.", note:"La escuela está lejos de aquí, tú vas con ellos → take." },
+      { english:"She brought flowers to the party.", highlight:"brought", spanish:"Ella trajo flores a la fiesta.", note:"Llegó a la fiesta con flores (hacia ese lugar) → brought." },
+    ],
+  },
+  {
+    id:"borrow-lend", label:"Borrow vs Lend", icon:"🤝", color:"amber",
+    title:"Borrow vs Lend", structure:"borrow (pedir prestado / recibir) | lend (prestar / dar)",
+    description:"Borrow = recibir algo temporalmente (yo tomo prestado). Lend = dar algo temporalmente (yo presto). Mismo significado pero distinta perspectiva. 'Can I borrow your pen?' y 'Can you lend me your pen?' dicen lo mismo pero desde lados opuestos.",
+    examples:[
+      { english:"Can I borrow your pen for a minute?", highlight:"borrow", spanish:"¿Puedo usar tu pluma un momento?", note:"Yo soy el receptor → borrow. No se dice 'Can I lend your pen?'." },
+      { english:"He borrowed money from the bank.", highlight:"borrowed", spanish:"Pidió dinero prestado al banco.", note:"Él recibió el dinero → borrowed from." },
+      { english:"She lent me her car for the weekend.", highlight:"lent", spanish:"Ella me prestó su carro el fin de semana.", note:"Ella fue la dadora → lent. Pasado de lend = lent." },
+      { english:"I'll lend you my notes if you want.", highlight:"lend", spanish:"Te presto mis apuntes si quieres.", note:"Yo soy el dador → lend. 'Lend to' o 'lend + person'." },
+      { english:"Never lend money to friends — it ruins relationships.", highlight:"lend", spanish:"Nunca le prestes dinero a amigos — arruina las relaciones.", note:"Lend = dar prestado. El que presta usa 'lend'." },
+    ],
+  },
+  {
+    id:"during-while-for", label:"During/While/For", icon:"⏱️", color:"teal",
+    title:"During vs While vs For", structure:"during + noun | while + clause (subject + verb) | for + duration",
+    description:"During = durante + sustantivo. While = mientras + oración completa (sujeto + verbo). For = durante + cantidad de tiempo. During y while son equivalentes en significado pero necesitan estructuras distintas. For solo expresa duración.",
+    examples:[
+      { english:"She fell asleep during the movie.", highlight:"during", spanish:"Se quedó dormida durante la película.", note:"During + noun (the movie). No puede ir seguido de 'she was watching'." },
+      { english:"She fell asleep while she was watching the movie.", highlight:"while", spanish:"Se quedó dormida mientras veía la película.", note:"While + clause completa (subject + verb)." },
+      { english:"I studied for three hours without a break.", highlight:"for three hours", spanish:"Estudié durante tres horas sin descanso.", note:"For + duración de tiempo. No es un evento sino una cantidad." },
+      { english:"During the meeting, nobody spoke.", highlight:"During the meeting", spanish:"Durante la reunión, nadie habló.", note:"During + noun phrase al inicio de la oración." },
+      { english:"While I was cooking, he was setting the table.", highlight:"While", spanish:"Mientras yo cocinaba, él ponía la mesa.", note:"While conecta dos acciones simultáneas en el pasado." },
+    ],
+  },
+  {
+    id:"although-despite", label:"Although / Despite", icon:"⚡", color:"rose",
+    title:"Although vs Despite vs In spite of", structure:"although / even though + clause | despite / in spite of + noun / -ing",
+    description:"Although y even though van seguidos de una oración completa (sujeto + verbo). Despite e in spite of van seguidos de un sustantivo o gerundio (-ing). Todos expresan contraste. Even though tiene un matiz más fuerte de sorpresa.",
+    examples:[
+      { english:"Although it was raining, we went for a walk.", highlight:"Although", spanish:"Aunque llovía, salimos a caminar.", note:"Although + clause completa (it was raining)." },
+      { english:"Despite the rain, we went for a walk.", highlight:"Despite the rain", spanish:"A pesar de la lluvia, salimos a caminar.", note:"Despite + noun (the rain). Mismo significado, diferente estructura." },
+      { english:"She passed the exam even though she hadn't studied.", highlight:"even though", spanish:"Pasó el examen aunque no había estudiado.", note:"Even though = contraste fuerte o inesperado." },
+      { english:"In spite of being tired, he finished the report.", highlight:"In spite of being", spanish:"A pesar de estar cansado, terminó el informe.", note:"In spite of + -ing. Sinónimo exacto de 'despite'." },
+      { english:"Despite working hard, she didn't get the promotion.", highlight:"Despite working", spanish:"A pesar de trabajar duro, no obtuvo el ascenso.", note:"Despite + -ing (no despite + that + clause)." },
+    ],
+  },
+  {
+    id:"also-too-either", label:"Also / Too / Either", icon:"➕", color:"lime",
+    title:"Also vs Too vs Either", structure:"also (also + verb / after be) | too (end, affirmative) | either (end, negative)",
+    description:"Also y too = también (afirmaciones). Also va antes del verbo principal o después de be/auxiliar — más formal. Too va al final de la oración — más informal. Either = también no, en oraciones negativas al final. 'Me too' vs 'Me neither/either'.",
+    examples:[
+      { english:"She also speaks French.", highlight:"also", spanish:"Ella también habla francés.", note:"Also antes del verbo principal. Registro más formal." },
+      { english:"I like sushi. My sister likes it too.", highlight:"too", spanish:"Me gusta el sushi. A mi hermana también.", note:"Too al final. Informal y muy común en conversación." },
+      { english:"I don't like spinach. — I don't either.", highlight:"either", spanish:"No me gusta la espinaca. — A mí tampoco.", note:"Either al final de oraciones negativas = también no." },
+      { english:"He is also a great cook.", highlight:"also", spanish:"Él también es un gran cocinero.", note:"Also después de 'be' o auxiliar." },
+      { english:"She can't drive, and I can't either.", highlight:"either", spanish:"Ella no sabe manejar, y yo tampoco.", note:"Either con 'can't' → yo tampoco. Alternativa: 'Neither can I'." },
+    ],
+  },
+  {
+    id:"so-such", label:"So vs Such", icon:"💥", color:"orange",
+    title:"So vs Such", structure:"so + adjective / adverb | such (a/an) + (adjective) + noun",
+    description:"So intensifica adjetivos y adverbios directamente. Such intensifica sustantivos (con o sin adjetivo). Con 'that' expresan consecuencia: so tired that... / such a long day that... Truco: si puedes poner 'a/an' después, usa 'such'.",
+    examples:[
+      { english:"The movie was so boring that I fell asleep.", highlight:"so boring", spanish:"La película era tan aburrida que me quedé dormido.", note:"So + adjective + that = consecuencia." },
+      { english:"It was such a beautiful day that we went to the beach.", highlight:"such a beautiful day", spanish:"Era un día tan hermoso que fuimos a la playa.", note:"Such a + adjective + noun. El 'a/an' va después de 'such'." },
+      { english:"She speaks so quickly that I can't understand her.", highlight:"so quickly", spanish:"Habla tan rápido que no puedo entenderla.", note:"So + adverb (quickly)." },
+      { english:"He has such a good memory — he never forgets anything.", highlight:"such a good memory", spanish:"Tiene tan buena memoria — nunca olvida nada.", note:"Such a + adjective + noun, sin consecuencia explícita." },
+      { english:"I'm so happy to see you!", highlight:"so happy", spanish:"¡Estoy tan feliz de verte!", note:"So + adjective sin 'that'. Muy común en conversación." },
+    ],
+  },
+  {
+    id:"miss-lose-fail", label:"Miss / Lose / Fail", icon:"❌", color:"pink",
+    title:"Miss vs Lose vs Fail", structure:"miss (no llegar a tiempo / extrañar) | lose (perder algo que tenías) | fail (reprobar / fracasar)",
+    description:"Tres palabras que en español se traducen como 'perder' o 'fallar' pero en inglés son distintas. Miss = no alcanzar algo por llegar tarde, o extrañar a alguien. Lose = dejar de tener algo. Fail = no pasar una prueba o no lograr algo.",
+    examples:[
+      { english:"I missed the bus by two minutes.", highlight:"missed", spanish:"Perdí el bus por dos minutos.", note:"Miss = no llegar a tiempo para tomar algo." },
+      { english:"She misses her family a lot.", highlight:"misses", spanish:"Ella extraña mucho a su familia.", note:"Miss = extrañar a alguien o algo ausente." },
+      { english:"I lost my keys somewhere in the house.", highlight:"lost", spanish:"Perdí mis llaves en algún lugar de la casa.", note:"Lose = dejar de tener algo que tenías." },
+      { english:"He failed the driving test three times.", highlight:"failed", spanish:"Reprobó el examen de manejo tres veces.", note:"Fail = no pasar un examen o no lograr algo." },
+      { english:"Don't miss this opportunity — it won't come again.", highlight:"miss", spanish:"No pierdas esta oportunidad — no volverá.", note:"Miss = no aprovechar algo que está disponible." },
+    ],
+  },
+  {
+    id:"false-friends", label:"Falsos amigos", icon:"🚫", color:"yellow",
+    title:"False Friends", structure:"palabras similares al español con significado diferente",
+    description:"Los 'falsos amigos' parecen palabras conocidas pero significan algo distinto. Actually ≠ actualmente (= en realidad). Sensible ≠ sensible (= sensato). Embarrassed ≠ embarazada (= avergonzado). Eventually ≠ eventualmente (= tarde o temprano). ¡Cuidado con estas trampas!",
+    examples:[
+      { english:"Actually, I think you're wrong.", highlight:"Actually", spanish:"En realidad, creo que estás equivocado.", note:"Actually = en realidad / de hecho. NOT actualmente → currently." },
+      { english:"She is very sensible about money.", highlight:"sensible", spanish:"Ella es muy sensata con el dinero.", note:"Sensible = sensato/prudente. NOT sensible al dolor → sensitive." },
+      { english:"He was embarrassed when he forgot her name.", highlight:"embarrassed", spanish:"Se sintió avergonzado cuando olvidó su nombre.", note:"Embarrassed = avergonzado. NOT embarazada → pregnant." },
+      { english:"The project will eventually be finished.", highlight:"eventually", spanish:"El proyecto tarde o temprano se terminará.", note:"Eventually = tarde o temprano / finalmente. NOT eventualmente → possibly." },
+      { english:"She is currently working on a new project.", highlight:"currently", spanish:"Ella actualmente está trabajando en un nuevo proyecto.", note:"Currently = actualmente / en este momento. NOT currently → actualmente en inglés." },
+    ],
+  },
+  {
+    id:"know-meet", label:"Know vs Meet", icon:"👥", color:"violet",
+    title:"Know vs Meet", structure:"know (conocer = tener relación) | meet (conocer = primer encuentro / reunirse)",
+    description:"Know = conocer a alguien, tener una relación establecida. Meet = conocer a alguien por primera vez, o encontrarse/reunirse con alguien. 'Nice to meet you' es siempre el primer contacto. Una vez que lo conoces, ya lo 'know'.",
+    examples:[
+      { english:"Nice to meet you! I've heard a lot about you.", highlight:"meet", spanish:"¡Mucho gusto! He escuchado mucho sobre ti.", note:"Meet = primer encuentro. Solo se dice 'Nice to meet you' la primera vez." },
+      { english:"I've known her for ten years — she's my best friend.", highlight:"known", spanish:"La conozco desde hace diez años — es mi mejor amiga.", note:"Know = relación ya establecida. Present perfect: have known." },
+      { english:"Where did you two meet?", highlight:"meet", spanish:"¿Dónde se conocieron ustedes dos?", note:"Meet = el momento del primer encuentro." },
+      { english:"Do you know that man over there?", highlight:"know", spanish:"¿Conoces a ese hombre de allá?", note:"Know = ¿tienes relación con él? No es la primera vez." },
+      { english:"Let's meet at the café at 5.", highlight:"meet", spanish:"Encontrémonos en el café a las 5.", note:"Meet = reunirse / quedar con alguien (no primer encuentro)." },
+    ],
+  },
+  {
+    id:"causative", label:"Make/Let/Get/Have", icon:"🎯", color:"purple",
+    title:"Causative: Make / Let / Get / Have", structure:"make + person + base | let + person + base | get + person + to-inf | have + person + base",
+    description:"Make = obligar (sin opción). Let = permitir. Get = convencer o lograr que alguien haga algo. Have = encargar a alguien que haga algo (servicio). Make y let van con base verb (sin to). Get va con to-infinitivo. Have puede ir con base o past participle.",
+    examples:[
+      { english:"My boss makes me work overtime every week.", highlight:"makes me work", spanish:"Mi jefe me obliga a trabajar horas extra cada semana.", note:"Make + person + base = obligar. Sin opción de negarse." },
+      { english:"My parents let me stay out until midnight.", highlight:"let me stay", spanish:"Mis padres me dejan quedarme afuera hasta medianoche.", note:"Let + person + base = permitir. No hay presión, solo permiso." },
+      { english:"I'll get someone to fix the leaking pipe.", highlight:"get someone to fix", spanish:"Conseguiré que alguien arregle la tubería.", note:"Get + person + to-infinitivo = convencer o encargar." },
+      { english:"She had her hair cut at the salon.", highlight:"had her hair cut", spanish:"Se cortó el pelo en el salón.", note:"Have + object + past participle = encargar un servicio." },
+      { english:"Don't let them see you like this.", highlight:"let them see", spanish:"No los dejes verte así.", note:"Let en negativo = no permitir. Siempre + base verb." },
+    ],
+  },
+  {
+    id:"used-to", label:"Used to", icon:"🔙", color:"emerald",
+    title:"Used to / Be used to / Get used to", structure:"used to + base (hábito pasado) | be used to + -ing (acostumbrado) | get used to + -ing (acostumbrarse)",
+    description:"Used to = hábito o estado del pasado que ya NO existe. Be used to = estar acostumbrado (estado actual). Get used to = proceso de acostumbrarse. Error clásico: 'I used to smoke' (ya no fumo) ≠ 'I am used to smoking' (estoy acostumbrado a fumar).",
+    examples:[
+      { english:"I used to play football every weekend.", highlight:"used to play", spanish:"Solía jugar fútbol cada fin de semana.", note:"Hábito del pasado que ya no ocurre. Solo existe en pasado." },
+      { english:"She used to live in Paris when she was young.", highlight:"used to live", spanish:"Vivía en París cuando era joven.", note:"Estado pasado que ya no es actual → used to." },
+      { english:"Are you used to the cold weather yet?", highlight:"used to the cold", spanish:"¿Ya estás acostumbrado al clima frío?", note:"Be used to + noun = estar acostumbrado (estado presente)." },
+      { english:"It takes time to get used to a new city.", highlight:"get used to", spanish:"Toma tiempo acostumbrarse a una ciudad nueva.", note:"Get used to + -ing = proceso de adaptación." },
+      { english:"He didn't use to like vegetables, but now he loves them.", highlight:"use to like", spanish:"Antes no le gustaban los vegetales, pero ahora los ama.", note:"Negativo e interrogativo: 'didn't use to' (sin -d)." },
+    ],
+  },
+  {
+    id:"would-rather", label:"Would Rather / Had Better", icon:"⚠️", color:"indigo",
+    title:"Would Rather vs Had Better", structure:"would rather + base (+ than) | had better + base",
+    description:"Would rather = preferir (entre opciones). Had better = más vale que (advertencia — implica consecuencia negativa si no se hace). Ambos van con base verb sin to. En contracción: I'd rather / you'd better. Had better no es pasado.",
+    examples:[
+      { english:"I'd rather stay home than go out tonight.", highlight:"rather stay", spanish:"Prefiero quedarme en casa que salir esta noche.", note:"Would rather + base + than = preferir algo sobre otra opción." },
+      { english:"She'd rather read than watch TV.", highlight:"rather read", spanish:"Ella prefiere leer que ver TV.", note:"Would rather + base verb. Sin 'to'." },
+      { english:"You'd better call him — he's been waiting for hours.", highlight:"better call", spanish:"Más vale que lo llames — lleva horas esperando.", note:"Had better = advertencia. Implica consecuencia negativa." },
+      { english:"We'd better leave now or we'll miss the train.", highlight:"better leave", spanish:"Más nos vale irnos ahora o perderemos el tren.", note:"Had better + or + consecuencia = urgencia." },
+      { english:"Would you rather have coffee or tea?", highlight:"rather have", spanish:"¿Prefieres café o té?", note:"Pregunta con would rather para pedir preferencia." },
+    ],
+  },
+  {
+    id:"ing-ed-adjectives", label:"-ing vs -ed adj.", icon:"😊", color:"sky",
+    title:"-ing vs -ed Adjectives", structure:"-ed (cómo se siente la persona) | -ing (qué causa ese sentimiento)",
+    description:"Los adjetivos en -ed describen el estado emocional de una persona. Los adjetivos en -ing describen la característica de algo que causa ese estado. Error muy común: 'I'm boring' ❌ significa que TÚ eres aburrido. Lo correcto: 'I'm bored' ✓ = yo me siento aburrido.",
+    examples:[
+      { english:"The movie was so boring.", highlight:"boring", spanish:"La película era tan aburrida.", note:"-ing describe la película. Ella causa aburrimiento." },
+      { english:"I was so bored during the movie.", highlight:"bored", spanish:"Me aburrí tanto durante la película.", note:"-ed describe cómo me sentí YO. Yo experimenté el aburrimiento." },
+      { english:"That was an interesting lecture.", highlight:"interesting", spanish:"Fue una clase muy interesante.", note:"-ing: la clase es la que despierta interés." },
+      { english:"I was very interested in what she said.", highlight:"interested", spanish:"Estaba muy interesado en lo que dijo.", note:"-ed: yo sentí el interés." },
+      { english:"The news was shocking — everyone was shocked.", highlight:"shocking", spanish:"La noticia fue impactante — todos estaban impactados.", note:"-ing causa el sentimiento, -ed es el efecto en las personas." },
+    ],
+  },
+  {
+    id:"stative-verbs", label:"Verbos estativos", icon:"🧠", color:"amber",
+    title:"Stative Verbs", structure:"NO -ing: know / believe / want / love / hate / need / prefer / understand / remember / seem / belong / contain",
+    description:"Los verbos estativos describen estados mentales, emociones o sentidos — no acciones. No se usan en tiempos continuos. Error: 'I am knowing' ❌, 'She is wanting' ❌. Algunos como 'think', 'have' y 'see' pueden ser estativos o de acción según el contexto.",
+    examples:[
+      { english:"I know the answer. ✓ / I am knowing the answer. ✗", highlight:"know", spanish:"Sé la respuesta.", note:"Know = estado mental. No puede estar 'en progreso'." },
+      { english:"She wants a new job. ✓ / She is wanting a job. ✗", highlight:"wants", spanish:"Ella quiere un nuevo trabajo.", note:"Want = deseo/estado. No tiene forma continua." },
+      { english:"He has a car. ✓ (posesión) / He is having lunch. ✓ (acción)", highlight:"has", spanish:"Tiene un carro. / Está almorzando.", note:"Have puede ser estativo (posesión) o de acción (actividad)." },
+      { english:"I think she's right. ✓ / I'm thinking about it. ✓", highlight:"think", spanish:"Creo que tiene razón. / Lo estoy pensando.", note:"Think = opinión (estativo) o proceso activo (continuo). Ambos correctos." },
+      { english:"This soup tastes amazing. ✓ / This soup is tasting amazing. ✗", highlight:"tastes", spanish:"Esta sopa sabe increíble.", note:"Taste como percepción = estativo. Sin forma continua." },
+    ],
+  },
+  {
+    id:"unless", label:"Unless / As long as", icon:"🔒", color:"teal",
+    title:"Unless / As long as / Provided that", structure:"unless + positive clause (= if not) | as long as / provided that + condition",
+    description:"Unless = a menos que. Es equivalente a 'if not' — ya incluye la negación (no uses 'unless not'). As long as / provided that = siempre que / con tal de que — ponen una condición para que algo sea posible. Son estructuras condicionales muy usadas en conversación.",
+    examples:[
+      { english:"Unless you study, you'll fail the exam.", highlight:"Unless", spanish:"A menos que estudies, reprobarás el examen.", note:"Unless = if you don't study. No se dice 'unless you don't study'." },
+      { english:"Don't call me unless it's urgent.", highlight:"unless", spanish:"No me llames a menos que sea urgente.", note:"Unless en negativo = la condición para romper la regla." },
+      { english:"I'll lend you the money as long as you pay me back.", highlight:"as long as", spanish:"Te prestaré el dinero con tal de que me pagues.", note:"As long as = siempre que se cumpla esa condición." },
+      { english:"You can go out, provided that you finish your homework first.", highlight:"provided that", spanish:"Puedes salir, siempre y cuando termines tu tarea primero.", note:"Provided that = as long as. Más formal." },
+      { english:"Unless it stops raining, we'll cancel the picnic.", highlight:"Unless it stops", spanish:"A menos que deje de llover, cancelaremos el picnic.", note:"Unless + afirmativo = if it doesn't stop." },
+    ],
+  },
+  {
+    id:"both-not-only", label:"Both / Not only", icon:"✌️", color:"rose",
+    title:"Both…and / Not only…but also", structure:"both + A + and + B | not only + A + but also + B",
+    description:"Both…and = tanto A como B (incluye los dos de forma neutra). Not only…but also = no solo A sino también B (énfasis en el segundo elemento como algo extra o sorprendente). Con 'not only' al inicio, el auxiliar y sujeto invierten su orden.",
+    examples:[
+      { english:"Both my mother and my father speak English.", highlight:"Both", spanish:"Tanto mi madre como mi padre hablan inglés.", note:"Both…and incluye los dos elementos por igual." },
+      { english:"She is both intelligent and hardworking.", highlight:"both intelligent and hardworking", spanish:"Ella es tanto inteligente como trabajadora.", note:"Both…and con adjetivos." },
+      { english:"Not only did he apologize, but he also brought flowers.", highlight:"Not only did he", spanish:"No solo se disculpó, sino que también trajo flores.", note:"Not only al inicio → inversión: Not only did he (no 'he did')." },
+      { english:"This restaurant is not only cheap but also delicious.", highlight:"not only cheap but also delicious", spanish:"Este restaurante no es solo barato sino también delicioso.", note:"Not only…but also en el medio de la oración." },
+      { english:"Both options have their advantages.", highlight:"Both options", spanish:"Ambas opciones tienen sus ventajas.", note:"Both sin 'and' cuando va solo antes del noun." },
+    ],
+  },
+  {
+    id:"future-perfect", label:"Future Perfect/Cont.", icon:"🔮", color:"lime",
+    title:"Future Perfect & Future Continuous", structure:"will have + past participle | will be + verb-ing",
+    description:"Future Perfect = acción que estará completada antes de un momento futuro (habrá + participio). Future Continuous = acción que estará en progreso en un momento futuro (estará + -ando/-iendo). Ambos proyectan al futuro desde el presente.",
+    examples:[
+      { english:"By the time you arrive, I will have finished cooking.", highlight:"will have finished", spanish:"Para cuando llegues, yo habré terminado de cocinar.", note:"Will have + participio = completado antes de un punto futuro." },
+      { english:"By 2030, scientists will have found a cure.", highlight:"will have found", spanish:"Para 2030, los científicos habrán encontrado una cura.", note:"By + future date = Future Perfect." },
+      { english:"Don't call at 8 — I'll be having dinner.", highlight:"will be having", spanish:"No llames a las 8 — estaré cenando.", note:"Will be + -ing = en progreso en ese momento futuro." },
+      { english:"This time next week, I'll be flying to New York.", highlight:"will be flying", spanish:"A esta hora la semana que viene, estaré volando a Nueva York.", note:"'This time next week/month' → Future Continuous." },
+      { english:"By the end of the year, she will have worked here for a decade.", highlight:"will have worked", spanish:"Para finales de año, habrá trabajado aquí por una década.", note:"Future Perfect con duración: will have + worked + for." },
+    ],
+  },
+  {
+    id:"adjective-order", label:"Orden de adjetivos", icon:"📋", color:"orange",
+    title:"Adjective Order", structure:"opinion → size → age → shape → color → origin → material + noun",
+    description:"Cuando hay más de un adjetivo, el inglés sigue un orden fijo. Los nativos lo hacen instintivamente. La regla: opinion (beautiful), size (big), age (old), shape (round), color (red), origin (French), material (wooden). Violar el orden suena muy raro.",
+    examples:[
+      { english:"A beautiful little old Italian house.", highlight:"beautiful little old Italian", spanish:"Una hermosa casita italiana antigua.", note:"Opinion (beautiful) → size (little) → age (old) → origin (Italian)." },
+      { english:"A big black dog.", highlight:"big black", spanish:"Un perro negro grande.", note:"Size (big) → color (black). Nunca 'a black big dog'." },
+      { english:"A lovely old French song.", highlight:"lovely old French", spanish:"Una linda canción francesa antigua.", note:"Opinion (lovely) → age (old) → origin (French)." },
+      { english:"A small round wooden table.", highlight:"small round wooden", spanish:"Una mesita redonda de madera.", note:"Size (small) → shape (round) → material (wooden)." },
+      { english:"An expensive new red sports car.", highlight:"expensive new red", spanish:"Un auto deportivo rojo nuevo y caro.", note:"Opinion (expensive) → age (new) → color (red)." },
+    ],
+  },
+  {
+    id:"another-other", label:"Another / Other", icon:"🔄", color:"violet",
+    title:"Another vs Other vs Others", structure:"another + singular | other + plural/uncountable | others (pronoun) | the other (el restante)",
+    description:"Another = un/una + otro/a (singular, contable, indefinido). Other = otros/as (plural o incontable, siempre con sustantivo). Others = los/las demás (pronombre, sin sustantivo). The other = el/la otro/a específico (cuando solo quedan dos opciones o uno identificado).",
+    examples:[
+      { english:"Can I have another coffee, please?", highlight:"another", spanish:"¿Puedo tomar otro café, por favor?", note:"Another + singular countable = un/una más (indefinido)." },
+      { english:"I have other plans for the weekend.", highlight:"other", spanish:"Tengo otros planes para el fin de semana.", note:"Other + plural noun. No se dice 'another plans'." },
+      { english:"Some people liked the movie; others didn't.", highlight:"others", spanish:"A algunas personas les gustó la película; a otras no.", note:"Others = pronombre (sin sustantivo). Los/las demás." },
+      { english:"Do you have this shirt in other colors?", highlight:"other colors", spanish:"¿Tienen esta camisa en otros colores?", note:"Other + plural noun." },
+      { english:"I have two brothers. One lives in Mexico, the other lives in the US.", highlight:"the other", spanish:"Tengo dos hermanos. Uno vive en México, el otro en EE.UU.", note:"The other = el específico restante cuando solo hay dos." },
+    ],
+  },
 ];
 
 // ── Quiz data (4 per topic = 48 questions) ────────────────────────────────────
@@ -702,6 +930,120 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
   { sentence:"Did you ___ the game last night? (seguiste el partido)", options:["look","see","watch","looked at"], correct:"watch", topic:"See/Watch/Look", explanation:"Watch = seguir algo en movimiento con atención (partidos, películas)." },
   { sentence:"I didn't ___ you come in — I was reading.", options:["watch","look","look at","see"], correct:"see", topic:"See/Watch/Look", explanation:"See = percepción involuntaria. No estaba buscando verlo." },
   { sentence:"She ___ at me and smiled.", options:["saw","watched","looked","see"], correct:"looked", topic:"See/Watch/Look", explanation:"Look at = mirar deliberadamente a alguien. Acción intencional." },
+
+  // Bring vs Take
+  { sentence:"___ me that book, please. (tráelo hacia aquí)", options:["Take","Go with","Carry","Bring"], correct:"Bring", topic:"Bring vs Take", explanation:"Bring = traer hacia donde está el hablante." },
+  { sentence:"Don't forget to ___ your umbrella when you leave.", options:["bring","come with","carry","take"], correct:"take", topic:"Bring vs Take", explanation:"Take = llevar algo lejos del hablante (tú te vas)." },
+  { sentence:"She ___ flowers to the party last night. (llegó con ellas)", options:["took","carried","gave","brought"], correct:"brought", topic:"Bring vs Take", explanation:"Bring = traer hacia un destino compartido. Pasado: brought." },
+  { sentence:"Can you ___ the kids to school? (tú los llevas)", options:["bring","come with","carry","take"], correct:"take", topic:"Bring vs Take", explanation:"Take = llevar lejos del punto de partida." },
+
+  // Borrow vs Lend
+  { sentence:"Can I ___ your pen? I'll give it back.", options:["lend","give","take","borrow"], correct:"borrow", topic:"Borrow vs Lend", explanation:"Borrow = pedir prestado. Yo soy el receptor." },
+  { sentence:"She ___ me her car for the weekend. (ella = dadora)", options:["borrowed","took","gave","lent"], correct:"lent", topic:"Borrow vs Lend", explanation:"Lend = prestar. Ella fue la dadora. Pasado de lend = lent." },
+  { sentence:"He ___ money from the bank to buy a house.", options:["lent","gave","borrowed","took"], correct:"borrowed", topic:"Borrow vs Lend", explanation:"Borrow from = pedir prestado a. Él recibió el dinero." },
+  { sentence:"Never ___ money you can't afford to lose. (tú = dador)", options:["borrow","take","give","lend"], correct:"lend", topic:"Borrow vs Lend", explanation:"Lend = prestar algo tuyo a otro." },
+
+  // During / While / For
+  { sentence:"She fell asleep ___ the lecture. (+ noun)", options:["while","for","as","during"], correct:"during", topic:"During/While/For", explanation:"During + noun. 'The lecture' es un sustantivo." },
+  { sentence:"___ I was cooking, the phone rang. (+ clause)", options:["During","For","At","While"], correct:"While", topic:"During/While/For", explanation:"While + clause completa (I was cooking)." },
+  { sentence:"He studied ___ five hours without stopping.", options:["during","while","since","for"], correct:"for", topic:"During/While/For", explanation:"For + cantidad de tiempo (five hours)." },
+  { sentence:"___ the meeting, nobody said a word. (+ noun phrase)", options:["While","For","As","During"], correct:"During", topic:"During/While/For", explanation:"During + noun phrase. No puede seguirle un sujeto + verbo." },
+
+  // Although / Despite
+  { sentence:"___ being tired, she finished the report. (+ -ing)", options:["Although","Even though","Because","Despite"], correct:"Despite", topic:"Although / Despite", explanation:"Despite + -ing. No puede ir seguido de una cláusula completa." },
+  { sentence:"___ it was cold, they went swimming. (+ clause)", options:["Despite","In spite of","Because","Although"], correct:"Although", topic:"Although / Despite", explanation:"Although + clause completa (it was cold)." },
+  { sentence:"She passed ___ not studying at all.", options:["although","because","even though","despite"], correct:"despite", topic:"Although / Despite", explanation:"Despite + -ing. In spite of también sería correcto." },
+  { sentence:"He arrived on time ___ the traffic was terrible.", options:["despite","in spite of","because","even though"], correct:"even though", topic:"Although / Despite", explanation:"Even though + clause (the traffic was terrible). Contraste sorpresivo." },
+
+  // Also / Too / Either
+  { sentence:"I like jazz. My friend likes it ___. (final, afirmativo)", options:["either","also","neither","too"], correct:"too", topic:"Also / Too / Either", explanation:"Too al final de oraciones afirmativas." },
+  { sentence:"She ___ speaks German and French. (antes del verbo)", options:["too","either","neither","also"], correct:"also", topic:"Also / Too / Either", explanation:"Also antes del verbo principal. Posición formal." },
+  { sentence:"I can't swim. — I can't ___. (negativo)", options:["too","also","neither","either"], correct:"either", topic:"Also / Too / Either", explanation:"Either al final de oraciones negativas = yo tampoco." },
+  { sentence:"He is ___ a great writer. (después de be)", options:["too","either","neither","also"], correct:"also", topic:"Also / Too / Either", explanation:"Also va después del verbo be o auxiliar." },
+
+  // So vs Such
+  { sentence:"The film was ___ boring that I left early.", options:["such","such a","so much","so"], correct:"so", topic:"So vs Such", explanation:"So + adjective. Boring es adjetivo." },
+  { sentence:"It was ___ long day that I went straight to bed.", options:["so","so a","so much","such a"], correct:"such a", topic:"So vs Such", explanation:"Such a + adjective + noun. Siempre 'such a/an' antes del noun." },
+  { sentence:"She speaks ___ quickly that nobody understands.", options:["such","such a","so a","so"], correct:"so", topic:"So vs Such", explanation:"So + adverb (quickly)." },
+  { sentence:"He has ___ good memory.", options:["so","so a","so good a","such a"], correct:"such a", topic:"So vs Such", explanation:"Such a + adjective + noun (memory es un sustantivo)." },
+
+  // Miss / Lose / Fail
+  { sentence:"I ___ the bus by two minutes. (no llegué a tiempo)", options:["lost","failed","left","missed"], correct:"missed", topic:"Miss / Lose / Fail", explanation:"Miss = no alcanzar algo por llegar tarde." },
+  { sentence:"He ___ his wallet somewhere in the city.", options:["missed","failed","left","lost"], correct:"lost", topic:"Miss / Lose / Fail", explanation:"Lose = dejar de tener algo que tenías." },
+  { sentence:"She ___ her driving test twice before passing.", options:["missed","lost","left","failed"], correct:"failed", topic:"Miss / Lose / Fail", explanation:"Fail = no pasar una prueba o no lograr algo." },
+  { sentence:"Don't ___ this chance — it won't come again.", options:["lose","fail","leave","miss"], correct:"miss", topic:"Miss / Lose / Fail", explanation:"Miss = no aprovechar algo disponible." },
+
+  // False Friends
+  { sentence:"___, I think you're right. (en realidad)", options:["Currently","Lately","Truly","Actually"], correct:"Actually", topic:"Falsos amigos", explanation:"Actually = en realidad / de hecho. NOT actualmente → currently." },
+  { sentence:"She is very ___ — she always considers other people's feelings.", options:["sensible","sensational","sensory","sensitive"], correct:"sensitive", topic:"Falsos amigos", explanation:"Sensitive = sensible emocionalmente. Sensible = sensato/prudente." },
+  { sentence:"He was ___ when he forgot her birthday.", options:["embarrassing","pregnant","ashamed","embarrassed"], correct:"embarrassed", topic:"Falsos amigos", explanation:"Embarrassed = avergonzado/a. Embarrassed ≠ embarazada." },
+  { sentence:"The problem will ___ be solved.", options:["actually","currently","possibly","eventually"], correct:"eventually", topic:"Falsos amigos", explanation:"Eventually = tarde o temprano / finalmente. NOT eventualmente → possibly." },
+
+  // Know vs Meet
+  { sentence:"Nice to ___ you! I've heard so much about you.", options:["know","see","find","meet"], correct:"meet", topic:"Know vs Meet", explanation:"Nice to meet you = primer encuentro. Solo se dice la primera vez." },
+  { sentence:"Do you ___ that woman? Is she your neighbor?", options:["meet","find","see","know"], correct:"know", topic:"Know vs Meet", explanation:"Know = ¿tienes relación con ella? No es primer encuentro." },
+  { sentence:"We ___ for coffee every Friday morning.", options:["know","find","see","meet"], correct:"meet", topic:"Know vs Meet", explanation:"Meet = reunirse / quedar con alguien regularmente." },
+  { sentence:"I've ___ her for years — she's an old friend.", options:["met","saw","found","known"], correct:"known", topic:"Know vs Meet", explanation:"Have known = presente perfecto de know. Relación de larga data." },
+
+  // Causative
+  { sentence:"My boss ___ me work overtime every Friday.", options:["let","got","had","made"], correct:"made", topic:"Make/Let/Get/Have", explanation:"Make + person + base = obligar sin opción de negarse." },
+  { sentence:"My parents ___ me stay out until midnight.", options:["made","got","had","let"], correct:"let", topic:"Make/Let/Get/Have", explanation:"Let + person + base = permitir." },
+  { sentence:"I'll ___ someone to fix the pipe.", options:["make","have","let","get"], correct:"get", topic:"Make/Let/Get/Have", explanation:"Get + person + to-inf = convencer o encargar." },
+  { sentence:"She ___ her hair cut at the salon.", options:["made","got","let","had"], correct:"had", topic:"Make/Let/Get/Have", explanation:"Have + object + past participle = encargar un servicio." },
+
+  // Used to
+  { sentence:"He ___ smoke a pack a day, but he quit.", options:["is used to","gets used to","use to","used to"], correct:"used to", topic:"Used to", explanation:"Used to + base = hábito pasado que ya no ocurre." },
+  { sentence:"Are you ___ waking up early?", options:["used to","use to","getting to","used to be"], correct:"used to", topic:"Used to", explanation:"Be used to + -ing = estar acostumbrado (estado presente)." },
+  { sentence:"It takes time to ___ a new culture.", options:["used to","be used to","use to","get used to"], correct:"get used to", topic:"Used to", explanation:"Get used to + -ing = proceso de adaptación." },
+  { sentence:"She ___ live in Paris, but she moved to London.", options:["is used to","gets used to","use to","used to"], correct:"used to", topic:"Used to", explanation:"Used to + base = estado pasado que ya no es actual." },
+
+  // Would Rather / Had Better
+  { sentence:"I'd ___ stay home than go to that party.", options:["better","sooner","prefer","rather"], correct:"rather", topic:"Would Rather / Had Better", explanation:"Would rather + base verb (+ than) = preferir." },
+  { sentence:"You'd ___ call him now — he's been waiting all day.", options:["rather","prefer","more","better"], correct:"better", topic:"Would Rather / Had Better", explanation:"Had better = más vale que. Advertencia de consecuencia negativa." },
+  { sentence:"Would you ___ have coffee or tea?", options:["better","prefer","sooner","rather"], correct:"rather", topic:"Would Rather / Had Better", explanation:"Would rather en pregunta = ¿qué prefieres?" },
+  { sentence:"We'd ___ leave early or we'll miss the flight.", options:["rather","prefer","sooner","better"], correct:"better", topic:"Would Rather / Had Better", explanation:"Had better + or + consecuencia = urgencia fuerte." },
+
+  // -ing vs -ed adjectives
+  { sentence:"The presentation was so ___. (causa aburrimiento)", options:["bored","bore","to bore","boring"], correct:"boring", topic:"-ing vs -ed adj.", explanation:"-ing describe la presentación. Ella causa aburrimiento." },
+  { sentence:"I was completely ___ by the news.", options:["shocking","shock","to shock","shocked"], correct:"shocked", topic:"-ing vs -ed adj.", explanation:"-ed describe cómo me sentí YO al recibir el impacto." },
+  { sentence:"That was a very ___ lecture.", options:["interested","interest","to interest","interesting"], correct:"interesting", topic:"-ing vs -ed adj.", explanation:"-ing: la clase despierta interés. Ella tiene esa cualidad." },
+  { sentence:"He looked ___ when he heard the results.", options:["disappointing","disappoint","to disappoint","disappointed"], correct:"disappointed", topic:"-ing vs -ed adj.", explanation:"-ed: él se sintió decepcionado. Estado emocional de la persona." },
+
+  // Stative Verbs
+  { sentence:"She ___ the answer right now.", options:["is knowing","know","has knowing","knows"], correct:"knows", topic:"Verbos estativos", explanation:"Know es estativo — no tiene forma continua." },
+  { sentence:"I ___ to go home right now.", options:["am wanting","wanted","wants","want"], correct:"want", topic:"Verbos estativos", explanation:"Want es estativo. No se dice 'I am wanting'." },
+  { sentence:"This milk ___ bad.", options:["is tasting","tastes","taste","has tasted"], correct:"tastes", topic:"Verbos estativos", explanation:"Taste como percepción = estativo. Forma simple." },
+  { sentence:"I ___ what you mean — it's very clear.", options:["am understanding","understanding","have understood","understand"], correct:"understand", topic:"Verbos estativos", explanation:"Understand es estativo. No tiene forma continua." },
+
+  // Unless
+  { sentence:"___ you study, you'll fail.", options:["If","When","Although","Unless"], correct:"Unless", topic:"Unless / As long as", explanation:"Unless = if you don't. Ya incluye la negación." },
+  { sentence:"I won't go ___ you invite me personally.", options:["if","although","when","unless"], correct:"unless", topic:"Unless / As long as", explanation:"Unless = if you don't invite me." },
+  { sentence:"You can use my car ___ you bring it back by 6.", options:["unless","although","if not","as long as"], correct:"as long as", topic:"Unless / As long as", explanation:"As long as = siempre que se cumpla esa condición." },
+  { sentence:"Don't call me ___ it's an emergency.", options:["although","if","when","unless"], correct:"unless", topic:"Unless / As long as", explanation:"Unless = a menos que. La única razón para llamar." },
+
+  // Both / Not only
+  { sentence:"___ my sister and my brother live abroad.", options:["Either","Neither","Not only","Both"], correct:"Both", topic:"Both / Not only", explanation:"Both…and = tanto A como B. Incluye los dos." },
+  { sentence:"Not only is she talented, ___ she works very hard.", options:["but","and also","or also","but also"], correct:"but also", topic:"Both / Not only", explanation:"Not only…but also. La segunda parte introduce algo extra." },
+  { sentence:"Not only ___ he apologize, but he also brought gifts.", options:["he did","has he","he has","did he"], correct:"did he", topic:"Both / Not only", explanation:"Not only al inicio → inversión auxiliar/sujeto: did he." },
+  { sentence:"___ options have advantages and disadvantages.", options:["Neither","Either","Not only","Both"], correct:"Both", topic:"Both / Not only", explanation:"Both (sin 'and') antes de noun = ambos/as." },
+
+  // Future Perfect / Continuous
+  { sentence:"By the time you arrive, I ___ cooking.", options:["will finish","am finishing","finish","will have finished"], correct:"will have finished", topic:"Future Perfect/Cont.", explanation:"Will have + participio = completado antes de un punto futuro." },
+  { sentence:"Don't call at 8 — I ___ dinner.", options:["will have dinner","will","will have had","will be having"], correct:"will be having", topic:"Future Perfect/Cont.", explanation:"Will be + -ing = en progreso en ese momento futuro." },
+  { sentence:"By 2030, scientists ___ a cure.", options:["find","will find","found","will have found"], correct:"will have found", topic:"Future Perfect/Cont.", explanation:"By + future date → Future Perfect: will have + participio." },
+  { sentence:"This time next week, she ___ on a plane.", options:["flies","will fly","will have flown","will be flying"], correct:"will be flying", topic:"Future Perfect/Cont.", explanation:"'This time next week' → Future Continuous: will be + -ing." },
+
+  // Adjective Order
+  { sentence:"Which is correct?", options:["a French old beautiful house","a old beautiful French house","an old French beautiful house","a beautiful old French house"], correct:"a beautiful old French house", topic:"Orden de adjetivos", explanation:"Opinion (beautiful) → age (old) → origin (French)." },
+  { sentence:"Which is correct?", options:["a black big dog","a big dog black","a dog big black","a big black dog"], correct:"a big black dog", topic:"Orden de adjetivos", explanation:"Size (big) → color (black). Nunca 'a black big dog'." },
+  { sentence:"Which is correct?", options:["a wooden small round table","a round small wooden table","a small wooden round table","a small round wooden table"], correct:"a small round wooden table", topic:"Orden de adjetivos", explanation:"Size (small) → shape (round) → material (wooden)." },
+  { sentence:"She bought ___ dress for the party.", options:["a red lovely long","a long red lovely","a lovely long red","a red long lovely"], correct:"a lovely long red", topic:"Orden de adjetivos", explanation:"Opinion (lovely) → size (long) → color (red)." },
+
+  // Another / Other / Others
+  { sentence:"Can I have ___ piece of cake? (una más)", options:["other","the other","others","another"], correct:"another", topic:"Another / Other", explanation:"Another + singular countable = un/una más (indefinido)." },
+  { sentence:"Some students passed; ___ failed. (pronombre)", options:["other","the other","another","others"], correct:"others", topic:"Another / Other", explanation:"Others = pronombre (sin sustantivo). Los/las demás." },
+  { sentence:"I have ___ plans for the weekend. (+ plural noun)", options:["another","others","the other","other"], correct:"other", topic:"Another / Other", explanation:"Other + plural noun. No 'another plans' (another es singular)." },
+  { sentence:"I have two brothers. One is a teacher; ___ is a doctor.", options:["other","others","another","the other"], correct:"the other", topic:"Another / Other", explanation:"The other = el específico restante cuando solo hay dos." },
 ];
 
 // ── Phrasal Verbs data (~50) ──────────────────────────────────────────────────
