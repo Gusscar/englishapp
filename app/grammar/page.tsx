@@ -428,6 +428,54 @@ const TOPICS: GrammarTopic[] = [
       { english:"He speaks English very well.", highlight:"very well", spanish:"Él habla inglés muy bien.", note:"Very también modifica adverbios. Well es el adverbio de good." },
     ],
   },
+  {
+    id:"few-little", label:"Few vs Little", icon:"🔢", color:"sky",
+    title:"Few vs Little", structure:"a few / few + countable plural  |  a little / little + uncountable",
+    description:"Few se usa con sustantivos contables (cosas que se pueden contar: friends, cars, ideas). Little se usa con sustantivos incontables (cosas sin plural: water, time, money). Con 'a' son positivos (hay algo); sin 'a' son negativos (hay casi nada).",
+    examples:[
+      { english:"I have a few friends I can really trust.", highlight:"a few", spanish:"Tengo algunos amigos en quienes realmente confiar.", note:"A few + contable = algunos (positivo). Friends se puede contar." },
+      { english:"There is a little milk left — enough for coffee.", highlight:"a little", spanish:"Queda un poco de leche — suficiente para café.", note:"A little + incontable = un poco (positivo). Milk no tiene plural." },
+      { english:"Few people know the real story.", highlight:"Few", spanish:"Pocas personas conocen la historia real.", note:"Few sin 'a' = casi nadie (negativo). People es contable." },
+      { english:"We have little time before the flight.", highlight:"little", spanish:"Tenemos poco tiempo antes del vuelo.", note:"Little sin 'a' = casi nada (negativo). Time es incontable." },
+      { english:"Can I borrow a few dollars? Just for the bus.", highlight:"a few", spanish:"¿Me prestas unos dólares? Solo para el bus.", note:"Dollars se puede contar → a few. No se dice 'a few money'." },
+    ],
+  },
+  {
+    id:"either-neither", label:"Either / Neither", icon:"⚖️", color:"violet",
+    title:"Either vs Neither", structure:"either (uno u otro) | neither (ninguno) | either…or | neither…nor",
+    description:"Either = cualquiera de los dos (en positivo) o 'también no' (en negativo). Neither = ninguno de los dos. Either…or presenta dos opciones. Neither…nor descarta las dos. El verbo con neither suele ser singular.",
+    examples:[
+      { english:"Either option sounds fine to me.", highlight:"Either", spanish:"Cualquiera de las dos opciones me parece bien.", note:"Either = cualquiera de dos opciones. Verbo singular." },
+      { english:"Neither answer is correct.", highlight:"Neither", spanish:"Ninguna de las dos respuestas es correcta.", note:"Neither = ninguno de los dos. Siempre verbo singular." },
+      { english:"\"I don't like Mondays.\" \"Me neither.\"", highlight:"Me neither", spanish:"\"No me gustan los lunes.\" \"A mí tampoco.\"", note:"Me neither = responde a negaciones. Equivale a 'Yo tampoco'." },
+      { english:"You can either call or send me a message.", highlight:"either call or", spanish:"Puedes llamarme o mandarme un mensaje.", note:"Either…or = o…o. Presenta dos alternativas posibles." },
+      { english:"Neither the manager nor the staff were informed.", highlight:"Neither the manager nor", spanish:"Ni el gerente ni el personal fueron informados.", note:"Neither…nor = ni…ni. Descarta ambas opciones." },
+    ],
+  },
+  {
+    id:"say-tell", label:"Say vs Tell", icon:"💬", color:"rose",
+    title:"Say vs Tell", structure:"say + (to person) + message  |  tell + person + message",
+    description:"Say enfoca en las palabras exactas pronunciadas. Tell enfoca en transmitir información a alguien — siempre necesita un receptor (tell me, tell him). Expresiones fijas: tell the truth, tell a lie, tell a story, tell a joke.",
+    examples:[
+      { english:"She said she was tired.", highlight:"said", spanish:"Dijo que estaba cansada.", note:"Say + message. No necesita receptor directo." },
+      { english:"He told me to wait outside.", highlight:"told me", spanish:"Me dijo que esperara afuera.", note:"Tell + person + message. Siempre lleva receptor." },
+      { english:"What did she say?", highlight:"say", spanish:"¿Qué dijo ella?", note:"Say sin receptor. Preguntamos por las palabras exactas." },
+      { english:"Can you tell me the way to the station?", highlight:"tell me", spanish:"¿Puedes decirme cómo llegar a la estación?", note:"Tell me = informarme. No se dice 'say me'." },
+      { english:"Don't tell lies — just tell the truth.", highlight:"tell lies", spanish:"No digas mentiras — di la verdad.", note:"Tell a lie / tell the truth → expresiones fijas con 'tell'." },
+    ],
+  },
+  {
+    id:"see-watch-look", label:"See/Watch/Look", icon:"👁️", color:"teal",
+    title:"See vs Watch vs Look", structure:"see (percibir) | look at (observar) | watch (seguir con atención)",
+    description:"See = percibir algo sin esfuerzo, el ojo lo capta solo. Look (at) = dirigir la mirada intencionalmente hacia algo. Watch = seguir algo en movimiento con atención durante un tiempo (películas, partidos, personas). Look es acción; see puede ser involuntario.",
+    examples:[
+      { english:"Can you see that bird in the tree?", highlight:"see", spanish:"¿Puedes ver ese pájaro en el árbol?", note:"See = percibir sin esfuerzo. El pájaro está ahí y el ojo lo capta." },
+      { english:"Look at that sunset — it's beautiful!", highlight:"Look at", spanish:"¡Mira ese atardecer — es hermoso!", note:"Look at = dirigir la mirada a algo específico. Acción intencional." },
+      { english:"We watched the game for three hours.", highlight:"watched", spanish:"Vimos el partido durante tres horas.", note:"Watch = seguir algo durante un tiempo con atención (deportes, TV)." },
+      { english:"She looked at me and smiled.", highlight:"looked at", spanish:"Ella me miró y sonrió.", note:"Look at = mirar deliberadamente a una persona." },
+      { english:"I didn't see you come in — I was reading.", highlight:"see", spanish:"No te vi entrar — estaba leyendo.", note:"See = percepción involuntaria. No estaba buscando verlo." },
+    ],
+  },
 ];
 
 // ── Quiz data (4 per topic = 48 questions) ────────────────────────────────────
@@ -630,6 +678,30 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
   { sentence:"The movie was ___ interesting.", options:["too","too much","enough","very"], correct:"very", topic:"Very & Too", explanation:"Very = intensificador neutro. Sin consecuencia negativa." },
   { sentence:"She is ___ tall to fit in that car.", options:["very","quite","so","too"], correct:"too", topic:"Very & Too", explanation:"Too + adjective + to-infinitivo = exceso que impide hacer algo." },
   { sentence:"He speaks English ___.", options:["very good","too good","too well","very well"], correct:"very well", topic:"Very & Too", explanation:"Very modifica adverbios también. Well es el adverbio de good." },
+
+  // Few vs Little
+  { sentence:"I have ___ friends I can really trust. (algunos, positivo)", options:["few","little","a little","a few"], correct:"a few", topic:"Few vs Little", explanation:"A few + contable = algunos (positivo). Friends se puede contar." },
+  { sentence:"There is ___ milk left in the fridge. (un poco, positivo)", options:["a few","few","little","a little"], correct:"a little", topic:"Few vs Little", explanation:"A little + incontable = un poco (positivo). Milk no tiene plural." },
+  { sentence:"___ people know about this secret. (casi nadie)", options:["A little","Little","A few","Few"], correct:"Few", topic:"Few vs Little", explanation:"Few sin 'a' + contable = casi nadie/nada (negativo). People es contable." },
+  { sentence:"We have ___ time before the meeting starts. (casi nada)", options:["a few","few","a little","little"], correct:"little", topic:"Few vs Little", explanation:"Little sin 'a' + incontable = casi nada (negativo). Time es incontable." },
+
+  // Either / Neither
+  { sentence:"___ of the two answers is correct. (ninguna)", options:["Either","Both","Any","Neither"], correct:"Neither", topic:"Either / Neither", explanation:"Neither = ninguno de los dos. Verbo singular." },
+  { sentence:"You can ___ stay or leave — it's your choice.", options:["neither","both","either","any"], correct:"either", topic:"Either / Neither", explanation:"Either…or = o…o. Presenta dos opciones posibles." },
+  { sentence:"\"I can't swim.\" \"___.\" (yo tampoco)", options:["Me too","Me either","Neither can I","So can I"], correct:"Neither can I", topic:"Either / Neither", explanation:"Neither can I = yo tampoco puedo. Responde a una negación." },
+  { sentence:"___ the president nor the minister attended the event.", options:["Either","Both","Any","Neither"], correct:"Neither", topic:"Either / Neither", explanation:"Neither…nor = ni…ni. Descarta ambas opciones." },
+
+  // Say vs Tell
+  { sentence:"She ___ she was tired. (dijo)", options:["told","said to","said","told to"], correct:"said", topic:"Say vs Tell", explanation:"Say + message sin receptor directo obligatorio." },
+  { sentence:"He ___ me to wait outside.", options:["said","said to","told","said me"], correct:"told", topic:"Say vs Tell", explanation:"Tell + person + message. Siempre lleva receptor directo." },
+  { sentence:"Can you ___ me the way to the airport?", options:["say","say to","speak","tell"], correct:"tell", topic:"Say vs Tell", explanation:"Tell me = informarme. No se dice 'say me'." },
+  { sentence:"Don't ___ lies.", options:["say","speak","do","tell"], correct:"tell", topic:"Say vs Tell", explanation:"Tell a lie / tell the truth → expresiones fijas con 'tell'." },
+
+  // See vs Watch vs Look
+  { sentence:"___ at that beautiful painting!", options:["See","Watch","Looks","Look"], correct:"Look", topic:"See/Watch/Look", explanation:"Look at = dirigir la mirada intencionalmente. Acción deliberada." },
+  { sentence:"Did you ___ the game last night? (seguiste el partido)", options:["look","see","watch","looked at"], correct:"watch", topic:"See/Watch/Look", explanation:"Watch = seguir algo en movimiento con atención (partidos, películas)." },
+  { sentence:"I didn't ___ you come in — I was reading.", options:["watch","look","look at","see"], correct:"see", topic:"See/Watch/Look", explanation:"See = percepción involuntaria. No estaba buscando verlo." },
+  { sentence:"She ___ at me and smiled.", options:["saw","watched","looked","see"], correct:"looked", topic:"See/Watch/Look", explanation:"Look at = mirar deliberadamente a alguien. Acción intencional." },
 ];
 
 // ── Phrasal Verbs data (~50) ──────────────────────────────────────────────────
