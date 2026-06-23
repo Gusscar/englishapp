@@ -46,21 +46,6 @@ const sections = [
     badge: null,
   },
   {
-    href: "/grammar",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="4" y1="6" x2="20" y2="6"/>
-        <line x1="4" y1="12" x2="14" y2="12"/>
-        <line x1="4" y1="18" x2="18" y2="18"/>
-      </svg>
-    ),
-    title: "Gramatica",
-    desc: "Tiempos verbales, modales y mas",
-    color: "from-amber-900/50 to-amber-900/10 border-amber-700/30",
-    iconColor: "text-amber-400",
-    badge: null,
-  },
-  {
     href: "/patterns",
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

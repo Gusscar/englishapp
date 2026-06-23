@@ -4,6 +4,20 @@ import Link from "next/link";
 
 const sections = [
   {
+    href: "/flashcards",
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <line x1="8" y1="12" x2="16" y2="12"/>
+        <line x1="12" y1="8" x2="12" y2="16"/>
+      </svg>
+    ),
+    title: "Repasar frases",
+    desc: "Flashcards con repeticion espaciada (SRS)",
+    color: "from-indigo-900/60 to-indigo-900/20 border-indigo-700/40",
+    iconColor: "text-indigo-400",
+  },
+  {
     href: "/conversation",
     icon: (
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
